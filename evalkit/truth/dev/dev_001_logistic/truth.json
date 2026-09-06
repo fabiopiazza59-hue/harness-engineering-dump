@@ -1,0 +1,73 @@
+{
+  "task_id": "dev_001_logistic",
+  "analysis": "logistic",
+  "difficulty": 2,
+  "wrinkles": [],
+  "seed": 101000,
+  "theme": "clinical",
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 322,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_events",
+      "value": 112,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "or_exposure",
+      "value": 0.4436901330231654,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "or_ci_low",
+      "value": 0.2688040028052041,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "or_ci_high",
+      "value": 0.7323586408226764,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "p_exposure",
+      "value": 0.0014820504660406628,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "or_age",
+      "value": 1.0344346251043577,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "task_id": "fb_009_correlation",
+  "analysis": "correlation",
+  "difficulty": 1,
+  "wrinkles": [
+    "outlier_3sd"
+  ],
+  "seed": 202008,
+  "theme": "education",
+  "claims": [
+    {
+      "id": "n_all",
+      "value": 350,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_all",
+      "value": 0.4461684529383977,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_all",
+      "value": 1.593257764454053e-18,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "n_tutoring",
+      "value": 182,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_tutoring",
+      "value": 0.4743845716011319,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

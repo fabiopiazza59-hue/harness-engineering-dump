@@ -1,0 +1,57 @@
+{
+  "task_id": "ho_009_correlation",
+  "analysis": "correlation",
+  "difficulty": 1,
+  "wrinkles": [
+    "outlier_3sd"
+  ],
+  "seed": 303008,
+  "theme": "nutrition",
+  "claims": [
+    {
+      "id": "n_all",
+      "value": 216,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_all",
+      "value": 0.5120883201126473,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_all",
+      "value": 7.738590811027387e-16,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "n_mediterranean",
+      "value": 106,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_mediterranean",
+      "value": 0.529841317909675,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

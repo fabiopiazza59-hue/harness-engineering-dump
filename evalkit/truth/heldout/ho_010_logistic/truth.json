@@ -1,0 +1,73 @@
+{
+  "task_id": "ho_010_logistic",
+  "analysis": "logistic",
+  "difficulty": 2,
+  "wrinkles": [],
+  "seed": 303009,
+  "theme": "economics",
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 275,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_events",
+      "value": 162,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "or_exposure",
+      "value": 2.771350178647144,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "or_ci_low",
+      "value": 1.6626466763890246,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "or_ci_high",
+      "value": 4.619370983477976,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "p_exposure",
+      "value": 9.218650401753427e-05,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "or_age",
+      "value": 1.0272316527751124,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

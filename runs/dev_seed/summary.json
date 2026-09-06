@@ -1,0 +1,49 @@
+{
+  "run_id": "dev_seed",
+  "split": "dev",
+  "label": "weak seed",
+  "harness_dir": "seed/harness",
+  "harness_commit": "1131aba",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 3,
+  "repeats": 1,
+  "mean_score": 0.0,
+  "mean_raw_accuracy": 0.0,
+  "provenance_rate": 0.0,
+  "timeouts": 0,
+  "total_cost_usd": 0.017,
+  "total_llm_calls": 3,
+  "mean_output_tokens": 174.7,
+  "wall_s": 6.2,
+  "per_task": {
+    "dev_002_ttest": {
+      "score": 0.0,
+      "raw_accuracy": 0.0,
+      "provenance_rate": 0.0,
+      "n": 1
+    },
+    "dev_003_chisq": {
+      "score": 0.0,
+      "raw_accuracy": 0.0,
+      "provenance_rate": 0.0,
+      "n": 1
+    },
+    "dev_001_logistic": {
+      "score": 0.0,
+      "raw_accuracy": 0.0,
+      "provenance_rate": 0.0,
+      "n": 1
+    }
+  },
+  "finished_at": "2026-09-06 21:19:49"
+}

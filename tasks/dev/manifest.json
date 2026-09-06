@@ -1,0 +1,25 @@
+[
+  {
+    "task_id": "dev_001_logistic",
+    "analysis": "logistic",
+    "difficulty": 2,
+    "n_claims": 7,
+    "wrinkles": []
+  },
+  {
+    "task_id": "dev_002_ttest",
+    "analysis": "ttest",
+    "difficulty": 1,
+    "n_claims": 9,
+    "wrinkles": [
+      "outlier_3sd"
+    ]
+  },
+  {
+    "task_id": "dev_003_chisq",
+    "analysis": "chisq",
+    "difficulty": 2,
+    "n_claims": 8,
+    "wrinkles": []
+  }
+]

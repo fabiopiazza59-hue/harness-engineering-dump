@@ -1,0 +1,58 @@
+{
+  "task_id": "fb_003_correlation",
+  "analysis": "correlation",
+  "difficulty": 2,
+  "wrinkles": [
+    "outlier_3sd",
+    "log_outcome"
+  ],
+  "seed": 202002,
+  "theme": "psychology",
+  "claims": [
+    {
+      "id": "n_all",
+      "value": 219,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_all",
+      "value": 0.5742298046885664,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_all",
+      "value": 1.3109595005317223e-20,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "n_caffeine",
+      "value": 105,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_caffeine",
+      "value": 0.5709909340189405,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

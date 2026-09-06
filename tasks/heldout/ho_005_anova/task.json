@@ -1,0 +1,62 @@
+{
+  "task_id": "ho_005_anova",
+  "family": "reproduce_analysis",
+  "title": "Fasting glucose across baseline tertiles",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_low",
+      "description": "Number of participants in the low baseline tertile group",
+      "type": "count"
+    },
+    {
+      "id": "mean_low",
+      "description": "Mean fasting glucose (mg/dL) at follow-up in the low tertile group",
+      "type": "mean"
+    },
+    {
+      "id": "n_middle",
+      "description": "Number of participants in the middle baseline tertile group",
+      "type": "count"
+    },
+    {
+      "id": "mean_middle",
+      "description": "Mean fasting glucose (mg/dL) at follow-up in the middle tertile group",
+      "type": "mean"
+    },
+    {
+      "id": "n_high",
+      "description": "Number of participants in the high baseline tertile group",
+      "type": "count"
+    },
+    {
+      "id": "mean_high",
+      "description": "Mean fasting glucose (mg/dL) at follow-up in the high tertile group",
+      "type": "mean"
+    },
+    {
+      "id": "f_stat",
+      "description": "F statistic of the one-way ANOVA",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "p-value of the one-way ANOVA",
+      "type": "pvalue"
+    },
+    {
+      "id": "eta_squared",
+      "description": "Eta squared of the group factor",
+      "type": "effect"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

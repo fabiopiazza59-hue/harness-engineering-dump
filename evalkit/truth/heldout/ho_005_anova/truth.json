@@ -1,0 +1,94 @@
+{
+  "task_id": "ho_005_anova",
+  "analysis": "anova",
+  "difficulty": 2,
+  "wrinkles": [
+    "outlier_3sd",
+    "derived_tertiles"
+  ],
+  "seed": 303004,
+  "theme": "nutrition",
+  "claims": [
+    {
+      "id": "n_low",
+      "value": 75,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_low",
+      "value": 97.10666666666667,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "n_middle",
+      "value": 76,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_middle",
+      "value": 99.62236842105264,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "n_high",
+      "value": 73,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_high",
+      "value": 108.95205479452055,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "f_stat",
+      "value": 18.838074156760843,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 2.7910371969175134e-08,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "eta_squared",
+      "value": 0.14564987363217294,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ]
+}

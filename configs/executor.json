@@ -1,0 +1,11 @@
+{
+  "provider": "claude-cli",
+  "model": "sonnet",
+  "effort": "medium",
+  "max_steps": 30,
+  "step_timeout_s": 300,
+  "run_timeout_s": 1500,
+  "max_tool_output_chars": 6000,
+  "context_budget_chars": 60000,
+  "llm_retries": 3
+}

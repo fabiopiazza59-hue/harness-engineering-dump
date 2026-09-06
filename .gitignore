@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+runs/**/work/
+evolve/worktrees/
+ui/uploads_tmp/
+.playwright/
+*.png

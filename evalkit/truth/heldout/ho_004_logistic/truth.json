@@ -1,0 +1,73 @@
+{
+  "task_id": "ho_004_logistic",
+  "analysis": "logistic",
+  "difficulty": 1,
+  "wrinkles": [],
+  "seed": 303003,
+  "theme": "ecology",
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 293,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_events",
+      "value": 153,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "or_exposure",
+      "value": 2.255531090674604,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "or_ci_low",
+      "value": 1.39111921642914,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "or_ci_high",
+      "value": 3.6570701065136997,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "p_exposure",
+      "value": 0.0009711871419276334,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "or_age",
+      "value": 1.0192946657856494,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

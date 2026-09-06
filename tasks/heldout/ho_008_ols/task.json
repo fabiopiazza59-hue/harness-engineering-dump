@@ -1,0 +1,52 @@
+{
+  "task_id": "ho_008_ols",
+  "family": "reproduce_analysis",
+  "title": "Adjusted association between caffeine administration and reaction time",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_model",
+      "description": "Number of participants included in the regression model",
+      "type": "count"
+    },
+    {
+      "id": "coef_exposure",
+      "description": "Adjusted regression coefficient for caffeine administration",
+      "type": "coef"
+    },
+    {
+      "id": "se_exposure",
+      "description": "Standard error of the exposure coefficient",
+      "type": "se"
+    },
+    {
+      "id": "p_exposure",
+      "description": "Two-sided p-value for the exposure coefficient",
+      "type": "pvalue"
+    },
+    {
+      "id": "coef_age",
+      "description": "Adjusted regression coefficient for age (as entered in the model)",
+      "type": "coef"
+    },
+    {
+      "id": "r_squared",
+      "description": "R squared of the model",
+      "type": "r2"
+    },
+    {
+      "id": "adj_r_squared",
+      "description": "Adjusted R squared of the model",
+      "type": "r2"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

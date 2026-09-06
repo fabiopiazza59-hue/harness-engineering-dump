@@ -1,0 +1,14 @@
+{
+  "status": "partial",
+  "task_id": "dev_002_ttest",
+  "reason": "seed harness has no execution logic",
+  "artifacts": {},
+  "claims_written": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 2,
+    "output_tokens": 188,
+    "cache_read_tokens": 1552,
+    "cost_usd": 0.0022
+  }
+}

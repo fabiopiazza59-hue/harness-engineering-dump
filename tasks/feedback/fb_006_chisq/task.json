@@ -1,0 +1,57 @@
+{
+  "task_id": "fb_006_chisq",
+  "family": "reproduce_analysis",
+  "title": "Event rates by group in a field experiment on nitrogen fertilisation in grassland plots",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "description": "Number of plots in the unfertilised group",
+      "type": "count"
+    },
+    {
+      "id": "n_fertilised",
+      "description": "Number of plots in the fertilised group",
+      "type": "count"
+    },
+    {
+      "id": "events_fertilised",
+      "description": "Number of events in the fertilised group",
+      "type": "count"
+    },
+    {
+      "id": "prop_unfertilised",
+      "description": "Proportion with the event in the unfertilised group",
+      "type": "prop"
+    },
+    {
+      "id": "prop_fertilised",
+      "description": "Proportion with the event in the fertilised group",
+      "type": "prop"
+    },
+    {
+      "id": "risk_ratio",
+      "description": "Risk ratio (fertilised over unfertilised)",
+      "type": "ratio"
+    },
+    {
+      "id": "chi2_stat",
+      "description": "Pearson chi-square statistic (no continuity correction)",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "p-value of the chi-square test",
+      "type": "pvalue"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "task_id": "fb_005_anova",
+  "analysis": "anova",
+  "difficulty": 2,
+  "wrinkles": [
+    "outlier_3sd",
+    "derived_tertiles"
+  ],
+  "seed": 202004,
+  "theme": "psychology",
+  "claims": [
+    {
+      "id": "n_low",
+      "value": 62,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_low",
+      "value": 629.7161290322582,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "n_middle",
+      "value": 62,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_middle",
+      "value": 698.2838709677418,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "n_high",
+      "value": 62,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_high",
+      "value": 752.6741935483872,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "f_stat",
+      "value": 42.334380123965964,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 7.746157286596403e-16,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "eta_squared",
+      "value": 0.3163191706402577,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ]
+}

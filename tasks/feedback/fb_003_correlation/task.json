@@ -1,0 +1,42 @@
+{
+  "task_id": "fb_003_correlation",
+  "family": "reproduce_analysis",
+  "title": "Baseline values predict reaction time: a correlational analysis",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_all",
+      "description": "Number of participants in the full correlation analysis",
+      "type": "count"
+    },
+    {
+      "id": "r_all",
+      "description": "Spearman rank correlation coefficient in the full sample",
+      "type": "corr"
+    },
+    {
+      "id": "p_all",
+      "description": "Two-sided p-value of the full-sample correlation",
+      "type": "pvalue"
+    },
+    {
+      "id": "n_caffeine",
+      "description": "Number of participants in the caffeine group correlation analysis",
+      "type": "count"
+    },
+    {
+      "id": "r_caffeine",
+      "description": "Spearman rank correlation coefficient within the caffeine group",
+      "type": "corr"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

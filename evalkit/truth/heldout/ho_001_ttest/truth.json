@@ -1,0 +1,93 @@
+{
+  "task_id": "ho_001_ttest",
+  "analysis": "ttest",
+  "difficulty": 2,
+  "wrinkles": [
+    "outlier_3sd"
+  ],
+  "seed": 303000,
+  "theme": "psychology",
+  "claims": [
+    {
+      "id": "n_placebo",
+      "value": 89,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_caffeine",
+      "value": 90,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_placebo",
+      "value": 706.9932584269662,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_caffeine",
+      "value": 682.9911111111111,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "sd_caffeine",
+      "value": 99.26045824891838,
+      "type": "sd",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_diff",
+      "value": -24.002147315855154,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "t_stat",
+      "value": -1.601365191318443,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 0.11108100293042009,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_d",
+      "value": -0.23941371382337256,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ]
+}

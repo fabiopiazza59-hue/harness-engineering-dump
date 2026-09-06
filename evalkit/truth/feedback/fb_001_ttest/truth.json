@@ -1,0 +1,93 @@
+{
+  "task_id": "fb_001_ttest",
+  "analysis": "ttest",
+  "difficulty": 2,
+  "wrinkles": [
+    "outlier_3sd"
+  ],
+  "seed": 202000,
+  "theme": "nutrition",
+  "claims": [
+    {
+      "id": "n_usual",
+      "value": 108,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_mediterranean",
+      "value": 108,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_usual",
+      "value": 105.03240740740742,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_mediterranean",
+      "value": 100.92129629629629,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "sd_mediterranean",
+      "value": 10.722489693154255,
+      "type": "sd",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_diff",
+      "value": -4.1111111111111285,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "t_stat",
+      "value": -2.660960768781127,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 0.00838948917866922,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_d",
+      "value": -0.36211089494876725,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "task_id": "ho_007_ttest",
+  "analysis": "ttest",
+  "difficulty": 2,
+  "wrinkles": [
+    "outlier_3sd"
+  ],
+  "seed": 303006,
+  "theme": "ecology",
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "value": 159,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_fertilised",
+      "value": 170,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_unfertilised",
+      "value": 417.2194968553459,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_fertilised",
+      "value": 468.8541176470588,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "sd_fertilised",
+      "value": 86.08862236152011,
+      "type": "sd",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_diff",
+      "value": 51.634620791712905,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "t_stat",
+      "value": 5.552691904838846,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 5.8288283094112534e-08,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_d",
+      "value": 0.6126021308716227,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ]
+}

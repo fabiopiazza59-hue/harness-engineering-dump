@@ -1,0 +1,57 @@
+{
+  "task_id": "dev_003_chisq",
+  "family": "reproduce_analysis",
+  "title": "Event rates by group in a two-arm randomised trial of an antihypertensive regimen",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_control",
+      "description": "Number of patients in the control group",
+      "type": "count"
+    },
+    {
+      "id": "n_treatment",
+      "description": "Number of patients in the treatment group",
+      "type": "count"
+    },
+    {
+      "id": "events_treatment",
+      "description": "Number of events in the treatment group",
+      "type": "count"
+    },
+    {
+      "id": "prop_control",
+      "description": "Proportion with the event in the control group",
+      "type": "prop"
+    },
+    {
+      "id": "prop_treatment",
+      "description": "Proportion with the event in the treatment group",
+      "type": "prop"
+    },
+    {
+      "id": "risk_ratio",
+      "description": "Risk ratio (treatment over control)",
+      "type": "ratio"
+    },
+    {
+      "id": "chi2_stat",
+      "description": "Pearson chi-square statistic (no continuity correction)",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "p-value of the chi-square test",
+      "type": "pvalue"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

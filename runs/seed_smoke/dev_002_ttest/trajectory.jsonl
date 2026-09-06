@@ -1,0 +1,4 @@
+{"seq": 1, "t": 0.0, "kind": "start", "task_id": "dev_002_ttest", "workdir": "/home/user/harness-engineering-dump/tasks/dev/dev_002_ttest", "provider": "claude-cli", "model": "sonnet"}
+{"seq": 2, "t": 0.0, "kind": "observe", "files": ["data.csv", "data_dictionary.md", "paper_methods.md", "task.json"]}
+{"seq": 3, "t": 6.792, "kind": "llm_probe", "ok": true, "chars": 579}
+{"seq": 4, "t": 6.792, "kind": "end", "status": "partial"}

@@ -1,0 +1,82 @@
+{
+  "task_id": "fb_006_chisq",
+  "analysis": "chisq",
+  "difficulty": 0,
+  "wrinkles": [],
+  "seed": 202005,
+  "theme": "ecology",
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "value": 163,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_fertilised",
+      "value": 135,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "events_fertilised",
+      "value": 94,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "prop_unfertilised",
+      "value": 0.4294478527607362,
+      "type": "prop",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "prop_fertilised",
+      "value": 0.6962962962962963,
+      "type": "prop",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "risk_ratio",
+      "value": 1.6213756613756614,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "chi2_stat",
+      "value": 21.248013742781275,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 4.035283100798139e-06,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    }
+  ]
+}

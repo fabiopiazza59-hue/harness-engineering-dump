@@ -1,0 +1,73 @@
+{
+  "task_id": "fb_002_ols",
+  "analysis": "ols",
+  "difficulty": 0,
+  "wrinkles": [],
+  "seed": 202001,
+  "theme": "ecology",
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 224,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "coef_exposure",
+      "value": 28.94434618911196,
+      "type": "coef",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "se_exposure",
+      "value": 13.121287181633466,
+      "type": "se",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "p_exposure",
+      "value": 0.028430010983004742,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "coef_age",
+      "value": 2.334822792963563,
+      "type": "coef",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "r_squared",
+      "value": 0.306150043523141,
+      "type": "r2",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "adj_r_squared",
+      "value": 0.29347698495735364,
+      "type": "r2",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "task_id": "fb_001_ttest",
+    "analysis": "ttest",
+    "difficulty": 2,
+    "n_claims": 9,
+    "wrinkles": [
+      "outlier_3sd"
+    ]
+  },
+  {
+    "task_id": "fb_002_ols",
+    "analysis": "ols",
+    "difficulty": 0,
+    "n_claims": 7,
+    "wrinkles": []
+  },
+  {
+    "task_id": "fb_003_correlation",
+    "analysis": "correlation",
+    "difficulty": 2,
+    "n_claims": 5,
+    "wrinkles": [
+      "outlier_3sd",
+      "log_outcome"
+    ]
+  },
+  {
+    "task_id": "fb_004_logistic",
+    "analysis": "logistic",
+    "difficulty": 2,
+    "n_claims": 7,
+    "wrinkles": []
+  },
+  {
+    "task_id": "fb_005_anova",
+    "analysis": "anova",
+    "difficulty": 2,
+    "n_claims": 9,
+    "wrinkles": [
+      "outlier_3sd",
+      "derived_tertiles"
+    ]
+  },
+  {
+    "task_id": "fb_006_chisq",
+    "analysis": "chisq",
+    "difficulty": 0,
+    "n_claims": 8,
+    "wrinkles": []
+  },
+  {
+    "task_id": "fb_007_ttest",
+    "analysis": "ttest",
+    "difficulty": 2,
+    "n_claims": 9,
+    "wrinkles": [
+      "outlier_3sd"
+    ]
+  },
+  {
+    "task_id": "fb_008_ols",
+    "analysis": "ols",
+    "difficulty": 1,
+    "n_claims": 7,
+    "wrinkles": [
+      "outlier_3sd"
+    ]
+  },
+  {
+    "task_id": "fb_009_correlation",
+    "analysis": "correlation",
+    "difficulty": 1,
+    "n_claims": 5,
+    "wrinkles": [
+      "outlier_3sd"
+    ]
+  },
+  {
+    "task_id": "fb_010_logistic",
+    "analysis": "logistic",
+    "difficulty": 1,
+    "n_claims": 7,
+    "wrinkles": []
+  }
+]

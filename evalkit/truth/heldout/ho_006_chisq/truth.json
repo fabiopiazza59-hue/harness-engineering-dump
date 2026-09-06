@@ -1,0 +1,82 @@
+{
+  "task_id": "ho_006_chisq",
+  "analysis": "chisq",
+  "difficulty": 2,
+  "wrinkles": [],
+  "seed": 303005,
+  "theme": "clinical",
+  "claims": [
+    {
+      "id": "n_control",
+      "value": 168,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_treatment",
+      "value": 130,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "events_treatment",
+      "value": 38,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "prop_control",
+      "value": 0.47619047619047616,
+      "type": "prop",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "prop_treatment",
+      "value": 0.2923076923076923,
+      "type": "prop",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "risk_ratio",
+      "value": 0.6138461538461539,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "chi2_stat",
+      "value": 10.360877189351761,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 0.0012871402931461772,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    }
+  ]
+}

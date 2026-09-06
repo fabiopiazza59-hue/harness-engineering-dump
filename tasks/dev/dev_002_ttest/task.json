@@ -1,0 +1,62 @@
+{
+  "task_id": "dev_002_ttest",
+  "family": "reproduce_analysis",
+  "title": "Effect of the Mediterranean diet intervention on fasting glucose: a dietary intervention study on fasting glucose",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_usual",
+      "description": "Number of participants in the usual group included in the primary analysis",
+      "type": "count"
+    },
+    {
+      "id": "n_mediterranean",
+      "description": "Number of participants in the mediterranean group included in the primary analysis",
+      "type": "count"
+    },
+    {
+      "id": "mean_usual",
+      "description": "Mean fasting glucose (mg/dL) at follow-up in the usual group",
+      "type": "mean"
+    },
+    {
+      "id": "mean_mediterranean",
+      "description": "Mean fasting glucose (mg/dL) at follow-up in the mediterranean group",
+      "type": "mean"
+    },
+    {
+      "id": "sd_mediterranean",
+      "description": "Sample standard deviation of fasting glucose (mg/dL) at follow-up in the mediterranean group",
+      "type": "sd"
+    },
+    {
+      "id": "mean_diff",
+      "description": "Mean difference in fasting glucose (mg/dL) at follow-up (mediterranean minus usual)",
+      "type": "diff"
+    },
+    {
+      "id": "t_stat",
+      "description": "t statistic of the primary between-group test",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "Two-sided p-value of the primary between-group test",
+      "type": "pvalue"
+    },
+    {
+      "id": "cohens_d",
+      "description": "Cohen's d (pooled SD) for the between-group difference",
+      "type": "effect"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}
