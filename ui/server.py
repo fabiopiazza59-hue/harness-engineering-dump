@@ -75,6 +75,24 @@ def list_split(split: str) -> list[dict]:
     return out
 
 
+def resolve_harness_dir(harness_ref: str | None) -> Path:
+    """'current' -> harness/; a ledger version name or commit -> evolve/versions/<V>/harness if present,
+    else a git-archive snapshot of that commit (works only where the commit exists locally)."""
+    if not harness_ref or harness_ref == "current":
+        return ROOT / "harness"
+    ledger = ROOT / "evolve" / "ledger.jsonl"
+    rows = [json.loads(l) for l in ledger.read_text().splitlines() if l.strip()] if ledger.exists() else []
+    version = next((r["version"] for r in rows if r.get("commit") == harness_ref or r.get("version") == harness_ref), harness_ref)
+    snap = ROOT / "evolve" / "versions" / version / "harness"
+    if snap.exists():
+        return snap
+    hd = ROOT / "runs" / "_harness_snapshots" / harness_ref
+    if not (hd / "harness").exists():
+        hd.mkdir(parents=True, exist_ok=True)
+        subprocess.run(f"git archive {harness_ref} harness | tar -x -C {hd}", shell=True, cwd=ROOT, check=True)
+    return hd / "harness"
+
+
 def current_harness_commit() -> str:
     try:
         return subprocess.run(["git", "log", "-1", "--format=%h %s", "--", "harness"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
@@ -200,13 +218,7 @@ def api_pdf(split: str, tid: str):
 def _run_job(job_id: str, split: str, tid: str, harness_ref: str):
     job = JOBS[job_id]
     try:
-        harness_dir = ROOT / "harness"
-        if harness_ref and harness_ref != "current":
-            hd = ROOT / "runs" / "_harness_snapshots" / harness_ref
-            if not hd.exists():
-                hd.mkdir(parents=True)
-                subprocess.run(f"git archive {harness_ref} harness | tar -x -C {hd}", shell=True, cwd=ROOT, check=True)
-            harness_dir = hd / "harness"
+        harness_dir = resolve_harness_dir(harness_ref)
         task_dir = ROOT / "tasks" / split / tid
         run_dir = ROOT / "runs" / job_id / tid / "r0"
         work, out = run_dir / "work", run_dir / "out"
@@ -321,7 +333,10 @@ def api_promote(body: dict):
     commit = body.get("commit")
     if not commit:
         raise HTTPException(400, "commit required")
-    subprocess.run(["git", "checkout", commit, "--", "harness"], cwd=ROOT, check=True)
+    src = resolve_harness_dir(commit)
+    if src != ROOT / "harness":
+        shutil.rmtree(ROOT / "harness")
+        shutil.copytree(src, ROOT / "harness", ignore=shutil.ignore_patterns("__pycache__"))
     msg = f"Promote harness version {body.get('version', '')} ({commit[:8]}) after human review\n\nReason: {body.get('reason', '')}"
     subprocess.run(["git", "-c", "user.email=ui@local", "-c", "user.name=SciHarness UI", "commit", "-q", "-m", msg, "--", "harness"], cwd=ROOT, check=False)
     rec = {"commit": commit, "version": body.get("version"), "reason": body.get("reason", ""), "at": time.strftime("%Y-%m-%d %H:%M:%S")}

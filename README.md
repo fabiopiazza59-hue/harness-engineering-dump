@@ -23,7 +23,8 @@ uploaded papers without numeric truth and is reported separately.
 | `docs/PROTOCOL.md` | The contract: task family, scoring, roles, splits, guardrails |
 | `docs/LEDGER.md` | Full evolution ledger (feedback and held-out), written by the controller |
 | `seed/harness/` | The weak seed: runnable, policy-free, scores 0 (git tag `seed`) |
-| `harness/` | The current promoted harness (git tag `H0` = Creation result). Evolved candidates live on branch `evolution` |
+| `harness/` | The current promoted harness (= H0, the Creation result) |
+| `evolve/versions/H1`, `evolve/versions/H2` | Snapshots of the evolved candidates (the local `evolution` branch cannot be pushed from this session) |
 | `tasks/generator/` | Synthetic paper generators: easy tier (6 analysis types) and hard tier (6 more, messy data) |
 | `tasks/{dev,feedback,heldout}/` | Harness-visible task files. Truth lives in `evalkit/truth/<split>/` |
 | `evalkit/` | `score.py`, `run_eval.py`, `noise.py`, `judge.py`, `audit_harness.py`, `heldout_results/` |
