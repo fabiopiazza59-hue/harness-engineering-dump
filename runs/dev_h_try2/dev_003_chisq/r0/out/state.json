@@ -1,0 +1,55 @@
+{
+  "task_id": "dev_003_chisq",
+  "step": 4,
+  "started_at": 1788729778.8866165,
+  "plan": "1. Load data.csv. 2. Apply exclusions in order: filter age 18-80 inclusive; drop rows with missing sbp_12w. 3. Group by arm (control/treatment). 4. Compute n per group, events per group (event==1), proportions. 5. Compute risk ratio = prop_treatment/prop_control. 6. Run Pearson chi-square test of independence (2x2 table arm x event) without continuity correction (scipy.stats.chi2_contingency correction=False). 7. Output all claim values as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_control\": 135, \"n_treatment\": 134, \"events_treatment\": 34, \"prop_control\": 0.42962962962962964, \"prop_treatment\": 0.2537313432835821, \"risk_ratio\": 0.5905815748841997, \"chi2_stat\": 9.2459804338117"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_control": 135,
+    "n_treatment": 134,
+    "events_treatment": 34,
+    "prop_control": 0.42962962962962964,
+    "prop_treatment": 0.2537313432835821,
+    "risk_ratio": 0.5905815748841997,
+    "chi2_stat": 9.245980433811727,
+    "p_value": 0.002360129010364937
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_control": 135,
+        "n_treatment": 134,
+        "events_treatment": 34,
+        "prop_control": 0.42962962962962964,
+        "prop_treatment": 0.2537313432835821,
+        "risk_ratio": 0.5905815748841997,
+        "chi2_stat": 9.245980433811727,
+        "p_value": 0.002360129010364937
+      }
+    }
+  ],
+  "best_claims": {
+    "n_control": 135,
+    "n_treatment": 134,
+    "events_treatment": 34,
+    "prop_control": 0.42962962962962964,
+    "prop_treatment": 0.2537313432835821,
+    "risk_ratio": 0.5905815748841997,
+    "chi2_stat": 9.245980433811727,
+    "p_value": 0.002360129010364937
+  },
+  "best_analysis": "import pandas as pd\nfrom scipy.stats import chi2_contingency\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['sbp_12w'])\n\nctrl = df[df['arm']=='control']\ntrt = df[df['arm']=='treatment']\n\nn_control = len(ctrl)\nn_treatment = len(trt)\nevents_treatment = int(trt['event'].sum())\nevents_control = int(ctrl['event'].sum())\nprop_control = events_control/n_control\nprop_treatment = events_treatment/n_treatment\nrisk_ratio = prop_treatment/prop_control\n\ntable = pd.crosstab(df['arm'], df['event'])\nchi2, p, dof, expected = chi2_contingency(table, correction=False)\n\nresult = {\n 'n_control': n_control,\n 'n_treatment': n_treatment,\n 'events_treatment': events_treatment,\n 'prop_control': prop_control,\n 'prop_treatment': prop_treatment,\n 'risk_ratio': risk_ratio,\n 'chi2_stat': chi2,\n 'p_value': p\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}
