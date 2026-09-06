@@ -1,0 +1,18 @@
+{
+  "task_id": "fb_001_ttest",
+  "step": 2,
+  "started_at": 1788733116.9062746,
+  "plan": "1. Load data.csv. 2. Exclude participants with age outside [18,80]. 3. Exclude participants with missing glucose_fu. 4. Compute overall mean and SD of glucose_fu on remaining sample; remove observations >3 SD from mean (outliers). 5. Split by diet into usual/mediterranean groups. 6. Compute n, mean, sample SD (ddof=1) for each group. 7. Welch's t-test (unequal variances), two-sided, on glucose_fu between mediterranean and usual. 8. mean_diff = mean_mediterranean - mean_usual. 9. Cohen's d = mean_diff / pooled_SD where pooled SD = sqrt(((n1-1)*sd1^2+(n2-1)*sd2^2)/(n1+n2-2)). 10. Output all claims as JSON.",
+  "scripts": [],
+  "failures": [],
+  "draft_claims": {},
+  "claim_scripts": [],
+  "submissions": [],
+  "best_claims": {},
+  "best_analysis": "",
+  "parse_failures": 0,
+  "repairs": 0,
+  "compactions": 0,
+  "finished": false,
+  "status": "running"
+}

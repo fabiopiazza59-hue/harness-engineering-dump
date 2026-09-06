@@ -1,0 +1,62 @@
+{
+  "task_id": "dev_002_ttest",
+  "step": 4,
+  "started_at": 1788733088.8971226,
+  "plan": "1. Load data.csv. 2. Exclude participants with age outside [18,80]. 3. Exclude missing glucose_fu (complete case). 4. Compute overall mean and SD of glucose_fu on remaining sample; remove observations >3 SD from mean (outliers). 5. Split by diet group (usual, mediterranean). 6. Compute n, mean, sample SD (n-1) for each group. 7. Compute mean_diff = mean_mediterranean - mean_usual. 8. Run unpaired two-sided Student's t-test (equal variance) via scipy.stats.ttest_ind. 9. Compute pooled SD = sqrt(((n1-1)*sd1^2+(n2-1)*sd2^2)/(n1+n2-2)); cohens_d = mean_diff/pooled_sd. 10. Print JSON with all claim slots.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_usual\": 151, \"n_mediterranean\": 161, \"mean_usual\": 102.70132450331126, \"mean_mediterranean\": 98.29689440993788, \"sd_mediterranean\": 13.055125537314112, \"mean_diff\": -4.404430093373378, \"t_stat\": -"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_usual": 151,
+    "n_mediterranean": 161,
+    "mean_usual": 102.70132450331126,
+    "mean_mediterranean": 98.29689440993788,
+    "sd_mediterranean": 13.055125537314112,
+    "mean_diff": -4.404430093373378,
+    "t_stat": -2.9669917233423937,
+    "p_value": 0.003241289877945753,
+    "cohens_d": -0.3361183478602517
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_usual": 151,
+        "n_mediterranean": 161,
+        "mean_usual": 102.70132450331126,
+        "mean_mediterranean": 98.29689440993788,
+        "sd_mediterranean": 13.055125537314112,
+        "mean_diff": -4.404430093373378,
+        "t_stat": -2.9669917233423937,
+        "p_value": 0.003241289877945753,
+        "cohens_d": -0.3361183478602517
+      }
+    }
+  ],
+  "best_claims": {
+    "n_usual": 151,
+    "n_mediterranean": 161,
+    "mean_usual": 102.70132450331126,
+    "mean_mediterranean": 98.29689440993788,
+    "sd_mediterranean": 13.055125537314112,
+    "mean_diff": -4.404430093373378,
+    "t_stat": -2.9669917233423937,
+    "p_value": 0.003241289877945753,
+    "cohens_d": -0.3361183478602517
+  },
+  "best_analysis": "import pandas as pd, numpy as np, scipy.stats as st, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df[df['glucose_fu'].notna()]\n\nmean_all = df['glucose_fu'].mean()\nsd_all = df['glucose_fu'].std(ddof=1)\ndf = df[(df['glucose_fu'] >= mean_all - 3*sd_all) & (df['glucose_fu'] <= mean_all + 3*sd_all)]\n\nusual = df[df['diet']=='usual']['glucose_fu']\nmed = df[df['diet']=='mediterranean']['glucose_fu']\n\nn_usual = len(usual)\nn_med = len(med)\nmean_usual = usual.mean()\nmean_med = med.mean()\nsd_usual = usual.std(ddof=1)\nsd_med = med.std(ddof=1)\nmean_diff = mean_med - mean_usual\n\nt_stat, p_value = st.ttest_ind(med, usual, equal_var=True)\n\npooled_sd = np.sqrt(((n_usual-1)*sd_usual**2 + (n_med-1)*sd_med**2)/(n_usual+n_med-2))\ncohens_d = mean_diff/pooled_sd\n\nresult = {\n 'n_usual': n_usual,\n 'n_mediterranean': n_med,\n 'mean_usual': mean_usual,\n 'mean_mediterranean': mean_med,\n 'sd_mediterranean': sd_med,\n 'mean_diff': mean_diff,\n 't_stat': t_stat,\n 'p_value': p_value,\n 'cohens_d': cohens_d\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}
