@@ -1,0 +1,17 @@
+{
+  "task_id": "fb_004_logistic",
+  "step": 1,
+  "started_at": 1788731948.5207806,
+  "plan": "1. Load data.csv. 2. Apply age filter: keep 18<=age<=80. 3. Drop rows with missing glucose_fu or bmi. 4. Code diet: mediterranean=1, usual=0. 5. Fit logistic regression event ~ diet + age + bmi using statsmodels Logit (ML, no penalty). 6. Compute n_model = n obs used, n_events = sum(event). 7. Compute OR = exp(coef) for diet and age, Wald 95% CI = exp(coef +/- 1.96*se) using statsmodels conf_int, p-value from model summary. 8. Print JSON with all claims.",
+  "scripts": [],
+  "failures": [],
+  "draft_claims": {},
+  "submissions": [],
+  "best_claims": {},
+  "best_analysis": "",
+  "parse_failures": 0,
+  "repairs": 1,
+  "compactions": 0,
+  "finished": false,
+  "status": "running"
+}

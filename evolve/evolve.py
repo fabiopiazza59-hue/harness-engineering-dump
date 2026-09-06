@@ -142,7 +142,7 @@ def make_worktree(name: str, commit: str) -> Path:
     git("worktree", "add", "--detach", str(wt), commit)
     # keep only what the creator may see
     for child in list(wt.iterdir()):
-        if child.name in ("harness", ".git"):
+        if child.name in ("harness", ".git", ".gitignore"):
             continue
         shutil.rmtree(child) if child.is_dir() else child.unlink()
     # dev tasks with truth (allowed development cases) and the tooling to run them

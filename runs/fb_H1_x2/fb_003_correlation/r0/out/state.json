@@ -1,0 +1,47 @@
+{
+  "task_id": "fb_003_correlation",
+  "step": 4,
+  "started_at": 1788731924.662635,
+  "plan": "1. Load data.csv. 2. Exclude participants with age not in [18,80]. 3. Exclude rows with missing rt_ms. 4. Compute overall mean and sample SD (n-1) of rt_ms after above exclusions; remove rows where rt_ms more than 3 SD from mean. 5. Transform rt_ms: set values <1 to 1, then natural log. 6. Compute Spearman correlation between baseline and log_rt on full sample (n_all, r_all, p_all). 7. Subset to condition=='caffeine', compute Spearman correlation (n_caffeine, r_caffeine). 8. Print JSON with all claim ids.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_all\": 219, \"r_all\": 0.5742298046885664, \"p_all\": 1.3109595005317223e-20, \"n_caffeine\": 105, \"r_caffeine\": 0.5709909340189405}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_all": 219,
+    "r_all": 0.5742298046885664,
+    "p_all": 1.3109595005317223e-20,
+    "n_caffeine": 105,
+    "r_caffeine": 0.5709909340189405
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_all": 219,
+        "r_all": 0.5742298046885664,
+        "p_all": 1.3109595005317223e-20,
+        "n_caffeine": 105,
+        "r_caffeine": 0.5709909340189405
+      }
+    }
+  ],
+  "best_claims": {
+    "n_all": 219,
+    "r_all": 0.5742298046885664,
+    "p_all": 1.3109595005317223e-20,
+    "n_caffeine": 105,
+    "r_caffeine": 0.5709909340189405
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df[df['rt_ms'].notna()]\n\nmean = df['rt_ms'].mean()\nsd = df['rt_ms'].std(ddof=1)\ndf = df[(df['rt_ms'] - mean).abs() <= 3*sd]\n\ndf['rt_ms_adj'] = df['rt_ms'].clip(lower=1)\ndf['log_rt'] = np.log(df['rt_ms_adj'])\n\nn_all = len(df)\nr_all, p_all = stats.spearmanr(df['baseline'], df['log_rt'])\n\ncaf = df[df['condition']=='caffeine']\nn_caffeine = len(caf)\nr_caffeine, p_caffeine = stats.spearmanr(caf['baseline'], caf['log_rt'])\n\nresult = {\n 'n_all': n_all,\n 'r_all': r_all,\n 'p_all': p_all,\n 'n_caffeine': n_caffeine,\n 'r_caffeine': r_caffeine\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}
