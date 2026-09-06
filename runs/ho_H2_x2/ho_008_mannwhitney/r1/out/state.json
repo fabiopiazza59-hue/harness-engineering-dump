@@ -1,0 +1,59 @@
+{
+  "task_id": "ho_008_mannwhitney",
+  "step": 4,
+  "started_at": 1788733594.7410915,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (all columns identical), keep first occurrence. 3. Replace -999 with NaN across all columns (sentinel missing). 4. Filter age between 18 and 80 inclusive. 5. Normalize diet: strip whitespace, lowercase. 6. Drop rows with missing glucose_fu. 7. Split into usual and mediterranean groups. 8. Compute n for each group. 9. Compute median glucose_fu for each group. 10. Compute median_diff = median_mediterranean - median_usual. 11. Run scipy.stats.mannwhitneyu(mediterranean, usual, alternative='two-sided', use_continuity=True, method='asymptotic') - U statistic reported for mediterranean group (so mediterranean is first arg). 12. Compute rank_biserial = 1 - 2*U/(n1*n2) where n1=n_mediterranean, n2=n_usual. 13. Print all claims as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_usual\": 192, \"n_mediterranean\": 202, \"median_usual\": 105.35, \"median_mediterranean\": 96.6, \"median_diff\": -8.75, \"u_stat\": 13059.0, \"p_value\": 2.087096990227714e-08, \"rank_biserial\": 0.32657797029"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_usual": 192,
+    "n_mediterranean": 202,
+    "median_usual": 105.35,
+    "median_mediterranean": 96.6,
+    "median_diff": -8.75,
+    "u_stat": 13059.0,
+    "p_value": 2.087096990227714e-08,
+    "rank_biserial": 0.32657797029702973
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_usual": 192,
+        "n_mediterranean": 202,
+        "median_usual": 105.35,
+        "median_mediterranean": 96.6,
+        "median_diff": -8.75,
+        "u_stat": 13059.0,
+        "p_value": 2.087096990227714e-08,
+        "rank_biserial": 0.32657797029702973
+      }
+    }
+  ],
+  "best_claims": {
+    "n_usual": 192,
+    "n_mediterranean": 202,
+    "median_usual": 105.35,
+    "median_mediterranean": 96.6,
+    "median_diff": -8.75,
+    "u_stat": 13059.0,
+    "p_value": 2.087096990227714e-08,
+    "rank_biserial": 0.32657797029702973
+  },
+  "best_analysis": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# remove exact duplicates, keep first\ndf = df.drop_duplicates(keep='first')\n\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\n\n# age filter\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n\n# normalize diet\ndf['diet_norm'] = df['diet'].astype(str).str.strip().str.lower()\n\n# drop missing glucose_fu\ndf = df[df['glucose_fu'].notna()]\n\nusual = df[df['diet_norm'] == 'usual']['glucose_fu']\nmed = df[df['diet_norm'] == 'mediterranean']['glucose_fu']\n\nn_usual = len(usual)\nn_med = len(med)\n\nmedian_usual = usual.median()\nmedian_med = med.median()\nmedian_diff = median_med - median_usual\n\nres = stats.mannwhitneyu(med, usual, alternative='two-sided', use_continuity=True, method='asymptotic')\nU = res.statistic\np = res.pvalue\n\nrank_biserial = 1 - 2*U/(n_med*n_usual)\n\nclaims = {\n 'n_usual': n_usual,\n 'n_mediterranean': n_med,\n 'median_usual': median_usual,\n 'median_mediterranean': median_med,\n 'median_diff': median_diff,\n 'u_stat': U,\n 'p_value': p,\n 'rank_biserial': rank_biserial\n}\nprint(json.dumps(claims))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

@@ -1,0 +1,38 @@
+{
+  "claims": [
+    {
+      "id": "n_usual",
+      "value": 192
+    },
+    {
+      "id": "n_mediterranean",
+      "value": 202
+    },
+    {
+      "id": "median_usual",
+      "value": 105.35
+    },
+    {
+      "id": "median_mediterranean",
+      "value": 96.6
+    },
+    {
+      "id": "median_diff",
+      "value": -8.75
+    },
+    {
+      "id": "u_stat",
+      "value": 13059.0
+    },
+    {
+      "id": "p_value",
+      "value": 2.087096990227714e-08
+    },
+    {
+      "id": "rank_biserial",
+      "value": 0.32657797029702973
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

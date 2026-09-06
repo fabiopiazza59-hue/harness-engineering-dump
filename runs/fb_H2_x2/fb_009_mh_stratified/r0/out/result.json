@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_009_mh_stratified",
+  "reason": "verification gate passed",
+  "steps": 6,
+  "claims_written": true,
+  "slots_filled": 9,
+  "slots_total": 9,
+  "gate_passed": true,
+  "usage": {
+    "calls": 6,
+    "input_tokens": 37776,
+    "output_tokens": 5054,
+    "cache_read_tokens": 6426,
+    "cost_usd": 0.2029
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

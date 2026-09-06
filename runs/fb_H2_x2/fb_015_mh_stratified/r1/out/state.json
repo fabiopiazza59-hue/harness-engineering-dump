@@ -1,0 +1,62 @@
+{
+  "task_id": "fb_015_mh_stratified",
+  "step": 4,
+  "started_at": 1788733413.3180335,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (all columns identical), keep first. 3. Replace -999 with NaN across all columns. 4. Filter age between 18 and 80 inclusive (drop missing age too, since must be in range). 5. Normalize diet: strip whitespace, lowercase. 6. Define exposed = diet=='mediterranean', unexposed = diet=='usual' (drop other/missing categories). 7. Drop rows with missing event. 8. Compute n_total, n_exposed. 9. Build crude 2x2 table (exposed/unexposed x event/no event), compute crude OR = (a*d)/(b*c). 10. Stratify by site (1-4), build 2x2 tables per site, compute Mantel-Haenszel OR = sum(a_i*d_i/n_i) / sum(b_i*c_i/n_i). 11. Compute MH CI using Robins-Breslow-Greenland (RBG) variance formula, standard for MH OR CI. 12. Compute MH chi-square with continuity correction (standard Mantel-Haenszel test statistic). 13. Compute p-value from chi2 with df=1. 14. Compute OR for site 1 alone. 15. Print JSON of all claims.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_total\": 307, \"n_exposed\": 164, \"or_crude\": 0.5713033313851549, \"or_mh\": 0.5574900665452579, \"or_mh_ci_low\": 0.34434453898523265, \"or_mh_ci_high\": 0.9025703593631398, \"mh_chi2\": 5.143501328634977, "
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_total": 307,
+    "n_exposed": 164,
+    "or_crude": 0.5713033313851549,
+    "or_mh": 0.5574900665452579,
+    "or_mh_ci_low": 0.34434453898523265,
+    "or_mh_ci_high": 0.9025703593631398,
+    "mh_chi2": 5.143501328634977,
+    "mh_p": 0.023333542804517826,
+    "or_site1": 1.0178571428571428
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_total": 307,
+        "n_exposed": 164,
+        "or_crude": 0.5713033313851549,
+        "or_mh": 0.5574900665452579,
+        "or_mh_ci_low": 0.34434453898523265,
+        "or_mh_ci_high": 0.9025703593631398,
+        "mh_chi2": 5.143501328634977,
+        "mh_p": 0.023333542804517826,
+        "or_site1": 1.0178571428571428
+      }
+    }
+  ],
+  "best_claims": {
+    "n_total": 307,
+    "n_exposed": 164,
+    "or_crude": 0.5713033313851549,
+    "or_mh": 0.5574900665452579,
+    "or_mh_ci_low": 0.34434453898523265,
+    "or_mh_ci_high": 0.9025703593631398,
+    "mh_chi2": 5.143501328634977,
+    "mh_p": 0.023333542804517826,
+    "or_site1": 1.0178571428571428
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy.stats import chi2\n\ndf = pd.read_csv('data.csv')\n# 1. remove exact duplicates\ndf = df.drop_duplicates(keep='first')\n# 2. replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\ndf = df.replace(-999.0, np.nan)\n# 3. age filter\ndf = df[(df['age']>=18) & (df['age']<=80)]\n# 4. normalize diet\ndf['diet_norm'] = df['diet'].astype(str).str.strip().str.lower()\ndf = df[df['diet_norm'].isin(['mediterranean','usual'])]\n# drop missing event\ndf = df.dropna(subset=['event'])\n\ndf['exposed'] = (df['diet_norm']=='mediterranean').astype(int)\n\nn_total = len(df)\nn_exposed = int(df['exposed'].sum())\n\n# crude OR\na = ((df['exposed']==1)&(df['event']==1)).sum()\nb = ((df['exposed']==1)&(df['event']==0)).sum()\nc = ((df['exposed']==0)&(df['event']==1)).sum()\nd = ((df['exposed']==0)&(df['event']==0)).sum()\nor_crude = (a*d)/(b*c)\n\n# stratify by site\nsites = sorted(df['site'].dropna().unique())\nnum_sum = 0.0\nden_sum = 0.0\n# for variance (RBG)\nP_sum = 0.0\nQ_sum = 0.0\nR_sum = 0.0\nS_sum = 0.0\n\n# for MH chi2\nsum_a = 0.0\nsum_Ea = 0.0\nsum_Va = 0.0\n\nsite_or = {}\nfor s in sites:\n    sub = df[df['site']==s]\n    ai = ((sub['exposed']==1)&(sub['event']==1)).sum()\n    bi = ((sub['exposed']==1)&(sub['event']==0)).sum()\n    ci = ((sub['exposed']==0)&(sub['event']==1)).sum()\n    di = ((sub['exposed']==0)&(sub['event']==0)).sum()\n    ni = ai+bi+ci+di\n    if ni==0:\n        continue\n    num_sum += (ai*di)/ni\n    den_sum += (bi*ci)/ni\n    if bi*ci !=0 and ai*di !=0:\n        pass\n    # RBG variance components\n    Ri = ai*di/ni\n    Si = bi*ci/ni\n    Pi = (ai+di)/ni\n    Qi = (bi+ci)/ni\n    P_sum += Ri*Pi\n    Q_sum += Ri*Qi + Si*Pi\n    R_sum += Si*Qi\n    # for chi2\n    n1i = ai+bi  # exposed total\n    n0i = ci+di  # unexposed total\n    m1i = ai+ci  # event total\n    m0i = bi+di\n    Ei = n1i*m1i/ni\n    Vi = (n1i*n0i*m1i*m0i)/(ni**2*(ni-1)) if ni>1 else 0\n    sum_a += ai\n    sum_Ea += Ei\n    sum_Va += Vi\n    if s==1:\n        site_or[s] = (ai*di)/(bi*ci) if bi*ci!=0 else np.nan\n\nor_mh = num_sum/den_sum\n\n# RBG variance of ln(OR_MH)\nsum_R = num_sum\nsum_S = den_sum\nvar_ln_or = (P_sum/(2*sum_R**2)) + (Q_sum/(2*sum_R*sum_S)) + (R_sum/(2*sum_S**2))\nse_ln_or = np.sqrt(var_ln_or)\nln_or = np.log(or_mh)\nci_low = np.exp(ln_or - 1.96*se_ln_or)\nci_high = np.exp(ln_or + 1.96*se_ln_or)\n\n# MH chi2 with continuity correction\nnum = (abs(sum_a - sum_Ea) - 0.5)**2\nmh_chi2 = num/sum_Va\nmh_p = 1 - chi2.cdf(mh_chi2, df=1)\n\nor_site1 = site_or.get(1, np.nan)\n\nresult = {\n 'n_total': int(n_total),\n 'n_exposed': int(n_exposed),\n 'or_crude': float(or_crude),\n 'or_mh': float(or_mh),\n 'or_mh_ci_low': float(ci_low),\n 'or_mh_ci_high': float(ci_high),\n 'mh_chi2': float(mh_chi2),\n 'mh_p': float(mh_p),\n 'or_site1': float(or_site1)\n}\nimport json\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

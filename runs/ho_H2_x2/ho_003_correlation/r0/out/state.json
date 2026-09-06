@@ -1,0 +1,50 @@
+{
+  "task_id": "ho_003_correlation",
+  "step": 4,
+  "started_at": 1788733490.6382835,
+  "plan": "1. Load data.csv. 2. Exclude students with age <18 or >80 (inclusive range 18-80 kept). 3. Exclude rows with missing math_score. 4. Compute mean and sample SD (n-1) of math_score on remaining data; remove outliers >3 SD from mean. 5. Transform math_score: set values <1 to 1, then natural log. 6. Full sample: Spearman correlation between baseline and log_math_score, get r and two-sided p-value, n_all = sample size. 7. Subset to program=='tutoring' (check exact label), compute Spearman correlation r_tutoring, n_tutoring = sample size. 8. Print all results as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_all\": 179, \"r_all\": 0.5927110676825217, \"p_all\": 2.320763149894151e-18, \"n_tutoring\": 83, \"r_tutoring\": 0.5951772454229052}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_all": 179,
+    "r_all": 0.5927110676825217,
+    "p_all": 2.320763149894151e-18,
+    "n_tutoring": 83,
+    "r_tutoring": 0.5951772454229052
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_all": 179,
+        "r_all": 0.5927110676825217,
+        "p_all": 2.320763149894151e-18,
+        "n_tutoring": 83,
+        "r_tutoring": 0.5951772454229052
+      }
+    }
+  ],
+  "best_claims": {
+    "n_all": 179,
+    "r_all": 0.5927110676825217,
+    "p_all": 2.320763149894151e-18,
+    "n_tutoring": 83,
+    "r_tutoring": 0.5951772454229052
+  },
+  "best_analysis": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import spearmanr\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df[df['math_score'].notna()]\nmean = df['math_score'].mean()\nsd = df['math_score'].std(ddof=1)\ndf = df[(df['math_score'] - mean).abs() <= 3*sd]\ndf['math_score_adj'] = df['math_score'].clip(lower=1)\ndf['log_math'] = np.log(df['math_score_adj'])\n\nr_all, p_all = spearmanr(df['baseline'], df['log_math'])\nn_all = len(df)\n\ntut = df[df['program']=='tutoring']\nr_tut, p_tut = spearmanr(tut['baseline'], tut['log_math'])\nn_tut = len(tut)\n\nresult = {\n 'n_all': n_all,\n 'r_all': r_all,\n 'p_all': p_all,\n 'n_tutoring': n_tut,\n 'r_tutoring': r_tut\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

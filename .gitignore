@@ -5,3 +5,4 @@ evolve/worktrees/
 ui/uploads_tmp/
 .playwright/
 *.png
+!runs/ui_shots/*.png

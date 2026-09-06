@@ -1,0 +1,59 @@
+{
+  "task_id": "ho_010_ols_interaction",
+  "step": 5,
+  "started_at": 1788733639.6070402,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (identical on every column), keep first. 3. Replace -999 with NaN across all columns. 4. Filter age 18-80 inclusive. 5. Drop rows missing sbp_12w, weight_kg, height_cm. 6. Compute BMI = weight_kg/(height_cm/100)^2; exclude BMI<15 or >50. 7. Recode arm to binary exposure: treatment=1, control=0 (need to check actual values). 8. Center age at mean of analysis sample. 9. Create interaction = exposure*age_centered. 10. Fit OLS: sbp_12w ~ exposure + age_centered + interaction + bmi, HC3 robust SE. 11. Extract n, coef_exposure, se_exposure_hc3, p_exposure, coef_interaction, p_interaction, coef_bmi, r_squared. 12. Print JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 401, \"coef_exposure\": -7.37880510859495, \"se_exposure_hc3\": 1.2143135025370693, \"p_exposure\": 1.2281565102439397e-09, \"coef_interaction\": -0.11528452671652002, \"p_interaction\": 0.222617369"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 401,
+    "coef_exposure": -7.37880510859495,
+    "se_exposure_hc3": 1.2143135025370693,
+    "p_exposure": 1.2281565102439397e-09,
+    "coef_interaction": -0.11528452671652002,
+    "p_interaction": 0.2226173693562139,
+    "coef_bmi": 0.5133464796205561,
+    "r_squared": 0.12510349936102938
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 401,
+        "coef_exposure": -7.37880510859495,
+        "se_exposure_hc3": 1.2143135025370693,
+        "p_exposure": 1.2281565102439397e-09,
+        "coef_interaction": -0.11528452671652002,
+        "p_interaction": 0.2226173693562139,
+        "coef_bmi": 0.5133464796205561,
+        "r_squared": 0.12510349936102938
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 401,
+    "coef_exposure": -7.37880510859495,
+    "se_exposure_hc3": 1.2143135025370693,
+    "p_exposure": 1.2281565102439397e-09,
+    "coef_interaction": -0.11528452671652002,
+    "p_interaction": 0.2226173693562139,
+    "coef_bmi": 0.5133464796205561,
+    "r_squared": 0.12510349936102938
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df.drop_duplicates(keep='first')\ndf = df.replace(-999, np.nan)\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['sbp_12w','weight_kg','height_cm'])\ndf['bmi'] = df['weight_kg']/((df['height_cm']/100)**2)\ndf = df[(df['bmi']>=15) & (df['bmi']<=50)]\ndf['exposure'] = (df['arm']=='treatment').astype(int)\nage_mean = df['age'].mean()\ndf['age_c'] = df['age'] - age_mean\ndf['inter'] = df['exposure']*df['age_c']\n\nX = df[['exposure','age_c','inter','bmi']]\nX = sm.add_constant(X)\ny = df['sbp_12w']\nmodel = sm.OLS(y, X).fit(cov_type='HC3')\n\nresult = {\n 'n_model': int(model.nobs),\n 'coef_exposure': model.params['exposure'],\n 'se_exposure_hc3': model.bse['exposure'],\n 'p_exposure': model.pvalues['exposure'],\n 'coef_interaction': model.params['inter'],\n 'p_interaction': model.pvalues['inter'],\n 'coef_bmi': model.params['bmi'],\n 'r_squared': model.rsquared\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

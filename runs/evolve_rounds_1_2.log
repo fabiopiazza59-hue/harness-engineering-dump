@@ -5,3 +5,4 @@ H1: feedback 1.0 (H0 0.9167, band 0.1909) -> within noise band; held-out recorde
 === round 2: lineage head 158b5158, feedback signal from fb_H1_x2 ===
 feedback packet built (0 failed runs) at /home/user/harness-engineering-dump/evolve/worktrees/cand_2
 creator finished: 50 turns, 523.7s, $3.0785495
+H2: feedback 1.0 (H0 0.9167, band 0.1909) -> within noise band; held-out recorded (hidden from creator)

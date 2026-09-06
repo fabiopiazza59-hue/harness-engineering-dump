@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_011_ols_interaction",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 14425,
+    "output_tokens": 1395,
+    "cache_read_tokens": 6654,
+    "cost_usd": 0.073
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

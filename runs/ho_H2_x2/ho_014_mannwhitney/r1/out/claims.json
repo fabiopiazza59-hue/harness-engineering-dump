@@ -1,0 +1,38 @@
+{
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "value": 120
+    },
+    {
+      "id": "n_fertilised",
+      "value": 121
+    },
+    {
+      "id": "median_unfertilised",
+      "value": 419.5
+    },
+    {
+      "id": "median_fertilised",
+      "value": 475.9
+    },
+    {
+      "id": "median_diff",
+      "value": 56.39999999999998
+    },
+    {
+      "id": "u_stat",
+      "value": 9670.5
+    },
+    {
+      "id": "p_value",
+      "value": 8.441766954014353e-06
+    },
+    {
+      "id": "rank_biserial",
+      "value": -0.3320247933884297
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

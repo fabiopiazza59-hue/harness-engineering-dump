@@ -1,0 +1,66 @@
+{
+  "task_id": "fb_014_cox",
+  "step": 5,
+  "started_at": 1788733370.9044175,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (identical on all columns), keep first. 3. Replace -999 with NaN across all columns. 4. Filter age between 18 and 80 inclusive (drop missing age). 5. Normalise condition: strip whitespace, lowercase. 6. Compute follow-up days = last_contact_date - enrol_date. 7. Censor at 730 days: if followup>730, set to 730 and event=0. 8. Exclude records with followup==0. 9. Build exposure variable: 1 if condition=='caffeine', 0 if condition=='placebo' (drop other/missing labels). 10. Drop missing age/event/followup rows for Cox model. 11. Fit Cox PH model (lifelines CoxPHFitter, breslow ties) with exposure and age as covariates. 12. Extract HR (exp(coef)), 95% CI via z=1.96, p-value for exposure; HR for age. 13. Compute n_model = number of rows in model, n_events = sum(event), median_followup_days = median of followup time after censoring. Print all as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 1,
+      "summary": " \"/home/user/harness-engineering-dump/runs/fb_H2_x2/fb_014_cox/r0/out/scripts/scratch_01.py\", line 2, in <module>\n    from lifelines import CoxPHFitter\nModuleNotFoundError: No module named 'lifelines'"
+    },
+    {
+      "name": "scratch_02.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 207, \"n_events\": 88, \"median_followup_days\": 484.0, \"hr_exposure\": 0.46931717029210945, \"hr_ci_low\": 0.304708508588407, \"hr_ci_high\": 0.7228501998561286, \"p_exposure\": 0.000597444190638896"
+    }
+  ],
+  "failures": [
+    "scratch_01.py: exit 1:  \"/home/user/harness-engineering-dump/runs/fb_H2_x2/fb_014_cox/r0/out/scripts/scratch_01.py\", line 2, in <module>\n    from lifelines import CoxPHFitter\nModuleNotFoundError: No module named 'lifelines'"
+  ],
+  "draft_claims": {
+    "n_model": 207,
+    "n_events": 88,
+    "median_followup_days": 484.0,
+    "hr_exposure": 0.46931717029210945,
+    "hr_ci_low": 0.304708508588407,
+    "hr_ci_high": 0.7228501998561286,
+    "p_exposure": 0.0005974441906388961,
+    "hr_age": 1.034470674978907
+  },
+  "claim_scripts": [
+    "scratch_02.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 207,
+        "n_events": 88,
+        "median_followup_days": 484.0,
+        "hr_exposure": 0.46931717029210945,
+        "hr_ci_low": 0.304708508588407,
+        "hr_ci_high": 0.7228501998561286,
+        "p_exposure": 0.0005974441906388961,
+        "hr_age": 1.034470674978907
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 207,
+    "n_events": 88,
+    "median_followup_days": 484.0,
+    "hr_exposure": 0.46931717029210945,
+    "hr_ci_low": 0.304708508588407,
+    "hr_ci_high": 0.7228501998561286,
+    "p_exposure": 0.0005974441906388961,
+    "hr_age": 1.034470674978907
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom statsmodels.duration.hazard_regression import PHReg\n\ndf = pd.read_csv('data.csv')\n\n# 1. remove exact duplicates, keep first\ndf = df.drop_duplicates(keep='first')\n\n# 2. replace -999 with NaN\ndf = df.replace(-999, np.nan)\ndf = df.replace(-999.0, np.nan)\n\n# 3. age filter 18-80 inclusive, drop missing age\ndf = df[df['age'].notna()]\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# 4. normalise condition\ndf['condition'] = df['condition'].astype(str).str.strip().str.lower()\n\n# 5. compute followup days\ndf['enrol_date'] = pd.to_datetime(df['enrol_date'])\ndf['last_contact_date'] = pd.to_datetime(df['last_contact_date'])\ndf['followup'] = (df['last_contact_date'] - df['enrol_date']).dt.days\n\n# 6. censor at 730\nmask_long = df['followup'] > 730\ndf.loc[mask_long, 'followup'] = 730\ndf.loc[mask_long, 'event'] = 0\n\n# 7. exclude followup==0\ndf = df[df['followup'] != 0]\n\n# 8. exposure variable\ndf = df[df['condition'].isin(['placebo','caffeine'])]\ndf['exposure'] = (df['condition'] == 'caffeine').astype(int)\n\n# 9. drop missing needed cols\ndf = df.dropna(subset=['age','event','followup','exposure'])\n\nmodel_df = df[['followup','event','exposure','age']].copy()\n\nexog = model_df[['exposure','age']]\nmodel = PHReg(model_df['followup'], exog, status=model_df['event'], ties='breslow')\nres = model.fit()\n\nparams = res.params\nse = res.bse\nnames = list(exog.columns)\nidx_exp = names.index('exposure')\nidx_age = names.index('age')\n\ncoef_exp = params[idx_exp]\nse_exp = se[idx_exp]\nhr_exp = np.exp(coef_exp)\nhr_exp_low = np.exp(coef_exp - 1.96*se_exp)\nhr_exp_high = np.exp(coef_exp + 1.96*se_exp)\n\nfrom scipy import stats\nz_exp = coef_exp/se_exp\np_exp = 2*(1-stats.norm.cdf(abs(z_exp)))\n\ncoef_age = params[idx_age]\nhr_age = np.exp(coef_age)\n\nresult = {\n 'n_model': int(len(model_df)),\n 'n_events': int(model_df['event'].sum()),\n 'median_followup_days': float(model_df['followup'].median()),\n 'hr_exposure': float(hr_exp),\n 'hr_ci_low': float(hr_exp_low),\n 'hr_ci_high': float(hr_exp_high),\n 'p_exposure': float(p_exp),\n 'hr_age': float(hr_age)\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 1,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

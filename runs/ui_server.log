@@ -6,3 +6,8 @@ INFO:     127.0.0.1:56602 - "GET /api/versions HTTP/1.1" 200 OK
 INFO:     127.0.0.1:56612 - "POST /api/judge/ui_shots/uploads/01_drop.png HTTP/1.1" 404 Not Found
 INFO:     127.0.0.1:39446 - "POST /api/judge/ui_shots/uploads/01_drop.png HTTP/1.1" 404 Not Found
 INFO:     127.0.0.1:46360 - "POST /api/judge/ui_20260906_221031_up_e2e_glucose_trial/uploads/up_e2e_glucose_trial_a6fdb7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48088 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48088 - "GET /api/tasks HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48094 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:48088 - "GET /api/versions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48088 - "GET /api/versions HTTP/1.1" 200 OK

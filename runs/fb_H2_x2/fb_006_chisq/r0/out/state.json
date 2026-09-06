@@ -1,0 +1,59 @@
+{
+  "task_id": "fb_006_chisq",
+  "step": 4,
+  "started_at": 1788733195.6909723,
+  "plan": "1. Load data.csv. 2. Apply exclusions in order: (a) keep only rows with age between 18 and 80 inclusive; (b) drop rows with missing biomass (complete-case). 3. Group by treatment column (fertilised vs unfertilised). 4. Compute n per group, events (sum of event==1) per group, proportions. 5. Compute risk ratio = prop_fertilised/prop_unfertilised. 6. Run scipy.stats.chi2_contingency with correction=False on 2x2 table (event yes/no x treatment) to get chi2 stat and p-value. 7. Print all claims as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_unfertilised\": 163, \"n_fertilised\": 135, \"events_fertilised\": 94, \"prop_unfertilised\": 0.4294478527607362, \"prop_fertilised\": 0.6962962962962963, \"risk_ratio\": 1.6213756613756614, \"chi2_stat\": 21."
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_unfertilised": 163,
+    "n_fertilised": 135,
+    "events_fertilised": 94,
+    "prop_unfertilised": 0.4294478527607362,
+    "prop_fertilised": 0.6962962962962963,
+    "risk_ratio": 1.6213756613756614,
+    "chi2_stat": 21.248013742781275,
+    "p_value": 4.035283100798139e-06
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_unfertilised": 163,
+        "n_fertilised": 135,
+        "events_fertilised": 94,
+        "prop_unfertilised": 0.4294478527607362,
+        "prop_fertilised": 0.6962962962962963,
+        "risk_ratio": 1.6213756613756614,
+        "chi2_stat": 21.248013742781275,
+        "p_value": 4.035283100798139e-06
+      }
+    }
+  ],
+  "best_claims": {
+    "n_unfertilised": 163,
+    "n_fertilised": 135,
+    "events_fertilised": 94,
+    "prop_unfertilised": 0.4294478527607362,
+    "prop_fertilised": 0.6962962962962963,
+    "risk_ratio": 1.6213756613756614,
+    "chi2_stat": 21.248013742781275,
+    "p_value": 4.035283100798139e-06
+  },
+  "best_analysis": "import pandas as pd\nfrom scipy.stats import chi2_contingency\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df[df['biomass'].notna()]\n\nun = df[df['treatment']=='unfertilised']\nfe = df[df['treatment']=='fertilised']\n\nn_un = len(un)\nn_fe = len(fe)\nev_un = int(un['event'].sum())\nev_fe = int(fe['event'].sum())\nprop_un = ev_un/n_un\nprop_fe = ev_fe/n_fe\nrr = prop_fe/prop_un\n\ntable = [[ev_fe, n_fe-ev_fe],[ev_un, n_un-ev_un]]\nchi2, p, dof, exp = chi2_contingency(table, correction=False)\n\nresult = {\n 'n_unfertilised': n_un,\n 'n_fertilised': n_fe,\n 'events_fertilised': ev_fe,\n 'prop_unfertilised': prop_un,\n 'prop_fertilised': prop_fe,\n 'risk_ratio': rr,\n 'chi2_stat': chi2,\n 'p_value': p\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

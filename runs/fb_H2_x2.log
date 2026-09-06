@@ -1,0 +1,78 @@
+[1/32] fb_001_ttest r1: score=1.0 raw=1.0 prov=True 25.3s
+[2/32] fb_001_ttest r0: score=1.0 raw=1.0 prov=True 26.0s
+[3/32] fb_002_ols r0: score=1.0 raw=1.0 prov=True 29.3s
+[4/32] fb_003_correlation r0: score=1.0 raw=1.0 prov=True 23.1s
+[5/32] fb_002_ols r1: score=1.0 raw=1.0 prov=True 23.9s
+[6/32] fb_003_correlation r1: score=1.0 raw=1.0 prov=True 22.6s
+[7/32] fb_004_logistic r1: score=1.0 raw=1.0 prov=True 24.5s
+[8/32] fb_004_logistic r0: score=1.0 raw=1.0 prov=True 26.2s
+[9/32] fb_005_anova r0: score=1.0 raw=1.0 prov=True 25.1s
+[10/32] fb_006_chisq r0: score=1.0 raw=1.0 prov=True 22.7s
+[11/32] fb_005_anova r1: score=1.0 raw=1.0 prov=True 27.2s
+[12/32] fb_007_paired r0: score=1.0 raw=1.0 prov=True 24.8s
+[13/32] fb_007_paired r1: score=1.0 raw=1.0 prov=True 24.3s
+[14/32] fb_006_chisq r1: score=1.0 raw=1.0 prov=True 50.1s
+[15/32] fb_008_cox r0: score=1.0 raw=1.0 prov=True 41.5s
+[16/32] fb_008_cox r1: score=1.0 raw=1.0 prov=True 41.9s
+[17/32] fb_009_mh_stratified r0: score=1.0 raw=1.0 prov=True 59.7s
+[18/32] fb_010_multi_bh r0: score=1.0 raw=1.0 prov=True 26.0s
+[19/32] fb_009_mh_stratified r1: score=1.0 raw=1.0 prov=True 36.0s
+[20/32] fb_010_multi_bh r1: score=1.0 raw=1.0 prov=True 26.3s
+[21/32] fb_011_ols_interaction r0: score=1.0 raw=1.0 prov=True 26.1s
+[22/32] fb_011_ols_interaction r1: score=1.0 raw=1.0 prov=True 28.3s
+[23/32] fb_012_mannwhitney r0: score=1.0 raw=1.0 prov=True 26.3s
+[24/32] fb_012_mannwhitney r1: score=1.0 raw=1.0 prov=True 25.3s
+[25/32] fb_013_paired r0: score=1.0 raw=1.0 prov=True 25.7s
+[26/32] fb_013_paired r1: score=1.0 raw=1.0 prov=True 24.8s
+[27/32] fb_014_cox r0: score=1.0 raw=1.0 prov=True 41.2s
+[28/32] fb_014_cox r1: score=1.0 raw=1.0 prov=True 38.1s
+[29/32] fb_015_mh_stratified r0: score=1.0 raw=1.0 prov=True 43.5s
+[30/32] fb_016_multi_bh r0: score=1.0 raw=1.0 prov=True 26.0s
+[31/32] fb_015_mh_stratified r1: score=1.0 raw=1.0 prov=True 35.5s
+[32/32] fb_016_multi_bh r1: score=1.0 raw=1.0 prov=True 27.0s
+{
+  "run_id": "fb_H2_x2",
+  "split": "feedback",
+  "label": "H2 feedback",
+  "harness_dir": "evolve/worktrees/cand_2/harness",
+  "harness_commit": "e38a4ff",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 16,
+  "repeats": 2,
+  "mean_score": 1.0,
+  "mean_raw_accuracy": 1.0,
+  "provenance_rate": 1.0,
+  "timeouts": 0,
+  "total_cost_usd": 2.754,
+  "total_llm_calls": 139,
+  "mean_output_tokens": 1783.2,
+  "wall_s": 344.7,
+  "finished_at": "2026-09-06 22:24:21"
+}
+  fb_001_ttest                 score=1.000 raw=1.000 prov=1.00
+  fb_002_ols                   score=1.000 raw=1.000 prov=1.00
+  fb_003_correlation           score=1.000 raw=1.000 prov=1.00
+  fb_004_logistic              score=1.000 raw=1.000 prov=1.00
+  fb_005_anova                 score=1.000 raw=1.000 prov=1.00
+  fb_006_chisq                 score=1.000 raw=1.000 prov=1.00
+  fb_007_paired                score=1.000 raw=1.000 prov=1.00
+  fb_008_cox                   score=1.000 raw=1.000 prov=1.00
+  fb_009_mh_stratified         score=1.000 raw=1.000 prov=1.00
+  fb_010_multi_bh              score=1.000 raw=1.000 prov=1.00
+  fb_011_ols_interaction       score=1.000 raw=1.000 prov=1.00
+  fb_012_mannwhitney           score=1.000 raw=1.000 prov=1.00
+  fb_013_paired                score=1.000 raw=1.000 prov=1.00
+  fb_014_cox                   score=1.000 raw=1.000 prov=1.00
+  fb_015_mh_stratified         score=1.000 raw=1.000 prov=1.00
+  fb_016_multi_bh              score=1.000 raw=1.000 prov=1.00
+

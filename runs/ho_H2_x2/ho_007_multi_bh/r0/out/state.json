@@ -1,0 +1,59 @@
+{
+  "task_id": "ho_007_multi_bh",
+  "step": 4,
+  "started_at": 1788733566.5719278,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (identical on all columns), keep first. 3. Replace -999 with NaN. 4. Filter age between 18 and 80 inclusive. 5. Drop rows with missing sbp_12w or any of biomarker_1..6 (complete case). 6. n_analysed = resulting row count. 7. For each biomarker_i, compute Pearson r and p-value vs sbp_12w. 8. Apply BH correction across the 6 p-values. 9. Report r and adjusted p for biomarker_1, biomarker_3, biomarker_5. 10. n_significant_adj = count of adjusted p < 0.05. 11. r_strongest = signed r of biomarker with max abs(r).",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_analysed\": 373, \"r_biomarker_1\": 0.5151716689332558, \"p_adj_biomarker_1\": 6.795760569079605e-26, \"r_biomarker_3\": -0.3301967368376184, \"p_adj_biomarker_3\": 1.844488072954684e-10, \"p_adj_biomarker_"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_analysed": 373,
+    "r_biomarker_1": 0.5151716689332558,
+    "p_adj_biomarker_1": 6.795760569079605e-26,
+    "r_biomarker_3": -0.3301967368376184,
+    "p_adj_biomarker_3": 1.844488072954684e-10,
+    "p_adj_biomarker_5": 0.009969775767624933,
+    "n_significant_adj": 5,
+    "r_strongest": 0.5151716689332558
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_analysed": 373,
+        "r_biomarker_1": 0.5151716689332558,
+        "p_adj_biomarker_1": 6.795760569079605e-26,
+        "r_biomarker_3": -0.3301967368376184,
+        "p_adj_biomarker_3": 1.844488072954684e-10,
+        "p_adj_biomarker_5": 0.009969775767624933,
+        "n_significant_adj": 5,
+        "r_strongest": 0.5151716689332558
+      }
+    }
+  ],
+  "best_claims": {
+    "n_analysed": 373,
+    "r_biomarker_1": 0.5151716689332558,
+    "p_adj_biomarker_1": 6.795760569079605e-26,
+    "r_biomarker_3": -0.3301967368376184,
+    "p_adj_biomarker_3": 1.844488072954684e-10,
+    "p_adj_biomarker_5": 0.009969775767624933,
+    "n_significant_adj": 5,
+    "r_strongest": 0.5151716689332558
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\n# remove exact duplicates\ndf = df.drop_duplicates(keep='first')\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\n# age filter\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\ncols = ['sbp_12w','biomarker_1','biomarker_2','biomarker_3','biomarker_4','biomarker_5','biomarker_6']\ndf = df.dropna(subset=cols)\nn_analysed = len(df)\n\nbiomarkers = ['biomarker_1','biomarker_2','biomarker_3','biomarker_4','biomarker_5','biomarker_6']\nrs = {}\nps = {}\nfor b in biomarkers:\n    r, p = stats.pearsonr(df[b], df['sbp_12w'])\n    rs[b] = r\n    ps[b] = p\n\n# BH adjustment\npvals = np.array([ps[b] for b in biomarkers])\nn = len(pvals)\norder = np.argsort(pvals)\nranked = pvals[order]\nadj = np.empty(n)\nprev = 1.0\nfor i in range(n-1, -1, -1):\n    rank = i+1\n    val = ranked[i]*n/rank\n    prev = min(prev, val)\n    adj[i] = prev\nadj_p = np.empty(n)\nadj_p[order] = adj\nadj_p = np.clip(adj_p, 0, 1)\n\nadj_dict = {biomarkers[i]: adj_p[i] for i in range(n)}\n\nn_significant_adj = int(sum(1 for v in adj_p if v < 0.05))\n\nabs_rs = {b: abs(rs[b]) for b in biomarkers}\nstrongest = max(abs_rs, key=abs_rs.get)\nr_strongest = rs[strongest]\n\nresult = {\n    'n_analysed': n_analysed,\n    'r_biomarker_1': rs['biomarker_1'],\n    'p_adj_biomarker_1': adj_dict['biomarker_1'],\n    'r_biomarker_3': rs['biomarker_3'],\n    'p_adj_biomarker_3': adj_dict['biomarker_3'],\n    'p_adj_biomarker_5': adj_dict['biomarker_5'],\n    'n_significant_adj': n_significant_adj,\n    'r_strongest': r_strongest\n}\nimport json\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 1,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

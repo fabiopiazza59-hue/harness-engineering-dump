@@ -1,0 +1,56 @@
+{
+  "task_id": "ho_004_logistic",
+  "step": 4,
+  "started_at": 1788733514.6571975,
+  "plan": "1. Load data.csv. 2. Apply exclusions in order: (a) keep only plots with age between 18 and 80 inclusive; (b) drop rows with missing biomass or bmi. 3. Recode treatment into binary exposure (1=fertilised,0=unfertilised). 4. Fit logistic regression: event ~ exposure + age + bmi using statsmodels Logit (ML, no penalization). 5. Extract n_model (nobs), n_events (sum of event==1 in modelled data). 6. Compute OR = exp(coef) for exposure and age, Wald 95% CI = exp(coef +/- 1.96*se) using statsmodels conf_int (which uses z-based Wald CI by default). 7. p-value for exposure from model summary (two-sided Wald test). 8. Print JSON with all claims. Save as analysis.py, run, verify sane values, then submit.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 293, \"n_events\": 153, \"or_exposure\": 2.255531090674604, \"or_ci_low\": 1.39111921642914, \"or_ci_high\": 3.6570701065136997, \"p_exposure\": 0.0009711871419276334, \"or_age\": 1.0192946657856494}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 293,
+    "n_events": 153,
+    "or_exposure": 2.255531090674604,
+    "or_ci_low": 1.39111921642914,
+    "or_ci_high": 3.6570701065136997,
+    "p_exposure": 0.0009711871419276334,
+    "or_age": 1.0192946657856494
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 293,
+        "n_events": 153,
+        "or_exposure": 2.255531090674604,
+        "or_ci_low": 1.39111921642914,
+        "or_ci_high": 3.6570701065136997,
+        "p_exposure": 0.0009711871419276334,
+        "or_age": 1.0192946657856494
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 293,
+    "n_events": 153,
+    "or_exposure": 2.255531090674604,
+    "or_ci_low": 1.39111921642914,
+    "or_ci_high": 3.6570701065136997,
+    "p_exposure": 0.0009711871419276334,
+    "or_age": 1.0192946657856494
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\n\n# exclusion 1: age 18-80 inclusive\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# exclusion 2: drop missing biomass or bmi\ndf = df.dropna(subset=['biomass','bmi'])\n\n# exposure coding\ndf['exposure'] = (df['treatment']=='fertilised').astype(int)\n\nX = df[['exposure','age','bmi']]\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.Logit(y, X).fit(disp=0)\n\nn_model = int(model.nobs)\nn_events = int(y.sum())\n\nparams = model.params\nconf = model.conf_int()\npvals = model.pvalues\n\nor_exposure = np.exp(params['exposure'])\nor_ci_low = np.exp(conf.loc['exposure',0])\nor_ci_high = np.exp(conf.loc['exposure',1])\np_exposure = pvals['exposure']\nor_age = np.exp(params['age'])\n\nresult = {\n 'n_model': n_model,\n 'n_events': n_events,\n 'or_exposure': or_exposure,\n 'or_ci_low': or_ci_low,\n 'or_ci_high': or_ci_high,\n 'p_exposure': p_exposure,\n 'or_age': or_age\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

@@ -1,0 +1,56 @@
+{
+  "task_id": "fb_004_logistic",
+  "step": 4,
+  "started_at": 1788733168.016263,
+  "plan": "1. Load data.csv. 2. Apply exclusions in order: (a) keep age between 18 and 80 inclusive; (b) drop rows with missing glucose_fu or bmi. 3. Recode diet: mediterranean=1, usual=0. 4. Fit logistic regression: event ~ diet + age + bmi using statsmodels GLM binomial (MLE, no penalization). 5. n_model = number of rows in model; n_events = sum of event==1 among those rows. 6. Compute OR = exp(coef) for diet and age; Wald 95% CI = exp(coef +/- 1.96*se) (use statsmodels conf_int default alpha=0.05). 7. p_exposure = p-value for diet coefficient. 8. Print all claims as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 161, \"n_events\": 59, \"or_exposure\": 0.34611422507808903, \"or_ci_low\": 0.16402088710743384, \"or_ci_high\": 0.7303646438818502, \"p_exposure\": 0.005358818793801879, \"or_age\": 1.022823128772610"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.34611422507808903,
+    "or_ci_low": 0.16402088710743384,
+    "or_ci_high": 0.7303646438818502,
+    "p_exposure": 0.005358818793801879,
+    "or_age": 1.0228231287726104
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 161,
+        "n_events": 59,
+        "or_exposure": 0.34611422507808903,
+        "or_ci_low": 0.16402088710743384,
+        "or_ci_high": 0.7303646438818502,
+        "p_exposure": 0.005358818793801879,
+        "or_age": 1.0228231287726104
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.34611422507808903,
+    "or_ci_low": 0.16402088710743384,
+    "or_ci_high": 0.7303646438818502,
+    "p_exposure": 0.005358818793801879,
+    "or_age": 1.0228231287726104
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['glucose_fu','bmi'])\ndf['diet_bin'] = (df['diet']=='mediterranean').astype(int)\n\nX = df[['diet_bin','age','bmi']].copy()\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.GLM(y, X, family=sm.families.Binomial()).fit()\nprint(model.summary())\n\nn_model = int(model.nobs)\nn_events = int(y.sum())\n\nparams = model.params\nconf = model.conf_int()\npvals = model.pvalues\n\nor_exposure = np.exp(params['diet_bin'])\nor_ci_low = np.exp(conf.loc['diet_bin',0])\nor_ci_high = np.exp(conf.loc['diet_bin',1])\np_exposure = pvals['diet_bin']\nor_age = np.exp(params['age'])\n\nresult = {\n 'n_model': n_model,\n 'n_events': n_events,\n 'or_exposure': or_exposure,\n 'or_ci_low': or_ci_low,\n 'or_ci_high': or_ci_high,\n 'p_exposure': p_exposure,\n 'or_age': or_age\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

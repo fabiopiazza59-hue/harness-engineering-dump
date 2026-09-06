@@ -1,0 +1,62 @@
+{
+  "task_id": "ho_005_anova",
+  "step": 4,
+  "started_at": 1788733540.5815895,
+  "plan": "1. Load data.csv. 2. Exclude participants with age <18 or >80. 3. Exclude participants with missing glucose_fu. 4. Compute overall mean and sample SD (n-1) of glucose_fu on remaining sample; remove observations >3 SD from mean (outliers). 5. On this final analysis sample, compute tertile cut-points of baseline (33.3% and 66.7% percentiles) using the analysis sample. 6. Assign group: low if baseline <= 1st tercile cutpoint, middle if baseline <= 2nd tercile cutpoint (and > 1st), high if baseline > 2nd tercile cutpoint. 7. Compute n and mean glucose_fu per group. 8. One-way ANOVA (scipy.stats.f_oneway) across three groups on glucose_fu. 9. Compute eta squared = SS_between/SS_total. 10. Output all claims as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_low\": 75, \"mean_low\": 97.10666666666667, \"n_middle\": 76, \"mean_middle\": 99.62236842105264, \"n_high\": 73, \"mean_high\": 108.95205479452055, \"f_stat\": 18.838074156760843, \"p_value\": 2.791037196917513"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_low": 75,
+    "mean_low": 97.10666666666667,
+    "n_middle": 76,
+    "mean_middle": 99.62236842105264,
+    "n_high": 73,
+    "mean_high": 108.95205479452055,
+    "f_stat": 18.838074156760843,
+    "p_value": 2.7910371969175134e-08,
+    "eta_squared": 0.14564987363217294
+  },
+  "claim_scripts": [
+    "scratch_01.py"
+  ],
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_low": 75,
+        "mean_low": 97.10666666666667,
+        "n_middle": 76,
+        "mean_middle": 99.62236842105264,
+        "n_high": 73,
+        "mean_high": 108.95205479452055,
+        "f_stat": 18.838074156760843,
+        "p_value": 2.7910371969175134e-08,
+        "eta_squared": 0.14564987363217294
+      }
+    }
+  ],
+  "best_claims": {
+    "n_low": 75,
+    "mean_low": 97.10666666666667,
+    "n_middle": 76,
+    "mean_middle": 99.62236842105264,
+    "n_high": 73,
+    "mean_high": 108.95205479452055,
+    "f_stat": 18.838074156760843,
+    "p_value": 2.7910371969175134e-08,
+    "eta_squared": 0.14564987363217294
+  },
+  "best_analysis": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n# exclusion 1: age 18-80 inclusive\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n# exclusion 2: missing glucose_fu\ndf = df[df['glucose_fu'].notna()]\n# exclusion 3: outliers >3 sample SD from mean\nmean_g = df['glucose_fu'].mean()\nsd_g = df['glucose_fu'].std(ddof=1)\nlow_b = mean_g - 3*sd_g\nhigh_b = mean_g + 3*sd_g\ndf = df[(df['glucose_fu'] >= low_b) & (df['glucose_fu'] <= high_b)]\n\n# tertile cutpoints of baseline on analysis sample\nq1 = df['baseline'].quantile(1/3)\nq2 = df['baseline'].quantile(2/3)\n\ndef assign(v):\n    if v <= q1:\n        return 'low'\n    elif v <= q2:\n        return 'middle'\n    else:\n        return 'high'\n\ndf['group'] = df['baseline'].apply(assign)\n\ngroups = {g: df[df['group']==g]['glucose_fu'] for g in ['low','middle','high']}\nn_low = len(groups['low'])\nn_middle = len(groups['middle'])\nn_high = len(groups['high'])\nmean_low = groups['low'].mean()\nmean_middle = groups['middle'].mean()\nmean_high = groups['high'].mean()\n\nf_stat, p_value = stats.f_oneway(groups['low'], groups['middle'], groups['high'])\n\n# eta squared\ngrand_mean = df['glucose_fu'].mean()\nss_between = sum(len(v)*(v.mean()-grand_mean)**2 for v in groups.values())\nss_total = ((df['glucose_fu']-grand_mean)**2).sum()\neta_squared = ss_between/ss_total\n\nresult = {\n    'n_low': n_low,\n    'mean_low': mean_low,\n    'n_middle': n_middle,\n    'mean_middle': mean_middle,\n    'n_high': n_high,\n    'mean_high': mean_high,\n    'f_stat': f_stat,\n    'p_value': p_value,\n    'eta_squared': eta_squared\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

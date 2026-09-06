@@ -1,0 +1,34 @@
+{
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 161
+    },
+    {
+      "id": "n_events",
+      "value": 59
+    },
+    {
+      "id": "or_exposure",
+      "value": 0.34611422507808903
+    },
+    {
+      "id": "or_ci_low",
+      "value": 0.16402088710743384
+    },
+    {
+      "id": "or_ci_high",
+      "value": 0.7303646438818502
+    },
+    {
+      "id": "p_exposure",
+      "value": 0.005358818793801879
+    },
+    {
+      "id": "or_age",
+      "value": 1.0228231287726104
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}
