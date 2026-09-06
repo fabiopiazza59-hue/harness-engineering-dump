@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SciHarness</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea; --ok:#1a7f4b; --bad:#b42318; --warn:#b54708; --accent:#2f5fd0; --accent-bg:#e8eefc; }
+  * { box-sizing: border-box; }
+  body { margin:0; font: 14px/1.45 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color:var(--ink); background:var(--bg); }
+  header { background:#fff; border-bottom:1px solid var(--line); padding:12px 24px; display:flex; align-items:center; gap:24px; }
+  header h1 { font-size:17px; margin:0; letter-spacing:.2px; }
+  header .sub { color:var(--muted); font-size:12px; }
+  nav button { background:none; border:none; padding:8px 12px; font-size:14px; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; }
+  nav button.active { color:var(--ink); border-bottom-color:var(--accent); }
+  main { padding:20px 24px; max-width:1280px; margin:0 auto; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:16px; }
+  .card h2 { font-size:14px; margin:0 0 10px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); }
+  .drop { border:2px dashed #c8cdd4; border-radius:8px; padding:26px; text-align:center; color:var(--muted); cursor:pointer; }
+  .drop.over { border-color:var(--accent); background:var(--accent-bg); }
+  label { display:block; font-size:12px; color:var(--muted); margin:8px 0 4px; }
+  input[type=text], select { width:100%; padding:7px 9px; border:1px solid var(--line); border-radius:6px; font-size:13px; }
+  button.primary { background:var(--accent); color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:13px; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:7px 12px; font-size:13px; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:default; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:12px; }
+  tr.click { cursor:pointer; } tr.click:hover { background:#fafbfc; }
+  .tag { display:inline-block; padding:1px 7px; border-radius:10px; font-size:11px; background:#eef0f3; color:var(--muted); }
+  .ok { color:var(--ok); font-weight:600; } .bad { color:var(--bad); font-weight:600; } .warn { color:var(--warn); font-weight:600; }
+  .big { font-size:28px; font-weight:700; }
+  .kpis { display:flex; gap:24px; flex-wrap:wrap; } .kpi .l { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+  pre { background:#f2f4f7; border-radius:6px; padding:10px; overflow:auto; font-size:12px; max-height:360px; }
+  .muted { color:var(--muted); } .small { font-size:12px; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  details summary { cursor:pointer; color:var(--accent); font-size:13px; }
+  .verdict button { padding:2px 8px; font-size:12px; margin-right:4px; }
+  .verdict button.sel-ok { background:#dff5e8; border-color:var(--ok); } .verdict button.sel-bad { background:#fde3df; border-color:var(--bad); }
+  #toast { position:fixed; bottom:18px; right:18px; background:#1b1f24; color:#fff; padding:10px 14px; border-radius:6px; font-size:13px; display:none; }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>SciHarness</h1><div class="sub">LLM-built harness for reproducing published analyses · current harness: <span id="cur-harness">…</span></div></div>
+  <nav>
+    <button data-tab="papers" class="active">Papers</button>
+    <button data-tab="validate">Validate</button>
+    <button data-tab="versions">Versions</button>
+    <button data-tab="runs">Runs</button>
+  </nav>
+</header>
+<main>
+
+<!-- ------------------------------------------------------------ PAPERS -->
+<section id="tab-papers">
+  <div class="grid">
+    <div class="card">
+      <h2>Drop a test paper</h2>
+      <div class="drop" id="drop">Drop a PDF (or .md/.txt) here, or click to choose.<br><span class="small">Optionally add the dataset (CSV) and a truth JSON with the numbers you expect.</span></div>
+      <input type="file" id="file-paper" accept=".pdf,.md,.txt" hidden>
+      <label>Task name (optional)</label><input type="text" id="up-name" placeholder="e.g. smith2024_bp_trial">
+      <label>Dataset CSV (optional but needed to actually reproduce)</label><input type="file" id="file-data" accept=".csv">
+      <label>Truth JSON (optional; overrides values extracted from the paper) — format: {"claims":[{"id":"...","value":1.23}]}</label><input type="file" id="file-truth" accept=".json">
+      <div class="row" style="margin-top:12px"><button class="primary" id="btn-upload" disabled>Upload</button><span class="muted small" id="up-status"></span></div>
+      <p class="small muted">After upload, click <b>Build task</b>: the task builder (LLM) extracts the reported numbers as ground-truth claim slots and writes a methods-only view with every number withheld, so the harness cannot copy results from the paper.</p>
+    </div>
+    <div class="card">
+      <h2>Tasks</h2>
+      <div class="row"><select id="split-filter"><option value="uploads">uploads</option><option value="dev">dev (creation)</option><option value="feedback">feedback (evolution signal)</option><option value="heldout">held-out (hidden from evolution)</option></select><button class="secondary" id="btn-refresh-tasks">Refresh</button></div>
+      <table id="tasks-table" style="margin-top:10px"><thead><tr><th>task</th><th>title</th><th>claims</th><th>status</th><th></th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------------ VALIDATE -->
+<section id="tab-validate" hidden>
+  <div class="card">
+    <h2>Run and validate</h2>
+    <div class="row">
+      <select id="val-task" style="max-width:420px"></select>
+      <select id="val-harness" style="max-width:260px"><option value="current">harness: current (promoted)</option></select>
+      <button class="primary" id="btn-run">Run harness</button>
+      <span id="run-status" class="muted small"></span>
+    </div>
+    <div class="small muted" style="margin-top:6px">Score = fraction of claim slots within tolerance; 0 if analysis.py does not reproduce the submitted claims. Judge = LLM comparison against the full paper, reported separately. Your verdicts are saved with the run.</div>
+  </div>
+  <div id="val-result" hidden>
+    <div class="grid">
+      <div class="card">
+        <h2>Accuracy</h2>
+        <div class="kpis">
+          <div class="kpi"><div class="l">score</div><div class="big" id="k-score">–</div></div>
+          <div class="kpi"><div class="l">raw accuracy</div><div class="big" id="k-raw">–</div></div>
+          <div class="kpi"><div class="l">provenance</div><div class="big" id="k-prov">–</div></div>
+          <div class="kpi"><div class="l">judge accuracy</div><div class="big" id="k-judge">–</div></div>
+          <div class="kpi"><div class="l">human verdict</div><div class="big" id="k-human">–</div></div>
+          <div class="kpi"><div class="l">steps / cost</div><div class="big small-big" id="k-cost">–</div></div>
+        </div>
+        <div class="row" style="margin-top:12px"><button class="secondary" id="btn-judge">Run LLM judge</button><button class="secondary" id="btn-save-verdict">Save my verdicts</button><span class="muted small" id="judge-status"></span></div>
+        <p class="small muted" id="judge-text"></p>
+      </div>
+      <div class="card"><h2>Paper</h2><div class="row"><a id="pdf-link" target="_blank" class="small">open PDF</a></div><details><summary>methods view (what the harness saw)</summary><pre id="paper-methods"></pre></details><details><summary>full paper (with numbers)</summary><pre id="paper-full"></pre></details></div>
+    </div>
+    <div class="card">
+      <h2>Claims: harness vs truth vs judge</h2>
+      <table id="claims-table"><thead><tr><th>claim</th><th>description</th><th>harness</th><th>truth (paper)</th><th>tolerance</th><th>scorer</th><th>judge</th><th>your verdict</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="grid">
+      <div class="card"><h2>analysis.py submitted</h2><pre id="analysis-code"></pre></div>
+      <div class="card"><h2>Trajectory</h2><pre id="trajectory"></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------------ VERSIONS -->
+<section id="tab-versions" hidden>
+  <div class="card">
+    <h2>Harness versions (evolution ledger)</h2>
+    <p class="small muted">Feedback = the set the evolver saw. Held-out = never shown to the evolver. A version is "improved" only if the feedback gain exceeds H0's noise band. <b>Nothing is promoted automatically: you decide.</b></p>
+    <table id="versions-table"><thead><tr><th>version</th><th>commit</th><th>feedback</th><th>Δ H0</th><th>noise band</th><th>held-out</th><th>Δ H0</th><th>diff</th><th>verdict</th><th>hypothesis</th><th></th></tr></thead><tbody></tbody></table>
+    <div id="promotions" class="small muted" style="margin-top:10px"></div>
+  </div>
+  <div class="card" id="version-detail" hidden><h2>Round detail</h2><pre id="version-detail-pre"></pre></div>
+</section>
+
+<!-- ------------------------------------------------------------ RUNS -->
+<section id="tab-runs" hidden>
+  <div class="card"><h2>All runs</h2><table id="runs-table"><thead><tr><th>run</th><th>kind</th><th>split / task</th><th>score</th><th>n</th><th>cost USD</th><th>harness</th></tr></thead><tbody></tbody></table></div>
+</section>
+</main>
+<div id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const api = async (url, opt={}) => { const r = await fetch(url, opt); if (!r.ok) { throw new Error(await r.text()); } return r.json(); };
+const toast = m => { const t=$('#toast'); t.textContent=m; t.style.display='block'; setTimeout(()=>t.style.display='none', 3500); };
+const fmt = v => (v===null||v===undefined) ? '–' : (typeof v==='number' ? (Number.isInteger(v)? v : v.toFixed(4)) : v);
+let state = { tasks:{}, job:null, result:null, verdicts:{}, selected:null };
+
+// tabs
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active', x===b));
+  ['papers','validate','versions','runs'].forEach(t => $('#tab-'+t).hidden = (t!==b.dataset.tab));
+  if (b.dataset.tab==='versions') loadVersions(); if (b.dataset.tab==='runs') loadRuns(); if (b.dataset.tab==='validate') fillTaskSelect();
+});
+
+// ---------------------------------------------------------------- papers
+const drop=$('#drop'), fp=$('#file-paper');
+drop.onclick=()=>fp.click();
+drop.ondragover=e=>{e.preventDefault(); drop.classList.add('over');}; drop.ondragleave=()=>drop.classList.remove('over');
+drop.ondrop=e=>{e.preventDefault(); drop.classList.remove('over'); fp.files=e.dataTransfer.files; onPaper();};
+fp.onchange=onPaper;
+function onPaper(){ if(fp.files.length){ drop.textContent='Selected: '+fp.files[0].name; $('#btn-upload').disabled=false; } }
+$('#btn-upload').onclick=async()=>{
+  const fd=new FormData(); fd.append('paper', fp.files[0]); fd.append('name', $('#up-name').value);
+  if($('#file-data').files[0]) fd.append('data', $('#file-data').files[0]);
+  if($('#file-truth').files[0]) fd.append('truth', $('#file-truth').files[0]);
+  $('#up-status').textContent='uploading…';
+  try { const m=await api('/api/upload',{method:'POST', body:fd}); $('#up-status').textContent='uploaded as '+m.task_id+'. Now click Build task.'; $('#split-filter').value='uploads'; loadTasks(); }
+  catch(e){ $('#up-status').textContent='error: '+e.message; }
+};
+$('#btn-refresh-tasks').onclick=loadTasks; $('#split-filter').onchange=loadTasks;
+async function loadTasks(){
+  const d=await api('/api/tasks'); state.tasks=d.splits; const split=$('#split-filter').value; const tb=$('#tasks-table tbody'); tb.innerHTML='';
+  for(const t of d.splits[split]||[]){
+    const tr=document.createElement('tr');
+    const built=t.status==='ready';
+    tr.innerHTML=`<td><code>${t.task_id}</code></td><td>${t.title||''}</td><td>${t.n_claims??''}</td><td><span class="tag">${t.status||'ready'}</span>${t.has_truth?' <span class="tag">truth</span>':''}</td>
+      <td>${split==='uploads'&&!built?`<button class="secondary" data-build="${t.task_id}">Build task</button>`:''} ${built?`<button class="secondary" data-validate="${split}/${t.task_id}">Validate</button>`:''}</td>`;
+    tb.appendChild(tr);
+  }
+  tb.querySelectorAll('[data-build]').forEach(b=>b.onclick=async()=>{ b.disabled=true; b.textContent='building… (LLM)'; try{ const r=await api('/api/build_task/'+b.dataset.build,{method:'POST'}); toast(`built ${r.task.claims.length} claim slots, ${r.truth_claims} with truth`); loadTasks(); } catch(e){ toast('build failed: '+e.message); b.disabled=false; b.textContent='Build task'; }});
+  tb.querySelectorAll('[data-validate]').forEach(b=>b.onclick=()=>{ document.querySelector('nav button[data-tab=validate]').click(); setTimeout(()=>{ $('#val-task').value=b.dataset.validate; },50); });
+}
+
+// ---------------------------------------------------------------- validate
+async function fillTaskSelect(){
+  if(!Object.keys(state.tasks).length){ const d=await api('/api/tasks'); state.tasks=d.splits; }
+  const sel=$('#val-task'); const prev=sel.value; sel.innerHTML='';
+  for(const [split,list] of Object.entries(state.tasks)) for(const t of list){ if(t.status&&t.status!=='ready') continue; const o=document.createElement('option'); o.value=split+'/'+t.task_id; o.textContent=`[${split}] ${t.task_id} — ${t.title||''}`.slice(0,110); sel.appendChild(o); }
+  if(prev) sel.value=prev;
+  try{ const v=await api('/api/versions'); const hs=$('#val-harness'); hs.innerHTML='<option value="current">harness: current (promoted)</option>'; for(const r of v.versions){ if(r.commit&&r.feedback_mean!==null&&r.feedback_mean!==undefined){ const o=document.createElement('option'); o.value=r.commit; o.textContent=`harness: ${r.version} (${r.commit.slice(0,8)}) fb ${r.feedback_mean}`; hs.appendChild(o);} } }catch(e){}
+}
+$('#btn-run').onclick=async()=>{
+  const [split,tid]=$('#val-task').value.split('/'); const href=$('#val-harness').value;
+  $('#btn-run').disabled=true; $('#run-status').textContent='starting…'; $('#val-result').hidden=true;
+  try{ const j=await api(`/api/run/${split}/${tid}?harness_ref=${encodeURIComponent(href)}`,{method:'POST'}); state.job=j; poll(); }catch(e){ $('#run-status').textContent='error: '+e.message; $('#btn-run').disabled=false; }
+};
+async function poll(){
+  const j=await api('/api/job/'+state.job.job_id);
+  if(j.status==='running'){ $('#run-status').textContent=`running… ${j.steps||0} model turns, ${Math.round((Date.now()/1000)-j.started_at)}s`; setTimeout(poll,2500); return; }
+  $('#btn-run').disabled=false;
+  if(j.status==='error'){ $('#run-status').textContent='error: '+j.error; return; }
+  $('#run-status').textContent='done'; state.job=j; await showResult();
+}
+async function showResult(){
+  const j=state.job; const r=await api(`/api/result/${j.job_id}/${j.task_id}`); state.result=r; state.verdicts=(r.human&&r.human.verdicts)||{};
+  const t=await api(`/api/task/${j.split}/${j.task_id}`); state.selected=t;
+  $('#val-result').hidden=false;
+  const s=r.score||{}; const res=r.result||{};
+  $('#k-score').textContent=s.score===null||s.score===undefined?'n/a':s.score.toFixed(2); $('#k-score').className='big '+(s.score>=0.99?'ok':s.score>0?'warn':'bad');
+  $('#k-raw').textContent=s.raw_accuracy===null||s.raw_accuracy===undefined?'n/a':s.raw_accuracy.toFixed(2);
+  $('#k-prov').textContent=s.provenance_ok===null||s.provenance_ok===undefined?'n/a':(s.provenance_ok?'pass':'FAIL'); $('#k-prov').className='big '+(s.provenance_ok?'ok':'bad');
+  $('#k-prov').title=s.provenance_log||'';
+  $('#k-cost').textContent=`${res.steps??'?'} / $${((res.usage||{}).cost_usd??0).toFixed(3)}`;
+  $('#pdf-link').href=`/api/pdf/${j.split}/${j.task_id}`; $('#pdf-link').style.display=t.has_pdf?'inline':'none';
+  $('#paper-methods').textContent=t.paper_methods; $('#paper-full').textContent=t.paper_full||'(no full paper on file)';
+  $('#analysis-code').textContent=r.analysis||'(none)';
+  $('#trajectory').textContent=r.trajectory.map(e=>`[${e.seq}] ${e.t}s ${e.kind}${e.tool?' '+e.tool:''}${e.ok!==undefined?' ok='+e.ok:''}${e.problems?' '+JSON.stringify(e.problems).slice(0,300):''}${e.reply?'\n    '+e.reply.slice(0,300).replace(/\n/g,' '):''}`).join('\n');
+  renderJudge(r.judge); renderClaims();
+}
+function renderJudge(jd){
+  if(!jd){ $('#k-judge').textContent='–'; $('#judge-text').textContent=''; return; }
+  $('#k-judge').textContent=jd.judge_accuracy===null||jd.judge_accuracy===undefined?'n/a':jd.judge_accuracy.toFixed(2);
+  $('#judge-text').textContent=(jd.overall_assessment||'')+(jd.fidelity_score!==null&&jd.fidelity_score!==undefined?` Methods fidelity ${jd.fidelity_score.toFixed(2)}.`:'')+(jd.confidence!==undefined?` Confidence ${jd.confidence}.`:'');
+}
+function renderClaims(){
+  const r=state.result, t=state.selected; const tb=$('#claims-table tbody'); tb.innerHTML='';
+  const truth={}; (t.truth?.claims||[]).forEach(c=>truth[c.id]=c);
+  const sub={}; ((r.claims||{}).claims||[]).forEach(c=>sub[c.id]=c.value);
+  const sc={}; ((r.score||{}).per_claim||[]).forEach(c=>sc[c.id]=c);
+  const jd={}; ((r.judge||{}).claims||[]).forEach(c=>jd[c.id]=c);
+  for(const c of t.task.claims){
+    const tr=document.createElement('tr'); const s=sc[c.id]; const j=jd[c.id]; const v=state.verdicts[c.id];
+    const tol=truth[c.id]?.tolerance; const tolTxt=tol?`±${tol.abs} / ${(tol.rel*100).toFixed(0)}%`:'';
+    tr.innerHTML=`<td><code>${c.id}</code><br><span class="tag">${c.type}</span></td><td class="small">${c.description}</td><td>${fmt(sub[c.id])}</td><td>${truth[c.id]?fmt(truth[c.id].value):'<span class="muted">not on file</span>'}</td><td class="small muted">${tolTxt}</td>
+      <td>${s?(s.correct?'<span class="ok">correct</span>':'<span class="bad">wrong</span>'):'–'}</td>
+      <td>${j?`<span class="${j.verdict==='match'?'ok':j.verdict==='mismatch'?'bad':'muted'}">${j.verdict}</span><div class="small muted">paper: ${j.paper_value??''} ${j.note?'· '+j.note:''}</div>`:'–'}</td>
+      <td class="verdict"><button class="secondary ${v==='correct'?'sel-ok':''}" data-v="correct" data-id="${c.id}">✓</button><button class="secondary ${v==='incorrect'?'sel-bad':''}" data-v="incorrect" data-id="${c.id}">✗</button></td>`;
+    tb.appendChild(tr);
+  }
+  tb.querySelectorAll('.verdict button').forEach(b=>b.onclick=()=>{ state.verdicts[b.dataset.id]=b.dataset.v; renderClaims(); updateHuman(); });
+  updateHuman();
+}
+function updateHuman(){ const vs=Object.values(state.verdicts); if(!vs.length){ $('#k-human').textContent='–'; return; } const ok=vs.filter(v=>v==='correct').length; $('#k-human').textContent=`${ok}/${vs.length}`; }
+$('#btn-save-verdict').onclick=async()=>{ const j=state.job; await api(`/api/verdict/${j.job_id}/${j.task_id}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({verdicts:state.verdicts})}); toast('verdicts saved with the run'); };
+$('#btn-judge').onclick=async()=>{ const j=state.job; $('#judge-status').textContent='judging… (LLM)'; $('#btn-judge').disabled=true; try{ const jd=await api(`/api/judge/${j.job_id}/${j.split}/${j.task_id}`,{method:'POST'}); state.result.judge=jd; renderJudge(jd); renderClaims(); $('#judge-status').textContent=`done ($${(jd.usage?.cost_usd??0).toFixed(3)})`; }catch(e){ $('#judge-status').textContent='error: '+e.message; } $('#btn-judge').disabled=false; };
+
+// ---------------------------------------------------------------- versions
+async function loadVersions(){
+  const v=await api('/api/versions'); $('#cur-harness').textContent=v.current; const tb=$('#versions-table tbody'); tb.innerHTML='';
+  const h0=v.versions.find(r=>r.version==='H0');
+  for(const r of v.versions){
+    const tr=document.createElement('tr');
+    const dfb=(h0&&r.feedback_mean!=null)?(r.feedback_mean-h0.feedback_mean):null; const dho=(h0&&r.heldout_mean!=null&&h0.heldout_mean!=null)?(r.heldout_mean-h0.heldout_mean):null;
+    const cls=x=>x==null?'':(x>0.0001?'ok':x<-0.0001?'bad':'muted');
+    tr.innerHTML=`<td><b>${r.version}</b><br><span class="small muted">${r.created_at||''}</span></td><td><code>${(r.commit||'').slice(0,8)}</code></td><td>${fmt(r.feedback_mean)}</td><td class="${cls(dfb)}">${dfb==null?'':(dfb>0?'+':'')+dfb.toFixed(3)}</td><td>${fmt(r.noise_band)}</td><td>${fmt(r.heldout_mean)}</td><td class="${cls(dho)}">${dho==null?'':(dho>0?'+':'')+dho.toFixed(3)}</td><td class="small">${r.diff||''}</td><td class="small">${r.outcome||''}</td><td class="small">${(r.hypothesis||'').slice(0,140)}</td>
+      <td><button class="secondary" data-detail="${r.version}">detail</button> ${r.commit&&r.feedback_mean!=null?`<button class="primary" data-promote="${r.commit}" data-version="${r.version}">Promote</button>`:''}</td>`;
+    tb.appendChild(tr);
+  }
+  tb.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>{ const r=v.versions.find(x=>x.version===b.dataset.detail); $('#version-detail').hidden=false; $('#version-detail-pre').textContent=`DIAGNOSIS\n${r.diagnosis||'(none)'}\n\nCHANGELOG\n${r.changelog||'(none)'}\n\nFEEDBACK PER TASK\n${JSON.stringify(r.feedback_per_task||{},null,1)}\n\nHELD-OUT PER TASK\n${JSON.stringify(r.heldout_per_task||{},null,1)}\n\nCREATOR\n${JSON.stringify(r.creator||{},null,1)}\naudit: ${r.audit||''}\ndiagnosis check: ${r.diagnosis_check||''}`; });
+  tb.querySelectorAll('[data-promote]').forEach(b=>b.onclick=async()=>{ const reason=prompt(`Promote ${b.dataset.version} (${b.dataset.promote.slice(0,8)}) to be the current harness? Enter a reason:`); if(reason===null) return; const r=await api('/api/promote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({commit:b.dataset.promote,version:b.dataset.version,reason})}); toast('promoted: '+r.current); loadVersions(); });
+  $('#promotions').innerHTML=v.promotions.length?'<b>Promotions:</b> '+v.promotions.map(p=>`${p.at}: ${p.version} (${p.commit.slice(0,8)}) — ${p.reason}`).join('<br>'):'No version has been promoted yet; harness/ is still H0.';
+}
+
+// ---------------------------------------------------------------- runs
+async function loadRuns(){
+  const rs=await api('/api/runs'); const tb=$('#runs-table tbody'); tb.innerHTML='';
+  for(const r of rs){ const tr=document.createElement('tr'); tr.innerHTML=`<td><code>${r.run_id}</code></td><td><span class="tag">${r.kind}</span></td><td>${r.kind==='eval'?r.split+' · '+(r.label||''):r.task_id}</td><td>${r.kind==='eval'?fmt(r.mean_score):fmt(r.score)+(r.provenance===false?' <span class="bad">prov fail</span>':'')+(r.has_judge?' <span class="tag">judged</span>':'')}</td><td>${r.n??''}</td><td>${r.cost??''}</td><td><code>${r.commit||''}</code></td>`;
+    if(r.kind==='ui'){ tr.classList.add('click'); tr.onclick=()=>{ document.querySelector('nav button[data-tab=validate]').click(); state.job={job_id:r.run_id, task_id:r.task_id, split:(Object.entries(state.tasks).find(([s,l])=>l.some(t=>t.task_id===r.task_id))||['uploads'])[0]}; showResult(); }; }
+    tb.appendChild(tr); }
+}
+
+// init
+(async()=>{ await loadTasks(); try{ const v=await api('/api/versions'); $('#cur-harness').textContent=v.current; }catch(e){} })();
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "task_id": "ho_010_logistic",
+  "step": 5,
+  "started_at": 1788730119.2141476,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 275, \"n_events\": 162, \"or_exposure\": 2.771350178647144, \"or_ci_low\": 1.6626466763890246, \"or_ci_high\": 4.619370983477976, \"p_exposure\": 9.218650401753427e-05, \"or_age\": 1.0272316527751124}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 275,
+    "n_events": 162,
+    "or_exposure": 2.771350178647144,
+    "or_ci_low": 1.6626466763890246,
+    "or_ci_high": 4.619370983477976,
+    "p_exposure": 9.218650401753427e-05,
+    "or_age": 1.0272316527751124
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 275,
+        "n_events": 162,
+        "or_exposure": 2.771350178647144,
+        "or_ci_low": 1.6626466763890246,
+        "or_ci_high": 4.619370983477976,
+        "p_exposure": 9.218650401753427e-05,
+        "or_age": 1.0272316527751124
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 275,
+    "n_events": 162,
+    "or_exposure": 2.771350178647144,
+    "or_ci_low": 1.6626466763890246,
+    "or_ci_high": 4.619370983477976,
+    "p_exposure": 9.218650401753427e-05,
+    "or_age": 1.0272316527751124
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df.dropna(subset=['savings','bmi'])\ndf['exposure'] = (df['program']=='coaching').astype(int)\n\nX = df[['exposure','age','bmi']].astype(float)\nX = sm.add_constant(X)\ny = df['event'].astype(float)\n\nmodel = sm.Logit(y, X).fit(disp=0)\nparams = model.params\nse = model.bse\nconf = model.conf_int()\npvals = model.pvalues\n\nor_exposure = np.exp(params['exposure'])\nci_low = np.exp(conf.loc['exposure',0])\nci_high = np.exp(conf.loc['exposure',1])\np_exposure = pvals['exposure']\nor_age = np.exp(params['age'])\n\nresult = {\n 'n_model': int(len(df)),\n 'n_events': int(df['event'].sum()),\n 'or_exposure': float(or_exposure),\n 'or_ci_low': float(ci_low),\n 'or_ci_high': float(ci_high),\n 'p_exposure': float(p_exposure),\n 'or_age': float(or_age)\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

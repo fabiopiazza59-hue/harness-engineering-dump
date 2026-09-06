@@ -1,0 +1,9 @@
+{
+  "model": "opus",
+  "effort": "high",
+  "max_turns": 90,
+  "timeout_s": 3000,
+  "feedback_repeats": 2,
+  "heldout_repeats": 2,
+  "smoke_split": "dev"
+}

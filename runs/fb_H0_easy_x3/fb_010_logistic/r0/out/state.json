@@ -1,0 +1,52 @@
+{
+  "task_id": "fb_010_logistic",
+  "step": 4,
+  "started_at": 1788730121.3159692,
+  "plan": "1. Load data.csv. 2. Apply age filter: keep 18<=age<=80. 3. Drop rows with missing savings or bmi (complete-case). 4. Recode program to binary: coaching=1, none=0. 5. Fit logistic regression: event ~ program + age + bmi using statsmodels Logit (MLE, no penalty). 6. Extract n_model (nobs), n_events (sum of event==1 in model sample). 7. Compute OR for program = exp(coef), Wald 95% CI = exp(coef +/- 1.96*se), p-value from Wald test (statsmodels default). 8. Compute OR for age = exp(coef_age). 9. Print all as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 207, \"n_events\": 115, \"or_exposure\": 1.8396254487841754, \"or_ci_low\": 1.0408764113641809, \"or_ci_high\": 3.2513195177312078, \"p_exposure\": 0.035918984633736606, \"or_age\": 1.007347508204559}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 207,
+    "n_events": 115,
+    "or_exposure": 1.8396254487841754,
+    "or_ci_low": 1.0408764113641809,
+    "or_ci_high": 3.2513195177312078,
+    "p_exposure": 0.035918984633736606,
+    "or_age": 1.007347508204559
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 207,
+        "n_events": 115,
+        "or_exposure": 1.8396254487841754,
+        "or_ci_low": 1.0408764113641809,
+        "or_ci_high": 3.2513195177312078,
+        "p_exposure": 0.035918984633736606,
+        "or_age": 1.007347508204559
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 207,
+    "n_events": 115,
+    "or_exposure": 1.8396254487841754,
+    "or_ci_low": 1.0408764113641809,
+    "or_ci_high": 3.2513195177312078,
+    "p_exposure": 0.035918984633736606,
+    "or_age": 1.007347508204559
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df.age>=18) & (df.age<=80)]\ndf = df.dropna(subset=['savings','bmi'])\ndf['program_bin'] = (df['program']=='coaching').astype(int)\n\nX = df[['program_bin','age','bmi']].copy()\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.Logit(y, X).fit(disp=0)\n\nn_model = int(model.nobs)\nn_events = int(y.sum())\n\nconf = model.conf_int()\nor_exposure = np.exp(model.params['program_bin'])\nor_ci_low = np.exp(conf.loc['program_bin',0])\nor_ci_high = np.exp(conf.loc['program_bin',1])\np_exposure = model.pvalues['program_bin']\nor_age = np.exp(model.params['age'])\n\nresult = {\n 'n_model': n_model,\n 'n_events': n_events,\n 'or_exposure': or_exposure,\n 'or_ci_low': or_ci_low,\n 'or_ci_high': or_ci_high,\n 'p_exposure': p_exposure,\n 'or_age': or_age\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

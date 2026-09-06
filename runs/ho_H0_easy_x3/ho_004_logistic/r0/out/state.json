@@ -1,0 +1,52 @@
+{
+  "task_id": "ho_004_logistic",
+  "step": 4,
+  "started_at": 1788729928.3896425,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 293, \"n_events\": 153, \"or_exposure\": 2.255531090674604, \"or_ci_low\": 1.39111921642914, \"or_ci_high\": 3.6570701065136997, \"p_exposure\": 0.0009711871419276334, \"or_age\": 1.0192946657856494}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 293,
+    "n_events": 153,
+    "or_exposure": 2.255531090674604,
+    "or_ci_low": 1.39111921642914,
+    "or_ci_high": 3.6570701065136997,
+    "p_exposure": 0.0009711871419276334,
+    "or_age": 1.0192946657856494
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 293,
+        "n_events": 153,
+        "or_exposure": 2.255531090674604,
+        "or_ci_low": 1.39111921642914,
+        "or_ci_high": 3.6570701065136997,
+        "p_exposure": 0.0009711871419276334,
+        "or_age": 1.0192946657856494
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 293,
+    "n_events": 153,
+    "or_exposure": 2.255531090674604,
+    "or_ci_low": 1.39111921642914,
+    "or_ci_high": 3.6570701065136997,
+    "p_exposure": 0.0009711871419276334,
+    "or_age": 1.0192946657856494
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df.dropna(subset=['biomass','bmi'])\ndf['treat_num'] = (df['treatment']=='fertilised').astype(int)\n\nX = df[['treat_num','age','bmi']]\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.Logit(y, X).fit(disp=0)\n\nparams = model.params\nconf = model.conf_int()\npvals = model.pvalues\n\nor_exposure = np.exp(params['treat_num'])\nor_ci_low = np.exp(conf.loc['treat_num',0])\nor_ci_high = np.exp(conf.loc['treat_num',1])\np_exposure = pvals['treat_num']\nor_age = np.exp(params['age'])\n\nresult = {\n 'n_model': int(len(df)),\n 'n_events': int(df['event'].sum()),\n 'or_exposure': float(or_exposure),\n 'or_ci_low': float(or_ci_low),\n 'or_ci_high': float(or_ci_high),\n 'p_exposure': float(p_exposure),\n 'or_age': float(or_age)\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

@@ -31,13 +31,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv=None) -> int:
     args = build_parser().parse_args(argv)
-    if args.command != "run":
-        # allow "python -m harness --task-json ..." (command defaults to run)
-        if args.command.startswith("-"):
-            pass
-        else:
-            print(f"unknown command: {args.command}", file=sys.stderr)
-            return 2
+    if args.command != "run" and not args.command.startswith("-"):
+        print(f"unknown command: {args.command}", file=sys.stderr)
+        return 2
     workdir = Path(args.workdir or os.getcwd()).resolve()
     if args.task_json:
         task_path = Path(args.task_json).resolve()

@@ -1,0 +1,52 @@
+{
+  "task_id": "fb_004_logistic",
+  "step": 5,
+  "started_at": 1788729923.014314,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 161, \"n_events\": 59, \"or_exposure\": 0.3461142250757604, \"or_ci_low\": 0.16402077528609071, \"or_ci_high\": 0.7303651417989179, \"p_exposure\": 0.005358860802361403, \"or_age\": 1.022823128772859}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.3461142250757604,
+    "or_ci_low": 0.16402077528609071,
+    "or_ci_high": 0.7303651417989179,
+    "p_exposure": 0.005358860802361403,
+    "or_age": 1.022823128772859
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 161,
+        "n_events": 59,
+        "or_exposure": 0.3461142250757604,
+        "or_ci_low": 0.16402077528609071,
+        "or_ci_high": 0.7303651417989179,
+        "p_exposure": 0.005358860802361403,
+        "or_age": 1.022823128772859
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.3461142250757604,
+    "or_ci_low": 0.16402077528609071,
+    "or_ci_high": 0.7303651417989179,
+    "p_exposure": 0.005358860802361403,
+    "or_age": 1.022823128772859
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df.dropna(subset=['glucose_fu','bmi'])\ndf['diet_bin'] = (df['diet']=='mediterranean').astype(int)\n\nX = df[['diet_bin','age','bmi']]\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.Logit(y, X).fit(disp=0)\n\nparams = model.params\nconf = model.conf_int(alpha=0.05)\npvals = model.pvalues\n\nor_exposure = np.exp(params['diet_bin'])\nor_ci_low = np.exp(conf.loc['diet_bin',0])\nor_ci_high = np.exp(conf.loc['diet_bin',1])\np_exposure = pvals['diet_bin']\nor_age = np.exp(params['age'])\n\nresult = {\n 'n_model': int(model.nobs),\n 'n_events': int(y.sum()),\n 'or_exposure': float(or_exposure),\n 'or_ci_low': float(or_ci_low),\n 'or_ci_high': float(or_ci_high),\n 'p_exposure': float(p_exposure),\n 'or_age': float(or_age)\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

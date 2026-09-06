@@ -1,0 +1,42 @@
+{
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "value": 159
+    },
+    {
+      "id": "n_fertilised",
+      "value": 170
+    },
+    {
+      "id": "mean_unfertilised",
+      "value": 417.2194968553459
+    },
+    {
+      "id": "mean_fertilised",
+      "value": 468.8541176470588
+    },
+    {
+      "id": "sd_fertilised",
+      "value": 86.08862236152011
+    },
+    {
+      "id": "mean_diff",
+      "value": 51.634620791712905
+    },
+    {
+      "id": "t_stat",
+      "value": 5.552691904838846
+    },
+    {
+      "id": "p_value",
+      "value": 5.8288283094112534e-08
+    },
+    {
+      "id": "cohens_d",
+      "value": 0.6126021308716227
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

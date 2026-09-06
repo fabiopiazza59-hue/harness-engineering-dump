@@ -1,0 +1,58 @@
+{
+  "task_id": "ho_005_anova",
+  "step": 4,
+  "started_at": 1788729960.240267,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_low\": 75, \"mean_low\": 97.10666666666667, \"n_middle\": 76, \"mean_middle\": 99.62236842105264, \"n_high\": 73, \"mean_high\": 108.95205479452055, \"f_stat\": 18.838074156760843, \"p_value\": 2.791037196917513"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_low": 75,
+    "mean_low": 97.10666666666667,
+    "n_middle": 76,
+    "mean_middle": 99.62236842105264,
+    "n_high": 73,
+    "mean_high": 108.95205479452055,
+    "f_stat": 18.838074156760843,
+    "p_value": 2.7910371969175134e-08,
+    "eta_squared": 0.14564987363217294
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_low": 75,
+        "mean_low": 97.10666666666667,
+        "n_middle": 76,
+        "mean_middle": 99.62236842105264,
+        "n_high": 73,
+        "mean_high": 108.95205479452055,
+        "f_stat": 18.838074156760843,
+        "p_value": 2.7910371969175134e-08,
+        "eta_squared": 0.14564987363217294
+      }
+    }
+  ],
+  "best_claims": {
+    "n_low": 75,
+    "mean_low": 97.10666666666667,
+    "n_middle": 76,
+    "mean_middle": 99.62236842105264,
+    "n_high": 73,
+    "mean_high": 108.95205479452055,
+    "f_stat": 18.838074156760843,
+    "p_value": 2.7910371969175134e-08,
+    "eta_squared": 0.14564987363217294
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# exclude age not in [18,80]\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# exclude missing glucose_fu\ndf = df[df['glucose_fu'].notna()]\n\n# outlier removal: >3 sample SD from mean of glucose_fu\nmean_g = df['glucose_fu'].mean()\nstd_g = df['glucose_fu'].std(ddof=1)\nlow_b = mean_g - 3*std_g\nhigh_b = mean_g + 3*std_g\ndf = df[(df['glucose_fu']>=low_b) & (df['glucose_fu']<=high_b)]\n\n# tertile cutpoints of baseline value in analysis sample\nq1 = df['baseline'].quantile(1/3)\nq2 = df['baseline'].quantile(2/3)\n\ndef grp(v):\n    if v <= q1:\n        return 'low'\n    elif v <= q2:\n        return 'middle'\n    else:\n        return 'high'\n\ndf['tertile'] = df['baseline'].apply(grp)\n\nlow = df[df['tertile']=='low']['glucose_fu']\nmid = df[df['tertile']=='middle']['glucose_fu']\nhigh = df[df['tertile']=='high']['glucose_fu']\n\nn_low, n_middle, n_high = len(low), len(mid), len(high)\nmean_low, mean_middle, mean_high = low.mean(), mid.mean(), high.mean()\n\nf_stat, p_value = stats.f_oneway(low, mid, high)\n\ngrand_mean = df['glucose_fu'].mean()\nss_between = n_low*(mean_low-grand_mean)**2 + n_middle*(mean_middle-grand_mean)**2 + n_high*(mean_high-grand_mean)**2\nss_total = ((df['glucose_fu']-grand_mean)**2).sum()\neta_squared = ss_between/ss_total\n\nresult = {\n 'n_low': n_low,\n 'mean_low': mean_low,\n 'n_middle': n_middle,\n 'mean_middle': mean_middle,\n 'n_high': n_high,\n 'mean_high': mean_high,\n 'f_stat': f_stat,\n 'p_value': p_value,\n 'eta_squared': eta_squared\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

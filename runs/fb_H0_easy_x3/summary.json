@@ -1,0 +1,91 @@
+{
+  "run_id": "fb_H0_x3",
+  "split": "feedback",
+  "label": "H0 baseline, feedback x3",
+  "harness_dir": "harness",
+  "harness_commit": "fe1a2b0",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 10,
+  "repeats": 3,
+  "mean_score": 0.9667,
+  "mean_raw_accuracy": 0.9667,
+  "provenance_rate": 0.967,
+  "timeouts": 0,
+  "total_cost_usd": 2.477,
+  "total_llm_calls": 133,
+  "mean_output_tokens": 1398.8,
+  "wall_s": 330.2,
+  "per_task": {
+    "fb_001_ttest": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_002_ols": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_003_correlation": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_004_logistic": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_005_anova": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_006_chisq": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_007_ttest": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_008_ols": {
+      "score": 0.6667,
+      "raw_accuracy": 0.6667,
+      "provenance_rate": 0.667,
+      "n": 3
+    },
+    "fb_009_correlation": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_010_logistic": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    }
+  },
+  "finished_at": "2026-09-06 21:29:26"
+}

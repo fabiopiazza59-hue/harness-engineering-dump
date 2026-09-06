@@ -1,0 +1,52 @@
+{
+  "task_id": "ho_010_logistic",
+  "step": 4,
+  "started_at": 1788730130.0484264,
+  "plan": "1. Load data.csv. 2. Apply exclusions in order: (a) keep age between 18 and 80 inclusive; (b) drop rows with missing savings or bmi (complete-case). 3. Recode program: 1 for coaching, 0 for none (based on 'program' column values, likely 'coaching'/'none' strings). 4. Fit logistic regression: event ~ program + age + bmi using statsmodels Logit (ML, no penalization). 5. n_model = number of rows in model; n_events = sum of event==1 among those rows. 6. Extract OR for program = exp(coef), Wald CI = exp(coef +/- 1.96*se) (use statsmodels default conf_int which uses normal approx). 7. p_exposure = p-value for program coefficient from Wald test. 8. or_age = exp(coef_age). 9. Print all as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 275, \"n_events\": 162, \"or_exposure\": 2.771350178647144, \"or_ci_low\": 1.6626466763890246, \"or_ci_high\": 4.619370983477976, \"p_exposure\": 9.218650401753427e-05, \"or_age\": 1.0272316527751124}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 275,
+    "n_events": 162,
+    "or_exposure": 2.771350178647144,
+    "or_ci_low": 1.6626466763890246,
+    "or_ci_high": 4.619370983477976,
+    "p_exposure": 9.218650401753427e-05,
+    "or_age": 1.0272316527751124
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 275,
+        "n_events": 162,
+        "or_exposure": 2.771350178647144,
+        "or_ci_low": 1.6626466763890246,
+        "or_ci_high": 4.619370983477976,
+        "p_exposure": 9.218650401753427e-05,
+        "or_age": 1.0272316527751124
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 275,
+    "n_events": 162,
+    "or_exposure": 2.771350178647144,
+    "or_ci_low": 1.6626466763890246,
+    "or_ci_high": 4.619370983477976,
+    "p_exposure": 9.218650401753427e-05,
+    "or_age": 1.0272316527751124
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\n# exclusion 1: age between 18 and 80 inclusive\ndf = df[(df['age']>=18) & (df['age']<=80)]\n# exclusion 2: drop missing savings or bmi\ndf = df.dropna(subset=['savings','bmi'])\n\ndf['program_bin'] = (df['program']=='coaching').astype(int)\n\nX = df[['program_bin','age','bmi']].astype(float)\nX = sm.add_constant(X)\ny = df['event'].astype(float)\n\nmodel = sm.Logit(y, X).fit(disp=0)\n\nn_model = int(len(df))\nn_events = int(df['event'].sum())\n\nparams = model.params\nconf = model.conf_int(alpha=0.05)\npvals = model.pvalues\n\nor_exposure = float(np.exp(params['program_bin']))\nor_ci_low = float(np.exp(conf.loc['program_bin',0]))\nor_ci_high = float(np.exp(conf.loc['program_bin',1]))\np_exposure = float(pvals['program_bin'])\nor_age = float(np.exp(params['age']))\n\nresult = {\n 'n_model': n_model,\n 'n_events': n_events,\n 'or_exposure': or_exposure,\n 'or_ci_low': or_ci_low,\n 'or_ci_high': or_ci_high,\n 'p_exposure': p_exposure,\n 'or_age': or_age\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

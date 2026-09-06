@@ -1,0 +1,26 @@
+{
+  "claims": [
+    {
+      "id": "n_all",
+      "value": 219
+    },
+    {
+      "id": "r_all",
+      "value": 0.5742298046885664
+    },
+    {
+      "id": "p_all",
+      "value": 1.3109595005317223e-20
+    },
+    {
+      "id": "n_caffeine",
+      "value": 105
+    },
+    {
+      "id": "r_caffeine",
+      "value": 0.5709909340189405
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

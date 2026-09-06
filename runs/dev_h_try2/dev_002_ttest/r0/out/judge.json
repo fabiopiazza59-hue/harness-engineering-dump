@@ -1,0 +1,85 @@
+{
+  "claims": [
+    {
+      "id": "n_usual",
+      "paper_value": "151",
+      "reproduced_value": 151,
+      "verdict": "match",
+      "note": "exact"
+    },
+    {
+      "id": "n_mediterranean",
+      "paper_value": "161",
+      "reproduced_value": 161,
+      "verdict": "match",
+      "note": "exact"
+    },
+    {
+      "id": "mean_usual",
+      "paper_value": "102.70",
+      "reproduced_value": 102.70132450331126,
+      "verdict": "match",
+      "note": "rounds to 102.70"
+    },
+    {
+      "id": "mean_mediterranean",
+      "paper_value": "98.30",
+      "reproduced_value": 98.29689440993788,
+      "verdict": "match",
+      "note": "rounds to 98.30"
+    },
+    {
+      "id": "sd_mediterranean",
+      "paper_value": "13.06",
+      "reproduced_value": 13.055125537314112,
+      "verdict": "match",
+      "note": "rounds to 13.06"
+    },
+    {
+      "id": "mean_diff",
+      "paper_value": "-4.40",
+      "reproduced_value": -4.404430093373378,
+      "verdict": "match",
+      "note": "rounds to -4.40"
+    },
+    {
+      "id": "t_stat",
+      "paper_value": "-2.97",
+      "reproduced_value": -2.9669917233423937,
+      "verdict": "match",
+      "note": "rounds to -2.97"
+    },
+    {
+      "id": "p_value",
+      "paper_value": "0.003",
+      "reproduced_value": 0.003241289877945753,
+      "verdict": "match",
+      "note": "within 0.005"
+    },
+    {
+      "id": "cohens_d",
+      "paper_value": "-0.336",
+      "reproduced_value": -0.3361183478602517,
+      "verdict": "match",
+      "note": "rounds to -0.336"
+    }
+  ],
+  "fidelity": {
+    "exclusions": 2,
+    "transformations": 2,
+    "test_or_model_choice": 2,
+    "variable_coding": 2,
+    "reporting_definitions": 2
+  },
+  "overall_assessment": "The reproduction matches every reported claim slot to the paper's stated precision, including counts, means, SD, t statistic, p-value, and Cohen's d. The script implements the described age filter, complete-case handling, 3-SD outlier removal computed after exclusions, equal-variance two-sided t-test, and pooled-SD effect size exactly as specified.",
+  "confidence": 0.96,
+  "judge_accuracy": 1.0,
+  "fidelity_score": 1.0,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 3270,
+    "output_tokens": 740,
+    "cache_read_tokens": 0,
+    "cost_usd": 0.0512
+  }
+}

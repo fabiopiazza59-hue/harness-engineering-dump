@@ -1,0 +1,26 @@
+{
+  "claims": [
+    {
+      "id": "n_all",
+      "value": 350
+    },
+    {
+      "id": "r_all",
+      "value": 0.4461684529383977
+    },
+    {
+      "id": "p_all",
+      "value": 1.593257764454053e-18
+    },
+    {
+      "id": "n_tutoring",
+      "value": 182
+    },
+    {
+      "id": "r_tutoring",
+      "value": 0.4743845716011319
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

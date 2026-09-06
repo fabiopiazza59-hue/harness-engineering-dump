@@ -1,0 +1,69 @@
+[1/30] fb_001_ttest r0: score=1.0 raw=1.0 prov=True 28.0s
+[2/30] fb_001_ttest r2: score=1.0 raw=1.0 prov=True 29.3s
+[3/30] fb_001_ttest r1: score=1.0 raw=1.0 prov=True 37.7s
+[4/30] fb_002_ols r0: score=1.0 raw=1.0 prov=True 26.5s
+[5/30] fb_002_ols r1: score=1.0 raw=1.0 prov=True 36.4s
+[6/30] fb_002_ols r2: score=1.0 raw=1.0 prov=True 35.2s
+[7/30] fb_003_correlation r0: score=1.0 raw=1.0 prov=True 29.0s
+[8/30] fb_003_correlation r1: score=1.0 raw=1.0 prov=True 32.2s
+[9/30] fb_003_correlation r2: score=1.0 raw=1.0 prov=True 36.5s
+[10/30] fb_004_logistic r0: score=1.0 raw=1.0 prov=True 38.0s
+[11/30] fb_004_logistic r1: score=1.0 raw=1.0 prov=True 27.3s
+[12/30] fb_004_logistic r2: score=1.0 raw=1.0 prov=True 25.8s
+[13/30] fb_005_anova r0: score=1.0 raw=1.0 prov=True 30.5s
+[14/30] fb_005_anova r2: score=1.0 raw=1.0 prov=True 29.0s
+[15/30] fb_005_anova r1: score=1.0 raw=1.0 prov=True 38.2s
+[16/30] fb_006_chisq r1: score=1.0 raw=1.0 prov=True 23.8s
+[17/30] fb_006_chisq r0: score=1.0 raw=1.0 prov=True 36.0s
+[18/30] fb_006_chisq r2: score=1.0 raw=1.0 prov=True 33.2s
+[19/30] fb_007_ttest r1: score=1.0 raw=1.0 prov=True 28.9s
+[20/30] fb_007_ttest r0: score=1.0 raw=1.0 prov=True 36.7s
+[21/30] fb_007_ttest r2: score=1.0 raw=1.0 prov=True 29.4s
+[22/30] fb_008_ols r0: score=0.0 raw=0.0 prov=False 32.6s
+[23/30] fb_008_ols r2: score=1.0 raw=1.0 prov=True 26.1s
+[24/30] fb_008_ols r1: score=1.0 raw=1.0 prov=True 33.7s
+[25/30] fb_009_correlation r0: score=1.0 raw=1.0 prov=True 25.1s
+[26/30] fb_009_correlation r1: score=1.0 raw=1.0 prov=True 25.9s
+[27/30] fb_009_correlation r2: score=1.0 raw=1.0 prov=True 25.7s
+[28/30] fb_010_logistic r0: score=1.0 raw=1.0 prov=True 27.9s
+[29/30] fb_010_logistic r1: score=1.0 raw=1.0 prov=True 28.3s
+[30/30] fb_010_logistic r2: score=1.0 raw=1.0 prov=True 32.8s
+{
+  "run_id": "fb_H0_x3",
+  "split": "feedback",
+  "label": "H0 baseline, feedback x3",
+  "harness_dir": "harness",
+  "harness_commit": "fe1a2b0",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 10,
+  "repeats": 3,
+  "mean_score": 0.9667,
+  "mean_raw_accuracy": 0.9667,
+  "provenance_rate": 0.967,
+  "timeouts": 0,
+  "total_cost_usd": 2.477,
+  "total_llm_calls": 133,
+  "mean_output_tokens": 1398.8,
+  "wall_s": 330.2,
+  "finished_at": "2026-09-06 21:29:26"
+}
+  fb_001_ttest                 score=1.000 raw=1.000 prov=1.00
+  fb_002_ols                   score=1.000 raw=1.000 prov=1.00
+  fb_003_correlation           score=1.000 raw=1.000 prov=1.00
+  fb_004_logistic              score=1.000 raw=1.000 prov=1.00
+  fb_005_anova                 score=1.000 raw=1.000 prov=1.00
+  fb_006_chisq                 score=1.000 raw=1.000 prov=1.00
+  fb_007_ttest                 score=1.000 raw=1.000 prov=1.00
+  fb_008_ols                   score=0.667 raw=0.667 prov=0.67
+  fb_009_correlation           score=1.000 raw=1.000 prov=1.00
+  fb_010_logistic              score=1.000 raw=1.000 prov=1.00

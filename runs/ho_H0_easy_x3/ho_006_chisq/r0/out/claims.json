@@ -1,0 +1,38 @@
+{
+  "claims": [
+    {
+      "id": "n_control",
+      "value": 168
+    },
+    {
+      "id": "n_treatment",
+      "value": 130
+    },
+    {
+      "id": "events_treatment",
+      "value": 38
+    },
+    {
+      "id": "prop_control",
+      "value": 0.47619047619047616
+    },
+    {
+      "id": "prop_treatment",
+      "value": 0.2923076923076923
+    },
+    {
+      "id": "risk_ratio",
+      "value": 0.6138461538461539
+    },
+    {
+      "id": "chi2_stat",
+      "value": 10.360877189351761
+    },
+    {
+      "id": "p_value",
+      "value": 0.0012871402931461772
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

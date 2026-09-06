@@ -1,0 +1,58 @@
+{
+  "task_id": "ho_007_ttest",
+  "step": 4,
+  "started_at": 1788730028.0651016,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_unfertilised\": 159, \"n_fertilised\": 170, \"mean_unfertilised\": 417.2194968553459, \"mean_fertilised\": 468.8541176470588, \"sd_fertilised\": 86.08862236152011, \"mean_diff\": 51.634620791712905, \"t_stat\""
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_unfertilised": 159,
+    "n_fertilised": 170,
+    "mean_unfertilised": 417.2194968553459,
+    "mean_fertilised": 468.8541176470588,
+    "sd_fertilised": 86.08862236152011,
+    "mean_diff": 51.634620791712905,
+    "t_stat": 5.552691904838846,
+    "p_value": 5.8288283094112534e-08,
+    "cohens_d": 0.6126021308716227
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_unfertilised": 159,
+        "n_fertilised": 170,
+        "mean_unfertilised": 417.2194968553459,
+        "mean_fertilised": 468.8541176470588,
+        "sd_fertilised": 86.08862236152011,
+        "mean_diff": 51.634620791712905,
+        "t_stat": 5.552691904838846,
+        "p_value": 5.8288283094112534e-08,
+        "cohens_d": 0.6126021308716227
+      }
+    }
+  ],
+  "best_claims": {
+    "n_unfertilised": 159,
+    "n_fertilised": 170,
+    "mean_unfertilised": 417.2194968553459,
+    "mean_fertilised": 468.8541176470588,
+    "sd_fertilised": 86.08862236152011,
+    "mean_diff": 51.634620791712905,
+    "t_stat": 5.552691904838846,
+    "p_value": 5.8288283094112534e-08,
+    "cohens_d": 0.6126021308716227
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df[df['biomass'].notna()]\n\nmean_all = df['biomass'].mean()\nsd_all = df['biomass'].std(ddof=1)\nlow, high = mean_all - 3*sd_all, mean_all + 3*sd_all\ndf = df[(df['biomass']>=low) & (df['biomass']<=high)]\n\ng_un = df[df['treatment']=='unfertilised']['biomass']\ng_fe = df[df['treatment']=='fertilised']['biomass']\n\nn_un = len(g_un)\nn_fe = len(g_fe)\nmean_un = g_un.mean()\nmean_fe = g_fe.mean()\nsd_un = g_un.std(ddof=1)\nsd_fe = g_fe.std(ddof=1)\nmean_diff = mean_fe - mean_un\n\nt_stat, p_value = stats.ttest_ind(g_fe, g_un, equal_var=True)\n\npooled_sd = np.sqrt(((n_un-1)*sd_un**2 + (n_fe-1)*sd_fe**2)/(n_un+n_fe-2))\ncohens_d = mean_diff / pooled_sd\n\nresult = {\n 'n_unfertilised': n_un,\n 'n_fertilised': n_fe,\n 'mean_unfertilised': mean_un,\n 'mean_fertilised': mean_fe,\n 'sd_fertilised': sd_fe,\n 'mean_diff': mean_diff,\n 't_stat': t_stat,\n 'p_value': p_value,\n 'cohens_d': cohens_d\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_010_logistic",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 7,
+  "slots_total": 7,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 12632,
+    "output_tokens": 1159,
+    "cache_read_tokens": 3017,
+    "cost_usd": 0.0627
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

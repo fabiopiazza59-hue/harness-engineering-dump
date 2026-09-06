@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_004_logistic",
+  "reason": "verification gate passed",
+  "steps": 6,
+  "claims_written": true,
+  "slots_filled": 7,
+  "slots_total": 7,
+  "gate_passed": true,
+  "usage": {
+    "calls": 6,
+    "input_tokens": 24994,
+    "output_tokens": 2367,
+    "cache_read_tokens": 3087,
+    "cost_usd": 0.1242
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

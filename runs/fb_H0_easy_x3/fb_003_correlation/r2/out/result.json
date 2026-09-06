@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_003_correlation",
+  "reason": "verification gate passed",
+  "steps": 5,
+  "claims_written": true,
+  "slots_filled": 5,
+  "slots_total": 5,
+  "gate_passed": true,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 18469,
+    "output_tokens": 1704,
+    "cache_read_tokens": 3016,
+    "cost_usd": 0.0915
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

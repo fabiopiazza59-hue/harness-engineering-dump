@@ -1,0 +1,52 @@
+{
+  "task_id": "fb_002_ols",
+  "step": 4,
+  "started_at": 1788729865.3233566,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 224, \"coef_exposure\": 28.94434618911196, \"se_exposure\": 13.121287181633466, \"p_exposure\": 0.028430010983004742, \"coef_age\": 2.334822792963563, \"r_squared\": 0.306150043523141, \"adj_r_square"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 224,
+    "coef_exposure": 28.94434618911196,
+    "se_exposure": 13.121287181633466,
+    "p_exposure": 0.028430010983004742,
+    "coef_age": 2.334822792963563,
+    "r_squared": 0.306150043523141,
+    "adj_r_squared": 0.29347698495735364
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 224,
+        "coef_exposure": 28.94434618911196,
+        "se_exposure": 13.121287181633466,
+        "p_exposure": 0.028430010983004742,
+        "coef_age": 2.334822792963563,
+        "r_squared": 0.306150043523141,
+        "adj_r_squared": 0.29347698495735364
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 224,
+    "coef_exposure": 28.94434618911196,
+    "se_exposure": 13.121287181633466,
+    "p_exposure": 0.028430010983004742,
+    "coef_age": 2.334822792963563,
+    "r_squared": 0.306150043523141,
+    "adj_r_squared": 0.29347698495735364
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['biomass','bmi'])\n\ndf['exposure'] = (df['treatment']=='fertilised').astype(int)\n\nX = df[['exposure','age','bmi','baseline']]\nX = sm.add_constant(X)\ny = df['biomass']\n\nmodel = sm.OLS(y, X).fit()\n\nresult = {\n 'n_model': int(model.nobs),\n 'coef_exposure': model.params['exposure'],\n 'se_exposure': model.bse['exposure'],\n 'p_exposure': model.pvalues['exposure'],\n 'coef_age': model.params['age'],\n 'r_squared': model.rsquared,\n 'adj_r_squared': model.rsquared_adj\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

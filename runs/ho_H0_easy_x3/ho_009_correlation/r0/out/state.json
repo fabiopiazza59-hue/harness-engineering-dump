@@ -1,0 +1,46 @@
+{
+  "task_id": "ho_009_correlation",
+  "step": 4,
+  "started_at": 1788730093.6237369,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_all\": 216, \"r_all\": 0.5120883201126473, \"p_all\": 7.738590811027387e-16, \"n_mediterranean\": 106, \"r_mediterranean\": 0.529841317909675}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_all": 216,
+    "r_all": 0.5120883201126473,
+    "p_all": 7.738590811027387e-16,
+    "n_mediterranean": 106,
+    "r_mediterranean": 0.529841317909675
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_all": 216,
+        "r_all": 0.5120883201126473,
+        "p_all": 7.738590811027387e-16,
+        "n_mediterranean": 106,
+        "r_mediterranean": 0.529841317909675
+      }
+    }
+  ],
+  "best_claims": {
+    "n_all": 216,
+    "r_all": 0.5120883201126473,
+    "p_all": 7.738590811027387e-16,
+    "n_mediterranean": 106,
+    "r_mediterranean": 0.529841317909675
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df[df['glucose_fu'].notna()]\nmean = df['glucose_fu'].mean()\nsd = df['glucose_fu'].std(ddof=1)\ndf = df[(df['glucose_fu']-mean).abs() <= 3*sd]\n\nn_all = len(df)\nr_all, p_all = stats.pearsonr(df['baseline'], df['glucose_fu'])\n\nmed = df[df['diet']=='mediterranean']\nn_med = len(med)\nr_med, p_med = stats.pearsonr(med['baseline'], med['glucose_fu'])\n\nresult = {\n 'n_all': n_all,\n 'r_all': r_all,\n 'p_all': p_all,\n 'n_mediterranean': n_med,\n 'r_mediterranean': r_med\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

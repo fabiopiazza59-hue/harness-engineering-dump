@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "task_id": "ho_009_correlation",
+  "reason": "too many unparseable replies",
+  "steps": 5,
+  "claims_written": false,
+  "slots_filled": 0,
+  "slots_total": 5,
+  "gate_passed": false,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 17649,
+    "output_tokens": 1946,
+    "cache_read_tokens": 2983,
+    "cost_usd": 0.0906
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

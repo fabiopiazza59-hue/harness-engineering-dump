@@ -1,0 +1,69 @@
+[1/30] ho_001_ttest r1: score=1.0 raw=1.0 prov=True 28.2s
+[2/30] ho_001_ttest r0: score=1.0 raw=1.0 prov=True 30.2s
+[3/30] ho_001_ttest r2: score=1.0 raw=1.0 prov=True 31.4s
+[4/30] ho_002_ols r0: score=1.0 raw=1.0 prov=True 30.3s
+[5/30] ho_002_ols r1: score=1.0 raw=1.0 prov=True 29.5s
+[6/30] ho_002_ols r2: score=1.0 raw=1.0 prov=True 45.9s
+[7/30] ho_003_correlation r0: score=1.0 raw=1.0 prov=True 26.8s
+[8/30] ho_003_correlation r1: score=1.0 raw=1.0 prov=True 26.5s
+[9/30] ho_003_correlation r2: score=1.0 raw=1.0 prov=True 26.4s
+[10/30] ho_004_logistic r0: score=1.0 raw=1.0 prov=True 27.5s
+[11/30] ho_004_logistic r1: score=1.0 raw=1.0 prov=True 28.0s
+[12/30] ho_004_logistic r2: score=1.0 raw=1.0 prov=True 41.8s
+[13/30] ho_005_anova r1: score=1.0 raw=1.0 prov=True 29.2s
+[14/30] ho_005_anova r0: score=0.0 raw=0.0 prov=False 34.7s
+[15/30] ho_006_chisq r0: score=1.0 raw=1.0 prov=True 27.4s
+[16/30] ho_006_chisq r1: score=1.0 raw=1.0 prov=True 34.6s
+[17/30] ho_005_anova r2: score=1.0 raw=1.0 prov=True 37.8s
+[18/30] ho_006_chisq r2: score=1.0 raw=1.0 prov=True 34.5s
+[19/30] ho_007_ttest r0: score=1.0 raw=1.0 prov=True 29.8s
+[20/30] ho_007_ttest r1: score=1.0 raw=1.0 prov=True 34.5s
+[21/30] ho_007_ttest r2: score=1.0 raw=1.0 prov=True 30.0s
+[22/30] ho_008_ols r1: score=1.0 raw=1.0 prov=True 26.9s
+[23/30] ho_008_ols r0: score=1.0 raw=1.0 prov=True 35.6s
+[24/30] ho_008_ols r2: score=1.0 raw=1.0 prov=True 29.5s
+[25/30] ho_009_correlation r0: score=1.0 raw=1.0 prov=True 23.9s
+[26/30] ho_009_correlation r1: score=0.0 raw=0.0 prov=False 33.8s
+[27/30] ho_009_correlation r2: score=1.0 raw=1.0 prov=True 24.5s
+[28/30] ho_010_logistic r0: score=1.0 raw=1.0 prov=True 34.9s
+[29/30] ho_010_logistic r1: score=1.0 raw=1.0 prov=True 28.4s
+[30/30] ho_010_logistic r2: score=1.0 raw=1.0 prov=True 25.1s
+{
+  "run_id": "ho_H0_x3",
+  "split": "heldout",
+  "label": "H0 baseline, heldout x3",
+  "harness_dir": "harness",
+  "harness_commit": "fe1a2b0",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 10,
+  "repeats": 3,
+  "mean_score": 0.9333,
+  "mean_raw_accuracy": 0.9333,
+  "provenance_rate": 0.933,
+  "timeouts": 0,
+  "total_cost_usd": 2.491,
+  "total_llm_calls": 132,
+  "mean_output_tokens": 1432.9,
+  "wall_s": 331.5,
+  "finished_at": "2026-09-06 21:29:30"
+}
+  ho_001_ttest                 score=1.000 raw=1.000 prov=1.00
+  ho_002_ols                   score=1.000 raw=1.000 prov=1.00
+  ho_003_correlation           score=1.000 raw=1.000 prov=1.00
+  ho_004_logistic              score=1.000 raw=1.000 prov=1.00
+  ho_005_anova                 score=0.667 raw=0.667 prov=0.67
+  ho_006_chisq                 score=1.000 raw=1.000 prov=1.00
+  ho_007_ttest                 score=1.000 raw=1.000 prov=1.00
+  ho_008_ols                   score=1.000 raw=1.000 prov=1.00
+  ho_009_correlation           score=0.667 raw=0.667 prov=0.67
+  ho_010_logistic              score=1.000 raw=1.000 prov=1.00

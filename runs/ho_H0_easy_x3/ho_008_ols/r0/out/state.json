@@ -1,0 +1,57 @@
+{
+  "task_id": "ho_008_ols",
+  "step": 5,
+  "started_at": 1788730058.7854502,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 212, \"coef_exposure\": -56.365688738124845, \"se_exposure\": 13.610313189370553, \"p_exposure\": 5.0264957099630194e-05, \"coef_age\": -3.6167552688389213, \"r_squared\": 0.3570553934723337, \"adj_r"
+    },
+    {
+      "name": "scratch_02.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 212, \"coef_exposure\": -56.365688738124845, \"se_exposure\": 13.610313189370553, \"p_exposure\": 5.0264957099630194e-05, \"coef_age\": -3.6167552688389213, \"r_squared\": 0.3570553934723337, \"adj_r"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 212,
+    "coef_exposure": -56.365688738124845,
+    "se_exposure": 13.610313189370553,
+    "p_exposure": 5.0264957099630194e-05,
+    "coef_age": -3.6167552688389213,
+    "r_squared": 0.3570553934723337,
+    "adj_r_squared": 0.34463134310464927
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 212,
+        "coef_exposure": -56.365688738124845,
+        "se_exposure": 13.610313189370553,
+        "p_exposure": 5.0264957099630194e-05,
+        "coef_age": -3.6167552688389213,
+        "r_squared": 0.3570553934723337,
+        "adj_r_squared": 0.34463134310464927
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 212,
+    "coef_exposure": -56.365688738124845,
+    "se_exposure": 13.610313189370553,
+    "p_exposure": 5.0264957099630194e-05,
+    "coef_age": -3.6167552688389213,
+    "r_squared": 0.3570553934723337,
+    "adj_r_squared": 0.34463134310464927
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['rt_ms','bmi'])\ndf['exposure'] = (df['condition']=='caffeine').astype(int)\n\nX = df[['exposure','age','bmi','baseline']]\nX = sm.add_constant(X)\ny = df['rt_ms']\nmodel = sm.OLS(y, X).fit()\n\nresult = {\n 'n_model': int(model.nobs),\n 'coef_exposure': model.params['exposure'],\n 'se_exposure': model.bse['exposure'],\n 'p_exposure': model.pvalues['exposure'],\n 'coef_age': model.params['age'],\n 'r_squared': model.rsquared,\n 'adj_r_squared': model.rsquared_adj\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

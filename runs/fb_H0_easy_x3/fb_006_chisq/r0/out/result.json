@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_006_chisq",
+  "reason": "verification gate passed",
+  "steps": 5,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 21361,
+    "output_tokens": 1540,
+    "cache_read_tokens": 0,
+    "cost_usd": 0.1008
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

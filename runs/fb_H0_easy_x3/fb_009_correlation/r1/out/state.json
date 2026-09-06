@@ -1,0 +1,46 @@
+{
+  "task_id": "fb_009_correlation",
+  "step": 4,
+  "started_at": 1788730101.0902853,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_all\": 350, \"r_all\": 0.4461684529383977, \"p_all\": 1.593257764454053e-18, \"n_tutoring\": 182, \"r_tutoring\": 0.4743845716011319}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_all": 350,
+    "r_all": 0.4461684529383977,
+    "p_all": 1.593257764454053e-18,
+    "n_tutoring": 182,
+    "r_tutoring": 0.4743845716011319
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_all": 350,
+        "r_all": 0.4461684529383977,
+        "p_all": 1.593257764454053e-18,
+        "n_tutoring": 182,
+        "r_tutoring": 0.4743845716011319
+      }
+    }
+  ],
+  "best_claims": {
+    "n_all": 350,
+    "r_all": 0.4461684529383977,
+    "p_all": 1.593257764454053e-18,
+    "n_tutoring": 182,
+    "r_tutoring": 0.4743845716011319
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n# 1. age filter\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n# 2. missing math_score\ndf = df[df['math_score'].notna()]\n# 3. outlier removal: >3 sample SD from overall mean of math_score\nmean = df['math_score'].mean()\nsd = df['math_score'].std(ddof=1)\ndf = df[(df['math_score'] - mean).abs() <= 3*sd]\n\nn_all = len(df)\nr_all, p_all = stats.pearsonr(df['baseline'], df['math_score'])\n\ntut = df[df['program'] == 'tutoring']\nn_tutoring = len(tut)\nr_tutoring, p_tutoring = stats.pearsonr(tut['baseline'], tut['math_score'])\n\nresult = {\n 'n_all': n_all,\n 'r_all': r_all,\n 'p_all': p_all,\n 'n_tutoring': n_tutoring,\n 'r_tutoring': r_tutoring\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

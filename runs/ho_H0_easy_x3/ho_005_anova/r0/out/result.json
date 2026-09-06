@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "task_id": "ho_005_anova",
+  "reason": "too many unparseable replies",
+  "steps": 5,
+  "claims_written": false,
+  "slots_filled": 0,
+  "slots_total": 9,
+  "gate_passed": false,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 23116,
+    "output_tokens": 2603,
+    "cache_read_tokens": 0,
+    "cost_usd": 0.1185
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

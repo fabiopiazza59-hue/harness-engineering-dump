@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_006_chisq",
+  "reason": "verification gate passed",
+  "steps": 5,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 18254,
+    "output_tokens": 1623,
+    "cache_read_tokens": 3027,
+    "cost_usd": 0.0898
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

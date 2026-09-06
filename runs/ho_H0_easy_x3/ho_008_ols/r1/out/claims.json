@@ -1,0 +1,34 @@
+{
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 212
+    },
+    {
+      "id": "coef_exposure",
+      "value": -56.365688738124845
+    },
+    {
+      "id": "se_exposure",
+      "value": 13.610313189370553
+    },
+    {
+      "id": "p_exposure",
+      "value": 5.0264957099630194e-05
+    },
+    {
+      "id": "coef_age",
+      "value": -3.6167552688389213
+    },
+    {
+      "id": "r_squared",
+      "value": 0.3570553934723337
+    },
+    {
+      "id": "adj_r_squared",
+      "value": 0.34463134310464927
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}
