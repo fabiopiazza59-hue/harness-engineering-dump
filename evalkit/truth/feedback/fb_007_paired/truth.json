@@ -1,0 +1,95 @@
+{
+  "task_id": "fb_007_paired",
+  "analysis": "paired",
+  "difficulty": 3,
+  "wrinkles": [
+    "duplicates",
+    "sentinel_missing",
+    "paired_t"
+  ],
+  "seed": 505000,
+  "theme": "education",
+  "claims": [
+    {
+      "id": "n_pairs",
+      "value": 223,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_first",
+      "value": 65.10448430493273,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_second",
+      "value": 68.35291479820629,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_change",
+      "value": 3.248430493273543,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "sd_change",
+      "value": 6.525900217723114,
+      "type": "sd",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "t_stat",
+      "value": 7.433367098484354,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 2.2731876609542747e-12,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_dz",
+      "value": 0.4977750785173543,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_pct_change",
+      "value": 5.3254985544727775,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

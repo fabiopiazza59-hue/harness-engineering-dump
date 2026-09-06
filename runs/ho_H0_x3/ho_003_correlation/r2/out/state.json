@@ -1,0 +1,46 @@
+{
+  "task_id": "ho_003_correlation",
+  "step": 4,
+  "started_at": 1788730793.1630862,
+  "plan": "1. Load data.csv. 2. Exclude students with age outside [18,80]. 3. Exclude rows with missing math_score. 4. Compute mean and sample SD (n-1) of math_score on remaining data; remove observations >3 SD from mean (outliers). 5. Log-transform math_score (set values <1 to 1 first) -> log_math_score. 6. Full sample: Spearman correlation between baseline and log_math_score, get r_all, p_all, n_all. 7. Subset to program=='tutoring' (or equivalent coding), compute Spearman correlation r_tutoring, n_tutoring. 8. Print JSON with all values.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_all\": 179, \"r_all\": 0.5927110676825217, \"p_all\": 2.320763149894151e-18, \"n_tutoring\": 83, \"r_tutoring\": 0.5951772454229052}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_all": 179,
+    "r_all": 0.5927110676825217,
+    "p_all": 2.320763149894151e-18,
+    "n_tutoring": 83,
+    "r_tutoring": 0.5951772454229052
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_all": 179,
+        "r_all": 0.5927110676825217,
+        "p_all": 2.320763149894151e-18,
+        "n_tutoring": 83,
+        "r_tutoring": 0.5951772454229052
+      }
+    }
+  ],
+  "best_claims": {
+    "n_all": 179,
+    "r_all": 0.5927110676825217,
+    "p_all": 2.320763149894151e-18,
+    "n_tutoring": 83,
+    "r_tutoring": 0.5951772454229052
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# 1. age filter\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# 2. missing math_score\ndf = df[df['math_score'].notna()]\n\n# 3. outlier removal based on mean/std (n-1) of math_score\nmean = df['math_score'].mean()\nsd = df['math_score'].std(ddof=1)\nlow = mean - 3*sd\nhigh = mean + 3*sd\ndf = df[(df['math_score']>=low) & (df['math_score']<=high)]\n\n# 4. log transform\ndf = df.copy()\ndf['math_score_clip'] = df['math_score'].clip(lower=1)\ndf['log_math_score'] = np.log(df['math_score_clip'])\n\n# full sample correlation\nr_all, p_all = stats.spearmanr(df['baseline'], df['log_math_score'])\nn_all = len(df)\n\n# tutoring group\ndf_tut = df[df['program']=='tutoring']\nr_tut, p_tut = stats.spearmanr(df_tut['baseline'], df_tut['log_math_score'])\nn_tut = len(df_tut)\n\nresult = {\n 'n_all': n_all,\n 'r_all': r_all,\n 'p_all': p_all,\n 'n_tutoring': n_tut,\n 'r_tutoring': r_tut\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

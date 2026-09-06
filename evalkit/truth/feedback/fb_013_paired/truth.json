@@ -1,0 +1,95 @@
+{
+  "task_id": "fb_013_paired",
+  "analysis": "paired",
+  "difficulty": 3,
+  "wrinkles": [
+    "duplicates",
+    "sentinel_missing",
+    "paired_t"
+  ],
+  "seed": 505006,
+  "theme": "psychology",
+  "claims": [
+    {
+      "id": "n_pairs",
+      "value": 211,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_first",
+      "value": 696.0663507109005,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_second",
+      "value": 672.70663507109,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_change",
+      "value": -23.359715639810425,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "sd_change",
+      "value": 44.462565719883344,
+      "type": "sd",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "t_stat",
+      "value": -7.631576452194591,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 7.993812952704315e-13,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_dz",
+      "value": -0.5253793896415682,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_pct_change",
+      "value": -3.3764048264017363,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "task_id": "ho_014_mannwhitney",
+  "family": "reproduce_analysis",
+  "title": "Distribution-free comparison of above-ground biomass by group",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "description": "Number of plots in the unfertilised group",
+      "type": "count"
+    },
+    {
+      "id": "n_fertilised",
+      "description": "Number of plots in the fertilised group",
+      "type": "count"
+    },
+    {
+      "id": "median_unfertilised",
+      "description": "Median above-ground biomass (g/m^2) in the unfertilised group",
+      "type": "mean"
+    },
+    {
+      "id": "median_fertilised",
+      "description": "Median above-ground biomass (g/m^2) in the fertilised group",
+      "type": "mean"
+    },
+    {
+      "id": "median_diff",
+      "description": "Difference in medians (fertilised minus unfertilised)",
+      "type": "diff"
+    },
+    {
+      "id": "u_stat",
+      "description": "Mann-Whitney U statistic for the fertilised group",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "Two-sided p-value",
+      "type": "pvalue"
+    },
+    {
+      "id": "rank_biserial",
+      "description": "Rank-biserial correlation 1 - 2U/(n1 n2)",
+      "type": "effect"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

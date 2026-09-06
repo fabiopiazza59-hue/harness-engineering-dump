@@ -1,0 +1,49 @@
+{
+  "run_id": "dev_H0",
+  "split": "dev",
+  "label": "H0 smoke on regenerated dev",
+  "harness_dir": "harness",
+  "harness_commit": "68f903e",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 3,
+  "repeats": 1,
+  "mean_score": 1.0,
+  "mean_raw_accuracy": 1.0,
+  "provenance_rate": 1.0,
+  "timeouts": 0,
+  "total_cost_usd": 0.234,
+  "total_llm_calls": 13,
+  "mean_output_tokens": 1439.7,
+  "wall_s": 36.9,
+  "per_task": {
+    "dev_003_chisq": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 1
+    },
+    "dev_001_logistic": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 1
+    },
+    "dev_002_ttest": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 1
+    }
+  },
+  "finished_at": "2026-09-06 21:38:29"
+}

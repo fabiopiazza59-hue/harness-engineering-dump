@@ -63,7 +63,7 @@ THEMES = [
          outcome_col="rt_ms", group_col="condition", groups=("placebo", "caffeine"),
          exposure="caffeine administration", setting="a laboratory study of caffeine and attention"),
     dict(field="economics", unit="households", outcome="monthly savings (USD)",
-         outcome_col="savings", group_col="program", groups=("none", "coaching"),
+         outcome_col="savings", group_col="program", groups=("waitlist", "coaching"),
          exposure="participation in the financial coaching program", setting="an evaluation of a household financial coaching program"),
     dict(field="nutrition", unit="participants", outcome="fasting glucose (mg/dL) at follow-up",
          outcome_col="glucose_fu", group_col="diet", groups=("usual", "mediterranean"),

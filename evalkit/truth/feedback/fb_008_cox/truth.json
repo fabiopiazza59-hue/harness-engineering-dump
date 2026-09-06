@@ -1,0 +1,89 @@
+{
+  "task_id": "fb_008_cox",
+  "analysis": "cox",
+  "difficulty": 3,
+  "wrinkles": [
+    "messy_labels",
+    "duplicates",
+    "sentinel_missing",
+    "dates_to_time",
+    "admin_censoring",
+    "breslow"
+  ],
+  "seed": 505001,
+  "theme": "ecology",
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 404,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_events",
+      "value": 250,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "median_followup_days",
+      "value": 285.0,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "hr_exposure",
+      "value": 1.4768294487428384,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "hr_ci_low",
+      "value": 1.1509458633171052,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "hr_ci_high",
+      "value": 1.894985064187303,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "p_exposure",
+      "value": 0.002175548899268953,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "hr_age",
+      "value": 1.006049424889128,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

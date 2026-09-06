@@ -1,0 +1,86 @@
+{
+  "task_id": "ho_014_mannwhitney",
+  "analysis": "mannwhitney",
+  "difficulty": 3,
+  "wrinkles": [
+    "messy_labels",
+    "duplicates",
+    "sentinel_missing"
+  ],
+  "seed": 606007,
+  "theme": "ecology",
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "value": 120,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_fertilised",
+      "value": 121,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "median_unfertilised",
+      "value": 419.5,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "median_fertilised",
+      "value": 475.9,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "median_diff",
+      "value": 56.39999999999998,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "u_stat",
+      "value": 9670.5,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 8.441766954014353e-06,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "rank_biserial",
+      "value": -0.3320247933884297,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ]
+}

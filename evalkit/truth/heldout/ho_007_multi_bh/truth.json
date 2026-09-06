@@ -1,0 +1,86 @@
+{
+  "task_id": "ho_007_multi_bh",
+  "analysis": "multi_bh",
+  "difficulty": 3,
+  "wrinkles": [
+    "duplicates",
+    "sentinel_missing",
+    "bh_correction"
+  ],
+  "seed": 606000,
+  "theme": "clinical",
+  "claims": [
+    {
+      "id": "n_analysed",
+      "value": 373,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_biomarker_1",
+      "value": 0.5151716689332558,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_adj_biomarker_1",
+      "value": 6.795760569079606e-26,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "r_biomarker_3",
+      "value": -0.3301967368376184,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_adj_biomarker_3",
+      "value": 1.8444880729546843e-10,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "p_adj_biomarker_5",
+      "value": 0.009969775767624933,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "n_significant_adj",
+      "value": 5,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_strongest",
+      "value": 0.5151716689332558,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

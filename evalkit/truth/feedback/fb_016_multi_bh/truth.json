@@ -1,0 +1,86 @@
+{
+  "task_id": "fb_016_multi_bh",
+  "analysis": "multi_bh",
+  "difficulty": 3,
+  "wrinkles": [
+    "duplicates",
+    "sentinel_missing",
+    "bh_correction"
+  ],
+  "seed": 505009,
+  "theme": "psychology",
+  "claims": [
+    {
+      "id": "n_analysed",
+      "value": 344,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_biomarker_1",
+      "value": 0.45475731660164226,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_adj_biomarker_1",
+      "value": 3.501982336685895e-18,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "r_biomarker_3",
+      "value": -0.32473696432571536,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_adj_biomarker_3",
+      "value": 2.0612362737474602e-09,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "p_adj_biomarker_5",
+      "value": 0.09436758685942506,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "n_significant_adj",
+      "value": 2,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_strongest",
+      "value": 0.45475731660164226,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

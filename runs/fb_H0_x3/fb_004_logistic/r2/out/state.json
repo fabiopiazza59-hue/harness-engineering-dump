@@ -1,0 +1,16 @@
+{
+  "task_id": "fb_004_logistic",
+  "step": 5,
+  "started_at": 1788730812.1938283,
+  "plan": "",
+  "scripts": [],
+  "failures": [],
+  "draft_claims": {},
+  "submissions": [],
+  "best_claims": {},
+  "best_analysis": "",
+  "parse_failures": 3,
+  "compactions": 0,
+  "finished": true,
+  "status": "failed"
+}

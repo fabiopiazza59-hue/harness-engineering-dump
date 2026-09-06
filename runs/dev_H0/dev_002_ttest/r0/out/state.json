@@ -1,0 +1,58 @@
+{
+  "task_id": "dev_002_ttest",
+  "step": 5,
+  "started_at": 1788730672.7329228,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_usual\": 151, \"n_mediterranean\": 161, \"mean_usual\": 102.70132450331126, \"mean_mediterranean\": 98.29689440993788, \"sd_mediterranean\": 13.055125537314112, \"mean_diff\": -4.404430093373378, \"t_stat\": -"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_usual": 151,
+    "n_mediterranean": 161,
+    "mean_usual": 102.70132450331126,
+    "mean_mediterranean": 98.29689440993788,
+    "sd_mediterranean": 13.055125537314112,
+    "mean_diff": -4.404430093373378,
+    "t_stat": -2.9669917233423937,
+    "p_value": 0.003241289877945753,
+    "cohens_d": -0.3361183478602517
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_usual": 151,
+        "n_mediterranean": 161,
+        "mean_usual": 102.70132450331126,
+        "mean_mediterranean": 98.29689440993788,
+        "sd_mediterranean": 13.055125537314112,
+        "mean_diff": -4.404430093373378,
+        "t_stat": -2.9669917233423937,
+        "p_value": 0.003241289877945753,
+        "cohens_d": -0.3361183478602517
+      }
+    }
+  ],
+  "best_claims": {
+    "n_usual": 151,
+    "n_mediterranean": 161,
+    "mean_usual": 102.70132450331126,
+    "mean_mediterranean": 98.29689440993788,
+    "sd_mediterranean": 13.055125537314112,
+    "mean_diff": -4.404430093373378,
+    "t_stat": -2.9669917233423937,
+    "p_value": 0.003241289877945753,
+    "cohens_d": -0.3361183478602517
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\n# exclusion 1: age 18-80 inclusive\ndf = df[(df['age']>=18) & (df['age']<=80)]\n# exclusion 2: missing glucose_fu\ndf = df[df['glucose_fu'].notna()]\n# exclusion 3: outliers >3 SD from overall mean\nmean_all = df['glucose_fu'].mean()\nsd_all = df['glucose_fu'].std(ddof=1)\ndf = df[(df['glucose_fu'] - mean_all).abs() <= 3*sd_all]\n\nusual = df[df['diet']=='usual']['glucose_fu']\nmed = df[df['diet']=='mediterranean']['glucose_fu']\n\nn_usual = len(usual)\nn_med = len(med)\nmean_usual = usual.mean()\nmean_med = med.mean()\nsd_usual = usual.std(ddof=1)\nsd_med = med.std(ddof=1)\nmean_diff = mean_med - mean_usual\n\nt_stat, p_value = stats.ttest_ind(med, usual, equal_var=True)\n\npooled_sd = np.sqrt(((n_usual-1)*sd_usual**2 + (n_med-1)*sd_med**2)/(n_usual+n_med-2))\ncohens_d = mean_diff/pooled_sd\n\nresult = {\n 'n_usual': n_usual,\n 'n_mediterranean': n_med,\n 'mean_usual': mean_usual,\n 'mean_mediterranean': mean_med,\n 'sd_mediterranean': sd_med,\n 'mean_diff': mean_diff,\n 't_stat': t_stat,\n 'p_value': p_value,\n 'cohens_d': cohens_d\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

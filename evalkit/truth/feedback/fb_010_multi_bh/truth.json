@@ -1,0 +1,86 @@
+{
+  "task_id": "fb_010_multi_bh",
+  "analysis": "multi_bh",
+  "difficulty": 3,
+  "wrinkles": [
+    "duplicates",
+    "sentinel_missing",
+    "bh_correction"
+  ],
+  "seed": 505003,
+  "theme": "economics",
+  "claims": [
+    {
+      "id": "n_analysed",
+      "value": 291,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_biomarker_1",
+      "value": 0.49773822919901184,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_adj_biomarker_1",
+      "value": 7.633757228942548e-19,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "r_biomarker_3",
+      "value": -0.3178142009352862,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_adj_biomarker_3",
+      "value": 8.943947025490594e-08,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "p_adj_biomarker_5",
+      "value": 0.0004143740270936808,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "n_significant_adj",
+      "value": 3,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "r_strongest",
+      "value": 0.49773822919901184,
+      "type": "corr",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

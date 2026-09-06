@@ -1,0 +1,95 @@
+{
+  "task_id": "ho_011_paired",
+  "analysis": "paired",
+  "difficulty": 3,
+  "wrinkles": [
+    "duplicates",
+    "sentinel_missing",
+    "wilcoxon"
+  ],
+  "seed": 606004,
+  "theme": "clinical",
+  "claims": [
+    {
+      "id": "n_pairs",
+      "value": 220,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_first",
+      "value": 135.8531818181818,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_second",
+      "value": 130.93227272727273,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_change",
+      "value": -4.920909090909091,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "sd_change",
+      "value": 5.726244881972723,
+      "type": "sd",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "w_stat",
+      "value": 2586.5,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 1.1566676054660006e-23,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_dz",
+      "value": -0.8593605743968481,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_pct_change",
+      "value": -3.651735354605737,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

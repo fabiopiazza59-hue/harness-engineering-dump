@@ -1,0 +1,37 @@
+import pandas as pd, numpy as np, statsmodels.api as sm, json
+
+df = pd.read_csv('data.csv')
+df = df[(df['age']>=18)&(df['age']<=80)]
+df = df.dropna(subset=['biomass','bmi'])
+
+df['exposure'] = (df['treatment']=='fertilised').astype(int)
+
+X = df[['exposure','age','bmi']]
+X = sm.add_constant(X)
+y = df['event']
+
+model = sm.Logit(y, X).fit(disp=0)
+
+params = model.params
+conf = model.conf_int()
+pvals = model.pvalues
+
+n_model = int(len(df))
+n_events = int(df['event'].sum())
+
+or_exposure = float(np.exp(params['exposure']))
+or_ci_low = float(np.exp(conf.loc['exposure',0]))
+or_ci_high = float(np.exp(conf.loc['exposure',1]))
+p_exposure = float(pvals['exposure'])
+or_age = float(np.exp(params['age']))
+
+result = {
+ 'n_model': n_model,
+ 'n_events': n_events,
+ 'or_exposure': or_exposure,
+ 'or_ci_low': or_ci_low,
+ 'or_ci_high': or_ci_high,
+ 'p_exposure': p_exposure,
+ 'or_age': or_age
+}
+print(json.dumps(result))

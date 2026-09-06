@@ -1,0 +1,89 @@
+{
+  "task_id": "ho_015_cox",
+  "analysis": "cox",
+  "difficulty": 3,
+  "wrinkles": [
+    "messy_labels",
+    "duplicates",
+    "sentinel_missing",
+    "dates_to_time",
+    "admin_censoring",
+    "breslow"
+  ],
+  "seed": 606008,
+  "theme": "economics",
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 286,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_events",
+      "value": 174,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "median_followup_days",
+      "value": 304.5,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "hr_exposure",
+      "value": 1.6567505762898334,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "hr_ci_low",
+      "value": 1.2248234078571991,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "hr_ci_high",
+      "value": 2.2409944604493637,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "p_exposure",
+      "value": 0.0010534986806155417,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "hr_age",
+      "value": 1.0212162835402492,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

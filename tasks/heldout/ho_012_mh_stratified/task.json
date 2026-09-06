@@ -1,0 +1,62 @@
+{
+  "task_id": "ho_012_mh_stratified",
+  "family": "reproduce_analysis",
+  "title": "Site-stratified association between enrolment in the peer-tutoring program and the study event",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_total",
+      "description": "Number of students analysed",
+      "type": "count"
+    },
+    {
+      "id": "n_exposed",
+      "description": "Number in the tutoring (exposed) group",
+      "type": "count"
+    },
+    {
+      "id": "or_crude",
+      "description": "Crude odds ratio (exposed vs unexposed)",
+      "type": "ratio"
+    },
+    {
+      "id": "or_mh",
+      "description": "Mantel-Haenszel pooled odds ratio across sites",
+      "type": "ratio"
+    },
+    {
+      "id": "or_mh_ci_low",
+      "description": "Lower 95% CI of the MH odds ratio",
+      "type": "ci"
+    },
+    {
+      "id": "or_mh_ci_high",
+      "description": "Upper 95% CI of the MH odds ratio",
+      "type": "ci"
+    },
+    {
+      "id": "mh_chi2",
+      "description": "Mantel-Haenszel chi-square statistic (continuity corrected)",
+      "type": "stat"
+    },
+    {
+      "id": "mh_p",
+      "description": "p-value of the Mantel-Haenszel test",
+      "type": "pvalue"
+    },
+    {
+      "id": "or_site1",
+      "description": "Odds ratio within site 1",
+      "type": "ratio"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

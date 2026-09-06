@@ -1,0 +1,46 @@
+{
+  "task_id": "ho_003_correlation",
+  "step": 5,
+  "started_at": 1788730787.570688,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_all\": 179, \"r_all\": 0.5927110676825217, \"p_all\": 2.320763149894151e-18, \"n_tutoring\": 83, \"r_tutoring\": 0.5951772454229052}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_all": 179,
+    "r_all": 0.5927110676825217,
+    "p_all": 2.320763149894151e-18,
+    "n_tutoring": 83,
+    "r_tutoring": 0.5951772454229052
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_all": 179,
+        "r_all": 0.5927110676825217,
+        "p_all": 2.320763149894151e-18,
+        "n_tutoring": 83,
+        "r_tutoring": 0.5951772454229052
+      }
+    }
+  ],
+  "best_claims": {
+    "n_all": 179,
+    "r_all": 0.5927110676825217,
+    "p_all": 2.320763149894151e-18,
+    "n_tutoring": 83,
+    "r_tutoring": 0.5951772454229052
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n# exclusion 1: age 18-80 inclusive\ndf = df[(df['age']>=18) & (df['age']<=80)]\n# exclusion 2: missing math_score\ndf = df[df['math_score'].notna()]\n# outlier removal: >3 sample SD from mean\nmean = df['math_score'].mean()\nsd = df['math_score'].std(ddof=1)\nlow, high = mean-3*sd, mean+3*sd\ndf = df[(df['math_score']>=low) & (df['math_score']<=high)]\n# transform\ndf = df.copy()\ndf['math_score_adj'] = df['math_score'].clip(lower=1)\ndf['log_math'] = np.log(df['math_score_adj'])\n\n# full sample\nn_all = len(df)\nr_all, p_all = stats.spearmanr(df['baseline'], df['log_math'])\n\n# tutoring group\ndf_tut = df[df['program']=='tutoring']\nn_tutoring = len(df_tut)\nr_tutoring, p_tutoring = stats.spearmanr(df_tut['baseline'], df_tut['log_math'])\n\nresult = {\n 'n_all': n_all,\n 'r_all': r_all,\n 'p_all': p_all,\n 'n_tutoring': n_tutoring,\n 'r_tutoring': r_tutoring\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

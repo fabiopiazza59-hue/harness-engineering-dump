@@ -1,0 +1,88 @@
+{
+  "task_id": "ho_010_ols_interaction",
+  "analysis": "ols_interaction",
+  "difficulty": 3,
+  "wrinkles": [
+    "duplicates",
+    "sentinel_missing",
+    "derived_bmi",
+    "centred_age",
+    "hc3"
+  ],
+  "seed": 606003,
+  "theme": "clinical",
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 401,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "coef_exposure",
+      "value": -7.37880510859495,
+      "type": "coef",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "se_exposure_hc3",
+      "value": 1.2143135025370693,
+      "type": "se",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "p_exposure",
+      "value": 1.2281565102439397e-09,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "coef_interaction",
+      "value": -0.11528452671652002,
+      "type": "coef",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_interaction",
+      "value": 0.2226173693562139,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "coef_bmi",
+      "value": 0.5133464796205561,
+      "type": "coef",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "r_squared",
+      "value": 0.12510349936102938,
+      "type": "r2",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

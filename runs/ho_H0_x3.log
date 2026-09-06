@@ -1,0 +1,10 @@
+[1/48] ho_001_ttest r2: score=1.0 raw=1.0 prov=True 32.5s
+[2/48] ho_001_ttest r1: score=1.0 raw=1.0 prov=True 32.3s
+[3/48] ho_001_ttest r0: score=1.0 raw=1.0 prov=True 40.2s
+[4/48] ho_002_ols r1: score=0.0 raw=0.0 prov=False 39.9s
+[5/48] ho_002_ols r0: score=1.0 raw=1.0 prov=True 39.9s
+[6/48] ho_002_ols r2: score=1.0 raw=1.0 prov=True 37.4s
+[7/48] ho_003_correlation r2: score=1.0 raw=1.0 prov=True 28.4s
+[8/48] ho_003_correlation r0: score=1.0 raw=1.0 prov=True 35.7s
+[9/48] ho_003_correlation r1: score=0.0 raw=0.0 prov=False 35.7s
+[10/48] ho_004_logistic r0: score=1.0 raw=1.0 prov=True 28.3s

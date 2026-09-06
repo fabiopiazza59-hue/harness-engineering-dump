@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_003_correlation",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 5,
+  "slots_total": 5,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 13227,
+    "output_tokens": 1078,
+    "cache_read_tokens": 3033,
+    "cost_usd": 0.0643
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

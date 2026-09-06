@@ -1,0 +1,57 @@
+{
+  "task_id": "ho_013_multi_bh",
+  "family": "reproduce_analysis",
+  "title": "Biomarker correlates of systolic blood pressure with false-discovery-rate control",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_analysed",
+      "description": "Number of patients with all biomarkers and the outcome",
+      "type": "count"
+    },
+    {
+      "id": "r_biomarker_1",
+      "description": "Pearson r of biomarker_1 with the outcome",
+      "type": "corr"
+    },
+    {
+      "id": "p_adj_biomarker_1",
+      "description": "BH-adjusted p-value for biomarker_1",
+      "type": "pvalue"
+    },
+    {
+      "id": "r_biomarker_3",
+      "description": "Pearson r of biomarker_3 with the outcome",
+      "type": "corr"
+    },
+    {
+      "id": "p_adj_biomarker_3",
+      "description": "BH-adjusted p-value for biomarker_3",
+      "type": "pvalue"
+    },
+    {
+      "id": "p_adj_biomarker_5",
+      "description": "BH-adjusted p-value for biomarker_5",
+      "type": "pvalue"
+    },
+    {
+      "id": "n_significant_adj",
+      "description": "Number of biomarkers significant after BH adjustment (adjusted p < 0.05)",
+      "type": "count"
+    },
+    {
+      "id": "r_strongest",
+      "description": "Signed Pearson r of the biomarker with the largest absolute correlation",
+      "type": "corr"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

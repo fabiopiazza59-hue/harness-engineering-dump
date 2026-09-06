@@ -1,0 +1,57 @@
+{
+  "task_id": "fb_008_cox",
+  "family": "reproduce_analysis",
+  "title": "Time to the study event by nitrogen fertilisation: a survival analysis",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_model",
+      "description": "Number of plots in the Cox model",
+      "type": "count"
+    },
+    {
+      "id": "n_events",
+      "description": "Number of events after censoring",
+      "type": "count"
+    },
+    {
+      "id": "median_followup_days",
+      "description": "Median follow-up time in days (all analysed records, after censoring)",
+      "type": "mean"
+    },
+    {
+      "id": "hr_exposure",
+      "description": "Hazard ratio for the exposure",
+      "type": "ratio"
+    },
+    {
+      "id": "hr_ci_low",
+      "description": "Lower 95% CI of the exposure hazard ratio",
+      "type": "ci"
+    },
+    {
+      "id": "hr_ci_high",
+      "description": "Upper 95% CI of the exposure hazard ratio",
+      "type": "ci"
+    },
+    {
+      "id": "p_exposure",
+      "description": "p-value of the exposure term",
+      "type": "pvalue"
+    },
+    {
+      "id": "hr_age",
+      "description": "Hazard ratio per year of age",
+      "type": "ratio"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

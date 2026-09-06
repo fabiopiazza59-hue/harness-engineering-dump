@@ -1,0 +1,42 @@
+{
+  "claims": [
+    {
+      "id": "n_usual",
+      "value": 108
+    },
+    {
+      "id": "n_mediterranean",
+      "value": 108
+    },
+    {
+      "id": "mean_usual",
+      "value": 105.03240740740742
+    },
+    {
+      "id": "mean_mediterranean",
+      "value": 100.92129629629629
+    },
+    {
+      "id": "sd_mediterranean",
+      "value": 10.722489693154255
+    },
+    {
+      "id": "mean_diff",
+      "value": -4.1111111111111285
+    },
+    {
+      "id": "t_stat",
+      "value": -2.660960768781127
+    },
+    {
+      "id": "p_value",
+      "value": 0.00838948917866922
+    },
+    {
+      "id": "cohens_d",
+      "value": -0.36211089494876725
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

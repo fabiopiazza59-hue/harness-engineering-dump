@@ -1,0 +1,42 @@
+{
+  "claims": [
+    {
+      "id": "n_placebo",
+      "value": 89
+    },
+    {
+      "id": "n_caffeine",
+      "value": 90
+    },
+    {
+      "id": "mean_placebo",
+      "value": 706.9932584269662
+    },
+    {
+      "id": "mean_caffeine",
+      "value": 682.9911111111111
+    },
+    {
+      "id": "sd_caffeine",
+      "value": 99.26045824891838
+    },
+    {
+      "id": "mean_diff",
+      "value": -24.002147315855154
+    },
+    {
+      "id": "t_stat",
+      "value": -1.601365191318443
+    },
+    {
+      "id": "p_value",
+      "value": 0.11108100293042009
+    },
+    {
+      "id": "cohens_d",
+      "value": -0.23941371382337256
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

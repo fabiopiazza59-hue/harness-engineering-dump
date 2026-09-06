@@ -1,0 +1,52 @@
+{
+  "task_id": "ho_002_ols",
+  "step": 5,
+  "started_at": 1788730747.4273596,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 244, \"coef_exposure\": -0.09314589487782465, \"se_exposure\": 0.013871194024011099, \"p_exposure\": 1.3585645644354348e-10, \"coef_age\": -0.007154834352790379, \"r_squared\": 0.38967408543198656, "
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 244,
+    "coef_exposure": -0.09314589487782465,
+    "se_exposure": 0.013871194024011099,
+    "p_exposure": 1.3585645644354348e-10,
+    "coef_age": -0.007154834352790379,
+    "r_squared": 0.38967408543198656,
+    "adj_r_squared": 0.3794594257739444
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 244,
+        "coef_exposure": -0.09314589487782465,
+        "se_exposure": 0.013871194024011099,
+        "p_exposure": 1.3585645644354348e-10,
+        "coef_age": -0.007154834352790379,
+        "r_squared": 0.38967408543198656,
+        "adj_r_squared": 0.3794594257739444
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 244,
+    "coef_exposure": -0.09314589487782465,
+    "se_exposure": 0.013871194024011099,
+    "p_exposure": 1.3585645644354348e-10,
+    "coef_age": -0.007154834352790379,
+    "r_squared": 0.38967408543198656,
+    "adj_r_squared": 0.3794594257739444
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\n# age filter\ndf = df[(df['age']>=18) & (df['age']<=80)]\n# complete case for rt_ms, bmi\ndf = df.dropna(subset=['rt_ms','bmi'])\n# outlier removal on rt_ms\nmean = df['rt_ms'].mean()\nsd = df['rt_ms'].std(ddof=1)\ndf = df[(df['rt_ms'] - mean).abs() <= 3*sd]\n# rt_ms<1 set to 1, log transform\nrt = df['rt_ms'].clip(lower=1)\ndf['log_rt'] = np.log(rt)\n# exposure coding\ndf['exposure'] = (df['condition']=='caffeine').astype(int)\n# standardize continuous covariates\nfor col in ['age','bmi','baseline']:\n    df[col+'_std'] = (df[col]-df[col].mean())/df[col].std(ddof=1)\n\nX = df[['exposure','age_std','bmi_std','baseline_std']]\nX = sm.add_constant(X)\ny = df['log_rt']\nmodel = sm.OLS(y, X).fit()\n\nresult = {\n    'n_model': int(model.nobs),\n    'coef_exposure': model.params['exposure'],\n    'se_exposure': model.bse['exposure'],\n    'p_exposure': model.pvalues['exposure'],\n    'coef_age': model.params['age_std'],\n    'r_squared': model.rsquared,\n    'adj_r_squared': model.rsquared_adj\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

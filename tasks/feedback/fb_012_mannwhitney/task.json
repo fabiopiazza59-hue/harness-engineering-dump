@@ -1,0 +1,57 @@
+{
+  "task_id": "fb_012_mannwhitney",
+  "family": "reproduce_analysis",
+  "title": "Distribution-free comparison of monthly savings by group",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_waitlist",
+      "description": "Number of households in the waitlist group",
+      "type": "count"
+    },
+    {
+      "id": "n_coaching",
+      "description": "Number of households in the coaching group",
+      "type": "count"
+    },
+    {
+      "id": "median_waitlist",
+      "description": "Median monthly savings (USD) in the waitlist group",
+      "type": "mean"
+    },
+    {
+      "id": "median_coaching",
+      "description": "Median monthly savings (USD) in the coaching group",
+      "type": "mean"
+    },
+    {
+      "id": "median_diff",
+      "description": "Difference in medians (coaching minus waitlist)",
+      "type": "diff"
+    },
+    {
+      "id": "u_stat",
+      "description": "Mann-Whitney U statistic for the coaching group",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "Two-sided p-value",
+      "type": "pvalue"
+    },
+    {
+      "id": "rank_biserial",
+      "description": "Rank-biserial correlation 1 - 2U/(n1 n2)",
+      "type": "effect"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

@@ -54,35 +54,124 @@
     "wrinkles": []
   },
   {
-    "task_id": "ho_007_ttest",
-    "analysis": "ttest",
-    "difficulty": 2,
+    "task_id": "ho_007_multi_bh",
+    "analysis": "multi_bh",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "duplicates",
+      "sentinel_missing",
+      "bh_correction"
+    ]
+  },
+  {
+    "task_id": "ho_008_mannwhitney",
+    "analysis": "mannwhitney",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "messy_labels",
+      "duplicates",
+      "sentinel_missing"
+    ]
+  },
+  {
+    "task_id": "ho_009_cox",
+    "analysis": "cox",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "messy_labels",
+      "duplicates",
+      "sentinel_missing",
+      "dates_to_time",
+      "admin_censoring",
+      "breslow"
+    ]
+  },
+  {
+    "task_id": "ho_010_ols_interaction",
+    "analysis": "ols_interaction",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "duplicates",
+      "sentinel_missing",
+      "derived_bmi",
+      "centred_age",
+      "hc3"
+    ]
+  },
+  {
+    "task_id": "ho_011_paired",
+    "analysis": "paired",
+    "difficulty": 3,
     "n_claims": 9,
     "wrinkles": [
-      "outlier_3sd"
+      "duplicates",
+      "sentinel_missing",
+      "wilcoxon"
     ]
   },
   {
-    "task_id": "ho_008_ols",
-    "analysis": "ols",
-    "difficulty": 0,
-    "n_claims": 7,
-    "wrinkles": []
-  },
-  {
-    "task_id": "ho_009_correlation",
-    "analysis": "correlation",
-    "difficulty": 1,
-    "n_claims": 5,
+    "task_id": "ho_012_mh_stratified",
+    "analysis": "mh_stratified",
+    "difficulty": 3,
+    "n_claims": 9,
     "wrinkles": [
-      "outlier_3sd"
+      "messy_labels",
+      "duplicates",
+      "sentinel_missing",
+      "mantel_haenszel"
     ]
   },
   {
-    "task_id": "ho_010_logistic",
-    "analysis": "logistic",
-    "difficulty": 2,
-    "n_claims": 7,
-    "wrinkles": []
+    "task_id": "ho_013_multi_bh",
+    "analysis": "multi_bh",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "duplicates",
+      "sentinel_missing",
+      "bh_correction"
+    ]
+  },
+  {
+    "task_id": "ho_014_mannwhitney",
+    "analysis": "mannwhitney",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "messy_labels",
+      "duplicates",
+      "sentinel_missing"
+    ]
+  },
+  {
+    "task_id": "ho_015_cox",
+    "analysis": "cox",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "messy_labels",
+      "duplicates",
+      "sentinel_missing",
+      "dates_to_time",
+      "admin_censoring",
+      "breslow"
+    ]
+  },
+  {
+    "task_id": "ho_016_ols_interaction",
+    "analysis": "ols_interaction",
+    "difficulty": 3,
+    "n_claims": 8,
+    "wrinkles": [
+      "duplicates",
+      "sentinel_missing",
+      "derived_bmi",
+      "centred_age",
+      "hc3"
+    ]
   }
 ]

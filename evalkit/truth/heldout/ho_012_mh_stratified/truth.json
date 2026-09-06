@@ -1,0 +1,96 @@
+{
+  "task_id": "ho_012_mh_stratified",
+  "analysis": "mh_stratified",
+  "difficulty": 3,
+  "wrinkles": [
+    "messy_labels",
+    "duplicates",
+    "sentinel_missing",
+    "mantel_haenszel"
+  ],
+  "seed": 606005,
+  "theme": "education",
+  "claims": [
+    {
+      "id": "n_total",
+      "value": 445,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_exposed",
+      "value": 223,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "or_crude",
+      "value": 2.472192513368984,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "or_mh",
+      "value": 2.500371270751079,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "or_mh_ci_low",
+      "value": 1.7048152075402292,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "or_mh_ci_high",
+      "value": 3.66717545922046,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "mh_chi2",
+      "value": 21.432116859945054,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mh_p",
+      "value": 3.665790509810307e-06,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "or_site1",
+      "value": 1.6607142857142858,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

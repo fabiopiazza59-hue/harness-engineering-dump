@@ -1,0 +1,46 @@
+{
+  "task_id": "fb_003_correlation",
+  "step": 5,
+  "started_at": 1788730769.4775958,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_all\": 219, \"r_all\": 0.5742298046885664, \"p_all\": 1.3109595005317223e-20, \"n_caffeine\": 105, \"r_caffeine\": 0.5709909340189405}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_all": 219,
+    "r_all": 0.5742298046885664,
+    "p_all": 1.3109595005317223e-20,
+    "n_caffeine": 105,
+    "r_caffeine": 0.5709909340189405
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_all": 219,
+        "r_all": 0.5742298046885664,
+        "p_all": 1.3109595005317223e-20,
+        "n_caffeine": 105,
+        "r_caffeine": 0.5709909340189405
+      }
+    }
+  ],
+  "best_claims": {
+    "n_all": 219,
+    "r_all": 0.5742298046885664,
+    "p_all": 1.3109595005317223e-20,
+    "n_caffeine": 105,
+    "r_caffeine": 0.5709909340189405
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# exclusion 1: age 18-80 inclusive\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# exclusion 2: missing rt_ms\ndf = df[df['rt_ms'].notna()]\n\n# exclusion 3: outliers >3 sample SD from mean\nmean_rt = df['rt_ms'].mean()\nsd_rt = df['rt_ms'].std(ddof=1)\ndf = df[(df['rt_ms'] >= mean_rt - 3*sd_rt) & (df['rt_ms'] <= mean_rt + 3*sd_rt)]\n\n# transform\nrt_adj = df['rt_ms'].copy()\nrt_adj[rt_adj < 1] = 1\ndf['log_rt'] = np.log(rt_adj)\n\n# full sample correlation\nn_all = len(df)\nr_all, p_all = stats.spearmanr(df['baseline'], df['log_rt'])\n\n# caffeine group\ndf_caf = df[df['condition']=='caffeine']\nn_caffeine = len(df_caf)\nr_caffeine, p_caffeine = stats.spearmanr(df_caf['baseline'], df_caf['log_rt'])\n\nresult = {\n  'n_all': n_all,\n  'r_all': r_all,\n  'p_all': p_all,\n  'n_caffeine': n_caffeine,\n  'r_caffeine': r_caffeine\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

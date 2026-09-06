@@ -1,0 +1,113 @@
+{
+  "task_id": "up_e2e_glucose_trial_a6fdb7",
+  "raw_accuracy": 1.0,
+  "provenance_ok": true,
+  "score": 1.0,
+  "n_claims": 10,
+  "n_correct": 10,
+  "provenance_log": "ok",
+  "provenance_mismatch": [],
+  "per_claim": [
+    {
+      "id": "n_total_collected",
+      "truth": 350,
+      "pred": 350,
+      "correct": true,
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_usual",
+      "truth": 151,
+      "pred": 151,
+      "correct": true,
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_mediterranean",
+      "truth": 161,
+      "pred": 161,
+      "correct": true,
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_glucose_usual",
+      "truth": 102.7,
+      "pred": 102.70132450331126,
+      "correct": true,
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_glucose_mediterranean",
+      "truth": 98.3,
+      "pred": 98.29689440993788,
+      "correct": true,
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "sd_glucose_mediterranean",
+      "truth": 13.06,
+      "pred": 13.055125537314112,
+      "correct": true,
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_difference",
+      "truth": -4.4,
+      "pred": -4.404430093373378,
+      "correct": true,
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "t_statistic",
+      "truth": -2.97,
+      "pred": -2.9669917233423937,
+      "correct": true,
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "truth": 0.003,
+      "pred": 0.003241289877945753,
+      "correct": true,
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_d",
+      "truth": -0.336,
+      "pred": -0.3361183478602517,
+      "correct": true,
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ],
+  "submitted_any": true
+}

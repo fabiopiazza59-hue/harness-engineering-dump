@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_001_ttest",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 9,
+  "slots_total": 9,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 15438,
+    "output_tokens": 1432,
+    "cache_read_tokens": 3400,
+    "cost_usd": 0.0767
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

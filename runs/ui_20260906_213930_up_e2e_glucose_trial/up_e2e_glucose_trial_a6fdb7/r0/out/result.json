@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "up_e2e_glucose_trial_a6fdb7",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 10,
+  "slots_total": 10,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 16898,
+    "output_tokens": 1566,
+    "cache_read_tokens": 0,
+    "cost_usd": 0.0832
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

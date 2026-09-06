@@ -1,0 +1,57 @@
+{
+  "task_id": "ho_010_ols_interaction",
+  "family": "reproduce_analysis",
+  "title": "Does age modify the effect of assignment to the treatment arm on systolic blood pressure?",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_model",
+      "description": "Number of records in the model",
+      "type": "count"
+    },
+    {
+      "id": "coef_exposure",
+      "description": "Coefficient of the exposure (at mean age)",
+      "type": "coef"
+    },
+    {
+      "id": "se_exposure_hc3",
+      "description": "HC3 robust standard error of the exposure coefficient",
+      "type": "se"
+    },
+    {
+      "id": "p_exposure",
+      "description": "p-value of the exposure coefficient (HC3)",
+      "type": "pvalue"
+    },
+    {
+      "id": "coef_interaction",
+      "description": "Coefficient of the exposure x centred-age interaction",
+      "type": "coef"
+    },
+    {
+      "id": "p_interaction",
+      "description": "p-value of the interaction term (HC3)",
+      "type": "pvalue"
+    },
+    {
+      "id": "coef_bmi",
+      "description": "Coefficient of BMI",
+      "type": "coef"
+    },
+    {
+      "id": "r_squared",
+      "description": "R squared",
+      "type": "r2"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

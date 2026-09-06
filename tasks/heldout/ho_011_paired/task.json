@@ -1,0 +1,62 @@
+{
+  "task_id": "ho_011_paired",
+  "family": "reproduce_analysis",
+  "title": "Within-patient change in systolic blood pressure between two assessments",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods section exactly (exclusions, transformations, test choice, coding of variables). Produce a numeric value for every claim slot listed under 'claims'. Write claims.json with {\"claims\": [{\"id\": ..., \"value\": <number>}, ...]} and analysis.py, a standalone script that, when run from the task directory, recomputes the claims from data.csv and prints them as a single JSON object {\"<id>\": <number>, ...} on stdout.",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "claims": [
+    {
+      "id": "n_pairs",
+      "description": "Number of patients with both assessments in the analysis",
+      "type": "count"
+    },
+    {
+      "id": "mean_first",
+      "description": "Mean systolic blood pressure (mmHg) at 12 weeks at the first assessment",
+      "type": "mean"
+    },
+    {
+      "id": "mean_second",
+      "description": "Mean at the second assessment",
+      "type": "mean"
+    },
+    {
+      "id": "mean_change",
+      "description": "Mean change (second minus first)",
+      "type": "diff"
+    },
+    {
+      "id": "sd_change",
+      "description": "Sample SD of the paired differences",
+      "type": "sd"
+    },
+    {
+      "id": "w_stat",
+      "description": "Test statistic of the paired test",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "Two-sided p-value of the paired test",
+      "type": "pvalue"
+    },
+    {
+      "id": "cohens_dz",
+      "description": "Cohen's dz",
+      "type": "effect"
+    },
+    {
+      "id": "mean_pct_change",
+      "description": "Mean per-subject percent change",
+      "type": "diff"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  }
+}

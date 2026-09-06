@@ -1,0 +1,96 @@
+{
+  "task_id": "fb_009_mh_stratified",
+  "analysis": "mh_stratified",
+  "difficulty": 3,
+  "wrinkles": [
+    "messy_labels",
+    "duplicates",
+    "sentinel_missing",
+    "mantel_haenszel"
+  ],
+  "seed": 505002,
+  "theme": "nutrition",
+  "claims": [
+    {
+      "id": "n_total",
+      "value": 313,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_exposed",
+      "value": 167,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "or_crude",
+      "value": 0.4149481314835646,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "or_mh",
+      "value": 0.3925134629517352,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "or_mh_ci_low",
+      "value": 0.2397401521531502,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "or_mh_ci_high",
+      "value": 0.6426408643469229,
+      "type": "ci",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.03
+      }
+    },
+    {
+      "id": "mh_chi2",
+      "value": 13.163890559094677,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mh_p",
+      "value": 0.00028539571090269167,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "or_site1",
+      "value": 0.24107142857142858,
+      "type": "ratio",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    }
+  ]
+}

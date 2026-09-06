@@ -1,0 +1,30 @@
+{
+  "task_id": "ho_004_logistic",
+  "step": 4,
+  "started_at": 1788730825.051936,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 293, \"n_events\": 153, \"or_exposure\": 2.255531090674604, \"or_ci_low\": 1.39111921642914, \"or_ci_high\": 3.6570701065136997, \"p_exposure\": 0.0009711871419276334, \"or_age\": 1.0192946657856494}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 293,
+    "n_events": 153,
+    "or_exposure": 2.255531090674604,
+    "or_ci_low": 1.39111921642914,
+    "or_ci_high": 3.6570701065136997,
+    "p_exposure": 0.0009711871419276334,
+    "or_age": 1.0192946657856494
+  },
+  "submissions": [],
+  "best_claims": {},
+  "best_analysis": "",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": false,
+  "status": "running"
+}

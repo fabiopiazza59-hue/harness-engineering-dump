@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "task_id": "fb_004_logistic",
+  "reason": "too many unparseable replies",
+  "steps": 5,
+  "claims_written": false,
+  "slots_filled": 0,
+  "slots_total": 7,
+  "gate_passed": false,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 18371,
+    "output_tokens": 2106,
+    "cache_read_tokens": 3092,
+    "cost_usd": 0.0951
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}
