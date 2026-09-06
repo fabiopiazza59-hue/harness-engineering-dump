@@ -17,8 +17,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "evalkit"))
 from harness.config import load_model_config  # noqa: E402
 from harness.llm import LLM  # noqa: E402
+from jsonutil import parse_json_object  # noqa: E402
 
 SYSTEM = """You are a meticulous statistical reviewer. You compare an automated reproduction of a paper's analysis
 against the paper itself. You are given: the paper (with its reported numbers), the claim slots, the values the
@@ -65,11 +67,10 @@ def judge_run(task_dir: Path, output_dir: Path, paper: str | None, cfg_path: str
     ])
     llm = LLM(load_model_config(cfg_path))
     raw = llm.chat(SYSTEM, [{"role": "user", "content": user}], max_tokens=6000)
-    m = re.search(r"\{.*\}", raw, re.S)
     try:
-        verdict = json.loads(m.group(0) if m else raw)
-    except json.JSONDecodeError:
-        verdict = {"error": "judge returned non-JSON", "raw": raw[:2000]}
+        verdict = parse_json_object(raw)
+    except ValueError:
+        verdict = {"error": "judge returned non-JSON", "raw": raw[:4000]}
     cl = verdict.get("claims", []) if isinstance(verdict, dict) else []
     n_rep = [c for c in cl if c.get("verdict") in ("match", "mismatch")]
     verdict["judge_accuracy"] = round(sum(c.get("verdict") == "match" for c in n_rep) / len(n_rep), 4) if n_rep else None

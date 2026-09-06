@@ -1,0 +1,97 @@
+{
+  "task_id": "up_e2e_glucose_trial_26e732",
+  "analysis": "uploaded",
+  "source": "paper-reported values",
+  "claims": [
+    {
+      "id": "n_total_collected",
+      "value": 350,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_usual",
+      "value": 151,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "n_mediterranean",
+      "value": 161,
+      "type": "count",
+      "tolerance": {
+        "abs": 0,
+        "rel": 0
+      }
+    },
+    {
+      "id": "mean_glucose_usual",
+      "value": 102.7,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "mean_glucose_mediterranean",
+      "value": 98.3,
+      "type": "mean",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.01
+      }
+    },
+    {
+      "id": "sd_glucose_mediterranean",
+      "value": 13.06,
+      "type": "sd",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "mean_difference",
+      "value": -4.4,
+      "type": "diff",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "t_statistic",
+      "value": -2.97,
+      "type": "stat",
+      "tolerance": {
+        "abs": 0.01,
+        "rel": 0.02
+      }
+    },
+    {
+      "id": "p_value",
+      "value": 0.003,
+      "type": "pvalue",
+      "tolerance": {
+        "abs": 0.002,
+        "rel": 0.05
+      }
+    },
+    {
+      "id": "cohens_d",
+      "value": -0.336,
+      "type": "effect",
+      "tolerance": {
+        "abs": 0.005,
+        "rel": 0.02
+      }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "task_id": "up_e2e_glucose_trial_26e732",
+  "family": "reproduce_analysis",
+  "title": "Effect of the Mediterranean diet intervention on fasting glucose: a dietary intervention study on fasting glucose",
+  "instructions": "Reproduce the analysis described in paper_methods.md using data.csv. Follow the Methods exactly. Produce a numeric value for every claim slot. Write claims.json and analysis.py (prints the claims as one JSON object).",
+  "paper_view": "paper_methods.md",
+  "data_files": [
+    "data.csv"
+  ],
+  "data_dictionary": "data_dictionary.md",
+  "notes": "Reproduction order matters: (1) restrict to age 18-80 inclusive, (2) drop missing glucose_fu, (3) then compute the overall mean and SD of glucose_fu on the remaining sample and drop observations more than 3 SDs from that mean (single pass, not iterative). Outlier bounds are computed on the pooled sample, not per group. SD uses n-1 denominator. Difference and Cohen's d are mediterranean minus usual (hence negative). Pooled SD uses the standard equal-variance formula. The paper reports SD only for the mediterranean group; the usual-group SD is not a claim.",
+  "claims": [
+    {
+      "id": "n_total_collected",
+      "description": "Total number of participants for whom data were collected (rows in data.csv)",
+      "type": "count"
+    },
+    {
+      "id": "n_usual",
+      "description": "Number of participants in the usual group in the analysis sample after exclusions",
+      "type": "count"
+    },
+    {
+      "id": "n_mediterranean",
+      "description": "Number of participants in the mediterranean group in the analysis sample after exclusions",
+      "type": "count"
+    },
+    {
+      "id": "mean_glucose_usual",
+      "description": "Mean fasting glucose (mg/dL) at follow-up in the usual group",
+      "type": "mean"
+    },
+    {
+      "id": "mean_glucose_mediterranean",
+      "description": "Mean fasting glucose (mg/dL) at follow-up in the mediterranean group",
+      "type": "mean"
+    },
+    {
+      "id": "sd_glucose_mediterranean",
+      "description": "Sample standard deviation (n-1) of fasting glucose (mg/dL) at follow-up in the mediterranean group",
+      "type": "sd"
+    },
+    {
+      "id": "mean_difference",
+      "description": "Mean difference in follow-up fasting glucose (mg/dL), mediterranean minus usual",
+      "type": "diff"
+    },
+    {
+      "id": "t_statistic",
+      "description": "Two-sample equal-variance t statistic for the group difference in follow-up fasting glucose",
+      "type": "stat"
+    },
+    {
+      "id": "p_value",
+      "description": "Two-sided p-value for the unpaired equal-variance t-test",
+      "type": "pvalue"
+    },
+    {
+      "id": "cohens_d",
+      "description": "Cohen's d = mean difference / pooled SD for follow-up fasting glucose",
+      "type": "effect"
+    }
+  ],
+  "output": {
+    "claims_file": "claims.json",
+    "analysis_script": "analysis.py"
+  },
+  "status": "ready"
+}

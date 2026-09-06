@@ -1,0 +1,13 @@
+{
+  "error": "judge returned non-JSON",
+  "raw": "{\"claims\": [{\"id\": \"n_total_collected\", \"paper_value\": \"350\", \"reproduced_value\": 350, \"verdict\": \"match\", \"note\": \"Exact.\"}, {\"id\": \"n_usual\", \"paper_value\": \"151\", \"reproduced_value\": 151, \"verdict\": \"match\", \"note\": \"Exact.\"}, {\"id\": \"n_mediterranean\", \"paper_value\": \"161\", \"reproduced_value\": 161, \"verdict\": \"match\", \"note\": \"Exact.\"}, {\"id\": \"mean_glucose_usual\", \"paper_value\": \"102.70\", \"reproduced_value\": 102.70132450331126, \"verdict\": \"match\", \"note\": \"Rounds to 102.70.\"}, {\"id\": \"mean_glucose_mediterranean\", \"paper_value\": \"98.30\", \"reproduced_value\": 98.29689440993788, \"verdict\": \"match\", \"note\": \"Rounds to 98.30.\"}, {\"id\": \"sd_glucose_mediterranean\", \"paper_value\": \"13.06\", \"reproduced_value\": 13.055125537314112, \"verdict\": \"match\", \"note\": \"Rounds to 13.06.\"}, {\"id\": \"mean_difference\", \"paper_value\": \"-4.40\", \"reproduced_value\": -4.404430093373378, \"verdict\": \"match\", \"note\": \"Rounds to -4.40.\"}, {\"id\": \"t_statistic\", \"paper_value\": \"-2.97\", \"reproduced_value\": -2.9669917233423937, \"verdict\": \"match\", \"note\": \"Rounds to -2.97.\"}, {\"id\": \"p_value\", \"paper_value\": \"0.003\", \"reproduced_value\": 0.003241289877945753, \"verdict\": \"match\", \"note\": \"Within 0.005; rounds to 0.003.\"}, {\"id\": \"cohens_d\", \"paper_value\": \"-0.336\", \"reproduced_value\": -0.3361183478602517, \"verdict\": \"match\", \"note\": \"Rounds to -0.336.\"}], \"fidelity\": {\"exclusions\": 2, \"transformations\": 2, \"test_or_model_choice\": 2, \"variable_coding\": 2, \"reporting_definitions\": 2}, \"overall_assessment\": \"All ten claim slots reproduce the paper's reported values exactly at the paper's stated precision. The script implements the pre-specified exclusion sequence (age range, complete-case, 3-SD outlier removal on the post-exclusion sample), the equal-variance two-sided t-test, and the mediterranean-minus-usual direction with pooled-SD Cohen's d as described.\"the, \"confidence\": 0.95}",
+  "judge_accuracy": null,
+  "fidelity_score": null,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 3170,
+    "output_tokens": 830,
+    "cache_read_tokens": 516,
+    "cost_usd": 0.0527
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "claims": [
+    {
+      "id": "n_total_collected",
+      "value": 350
+    },
+    {
+      "id": "n_usual",
+      "value": 151
+    },
+    {
+      "id": "n_mediterranean",
+      "value": 161
+    },
+    {
+      "id": "mean_glucose_usual",
+      "value": 102.70132450331126
+    },
+    {
+      "id": "mean_glucose_mediterranean",
+      "value": 98.29689440993788
+    },
+    {
+      "id": "sd_glucose_mediterranean",
+      "value": 13.055125537314112
+    },
+    {
+      "id": "mean_difference",
+      "value": -4.404430093373378
+    },
+    {
+      "id": "t_statistic",
+      "value": -2.9669917233423937
+    },
+    {
+      "id": "p_value",
+      "value": 0.003241289877945753
+    },
+    {
+      "id": "cohens_d",
+      "value": -0.3361183478602517
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

@@ -1,0 +1,8 @@
+- `id`: participant identifier (integer)
+- `age`: age in years (float); analysis restricted to 18-80 inclusive
+- `sex`: binary sex indicator (0/1)
+- `bmi`: body mass index (kg/m^2)
+- `diet`: group membership, `mediterranean` or `usual`
+- `baseline`: baseline fasting glucose (mg/dL)
+- `glucose_fu`: fasting glucose (mg/dL) at follow-up — primary outcome
+- `event`: binary event indicator (0/1); not used in the primary analysis

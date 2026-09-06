@@ -27,6 +27,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "evalkit"))
 from evalkit.score import score_run, truth_path_for  # noqa: E402
 from evalkit.judge import judge_run  # noqa: E402
+from jsonutil import parse_json_object  # noqa: E402
 from harness.config import load_model_config  # noqa: E402
 from harness.llm import LLM  # noqa: E402
 from tasks.generator.make_tasks import TOL  # noqa: E402
@@ -135,10 +136,9 @@ def api_build_task(tid: str):
     llm = LLM(load_model_config(str(ROOT / "configs" / "judge.json")))
     user = "=== PAPER TEXT ===\n" + text[:60000] + "\n\n=== DATA SAMPLE ===\n" + (sample or "(no dataset provided)")
     raw = llm.chat(BUILDER_SYSTEM, [{"role": "user", "content": user}], max_tokens=12000)
-    m = re.search(r"\{.*\}", raw, re.S)
     try:
-        spec = json.loads(m.group(0) if m else raw)
-    except json.JSONDecodeError:
+        spec = parse_json_object(raw)
+    except ValueError:
         raise HTTPException(500, f"task builder returned non-JSON: {raw[:500]}")
     # user-provided truth overrides extracted values
     truth_vals = {}
