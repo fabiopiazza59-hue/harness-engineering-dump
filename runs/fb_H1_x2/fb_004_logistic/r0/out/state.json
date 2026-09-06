@@ -1,17 +1,53 @@
 {
   "task_id": "fb_004_logistic",
-  "step": 1,
+  "step": 4,
   "started_at": 1788731948.5207806,
   "plan": "1. Load data.csv. 2. Apply age filter: keep 18<=age<=80. 3. Drop rows with missing glucose_fu or bmi. 4. Code diet: mediterranean=1, usual=0. 5. Fit logistic regression event ~ diet + age + bmi using statsmodels Logit (ML, no penalty). 6. Compute n_model = n obs used, n_events = sum(event). 7. Compute OR = exp(coef) for diet and age, Wald 95% CI = exp(coef +/- 1.96*se) using statsmodels conf_int, p-value from model summary. 8. Print JSON with all claims.",
-  "scripts": [],
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 161, \"n_events\": 59, \"or_exposure\": 0.3461142250757604, \"or_ci_low\": 0.16402077528609071, \"or_ci_high\": 0.7303651417989179, \"p_exposure\": 0.005358860802361403, \"or_age\": 1.022823128772859}"
+    }
+  ],
   "failures": [],
-  "draft_claims": {},
-  "submissions": [],
-  "best_claims": {},
-  "best_analysis": "",
+  "draft_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.3461142250757604,
+    "or_ci_low": 0.16402077528609071,
+    "or_ci_high": 0.7303651417989179,
+    "p_exposure": 0.005358860802361403,
+    "or_age": 1.022823128772859
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 161,
+        "n_events": 59,
+        "or_exposure": 0.3461142250757604,
+        "or_ci_low": 0.16402077528609071,
+        "or_ci_high": 0.7303651417989179,
+        "p_exposure": 0.005358860802361403,
+        "or_age": 1.022823128772859
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.3461142250757604,
+    "or_ci_low": 0.16402077528609071,
+    "or_ci_high": 0.7303651417989179,
+    "p_exposure": 0.005358860802361403,
+    "or_age": 1.022823128772859
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df.dropna(subset=['glucose_fu','bmi'])\ndf['diet_bin'] = (df['diet']=='mediterranean').astype(int)\n\nX = df[['diet_bin','age','bmi']]\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.Logit(y, X).fit(disp=0)\nprint(model.summary())\n\nparams = model.params\nconf = model.conf_int()\npvals = model.pvalues\n\nor_exposure = np.exp(params['diet_bin'])\nci_low, ci_high = np.exp(conf.loc['diet_bin'])\np_exposure = pvals['diet_bin']\nor_age = np.exp(params['age'])\n\nresult = {\n 'n_model': int(model.nobs),\n 'n_events': int(y.sum()),\n 'or_exposure': or_exposure,\n 'or_ci_low': ci_low,\n 'or_ci_high': ci_high,\n 'p_exposure': p_exposure,\n 'or_age': or_age\n}\nprint(json.dumps(result))\n",
   "parse_failures": 0,
-  "repairs": 1,
+  "repairs": 2,
   "compactions": 0,
-  "finished": false,
-  "status": "running"
+  "finished": true,
+  "status": "success"
 }

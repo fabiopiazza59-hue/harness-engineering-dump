@@ -1,0 +1,56 @@
+{
+  "task_id": "ho_014_mannwhitney",
+  "step": 4,
+  "started_at": 1788732482.129687,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (all columns identical), keep first. 3. Replace -999 with NaN across all columns. 4. Filter age between 18 and 80 inclusive. 5. Normalize treatment: strip whitespace, lowercase. 6. Drop rows with missing biomass. 7. Split into fertilised/unfertilised groups based on normalized treatment. 8. Compute n per group, median per group, median_diff = median(fertilised)-median(unfertilised). 9. Run scipy.stats.mannwhitneyu with alternative='two-sided', use_continuity=True, method='asymptotic', with fertilised as first sample (x) so U is for fertilised group. 10. Compute rank_biserial = 1 - 2*U/(n1*n2) where n1=n_fertilised, n2=n_unfertilised. 11. Output JSON with all claim slots.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_unfertilised\": 120, \"n_fertilised\": 121, \"median_unfertilised\": 419.5, \"median_fertilised\": 475.9, \"median_diff\": 56.39999999999998, \"u_stat\": 9670.5, \"p_value\": 8.441766954014353e-06, \"rank_biser"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_unfertilised": 120,
+    "n_fertilised": 121,
+    "median_unfertilised": 419.5,
+    "median_fertilised": 475.9,
+    "median_diff": 56.39999999999998,
+    "u_stat": 9670.5,
+    "p_value": 8.441766954014353e-06,
+    "rank_biserial": -0.3320247933884297
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_unfertilised": 120,
+        "n_fertilised": 121,
+        "median_unfertilised": 419.5,
+        "median_fertilised": 475.9,
+        "median_diff": 56.39999999999998,
+        "u_stat": 9670.5,
+        "p_value": 8.441766954014353e-06,
+        "rank_biserial": -0.3320247933884297
+      }
+    }
+  ],
+  "best_claims": {
+    "n_unfertilised": 120,
+    "n_fertilised": 121,
+    "median_unfertilised": 419.5,
+    "median_fertilised": 475.9,
+    "median_diff": 56.39999999999998,
+    "u_stat": 9670.5,
+    "p_value": 8.441766954014353e-06,
+    "rank_biserial": -0.3320247933884297
+  },
+  "best_analysis": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# 1. remove exact duplicates, keep first\ndf = df.drop_duplicates(keep='first')\n\n# 2. replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\n\n# 3. filter age 18-80 inclusive\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n\n# 4. normalize treatment\ndf['treatment_norm'] = df['treatment'].astype(str).str.strip().str.lower()\n\n# 5. drop missing biomass\ndf = df.dropna(subset=['biomass'])\n\nfert = df[df['treatment_norm'] == 'fertilised']['biomass']\nunfert = df[df['treatment_norm'] == 'unfertilised']['biomass']\n\nn_fert = len(fert)\nn_unfert = len(unfert)\n\nmedian_fert = fert.median()\nmedian_unfert = unfert.median()\nmedian_diff = median_fert - median_unfert\n\nres = stats.mannwhitneyu(fert, unfert, alternative='two-sided', use_continuity=True, method='asymptotic')\nU = res.statistic\np = res.pvalue\n\nrank_biserial = 1 - 2*U/(n_fert*n_unfert)\n\nclaims = {\n 'n_unfertilised': n_unfert,\n 'n_fertilised': n_fert,\n 'median_unfertilised': median_unfert,\n 'median_fertilised': median_fert,\n 'median_diff': median_diff,\n 'u_stat': U,\n 'p_value': p,\n 'rank_biserial': rank_biserial\n}\nprint(json.dumps(claims))\n",
+  "parse_failures": 0,
+  "repairs": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

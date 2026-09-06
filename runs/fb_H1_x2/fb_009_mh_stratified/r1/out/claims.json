@@ -1,0 +1,42 @@
+{
+  "claims": [
+    {
+      "id": "n_total",
+      "value": 313
+    },
+    {
+      "id": "n_exposed",
+      "value": 167
+    },
+    {
+      "id": "or_crude",
+      "value": 0.4149481314835646
+    },
+    {
+      "id": "or_mh",
+      "value": 0.3925134629517352
+    },
+    {
+      "id": "or_mh_ci_low",
+      "value": 0.23973798025231347
+    },
+    {
+      "id": "or_mh_ci_high",
+      "value": 0.6426466863373705
+    },
+    {
+      "id": "mh_chi2",
+      "value": 13.163890559094677
+    },
+    {
+      "id": "mh_p",
+      "value": 0.00028539571090269167
+    },
+    {
+      "id": "or_site1",
+      "value": 0.24107142857142858
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

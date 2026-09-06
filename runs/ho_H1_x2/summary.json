@@ -1,0 +1,127 @@
+{
+  "run_id": "ho_H1_x2",
+  "split": "heldout",
+  "label": "H1 heldout",
+  "harness_dir": "evolve/worktrees/cand_1/harness",
+  "harness_commit": "158b515",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 16,
+  "repeats": 2,
+  "mean_score": 0.9931,
+  "mean_raw_accuracy": 0.9931,
+  "provenance_rate": 1.0,
+  "timeouts": 0,
+  "total_cost_usd": 2.853,
+  "total_llm_calls": 134,
+  "mean_output_tokens": 1638.1,
+  "wall_s": 334.3,
+  "per_task": {
+    "ho_001_ttest": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_002_ols": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_003_correlation": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_004_logistic": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_005_anova": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_006_chisq": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_007_multi_bh": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_008_mannwhitney": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_009_cox": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_010_ols_interaction": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_011_paired": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_012_mh_stratified": {
+      "score": 0.8889,
+      "raw_accuracy": 0.8889,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_013_multi_bh": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_014_mannwhitney": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_016_ols_interaction": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "ho_015_cox": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    }
+  },
+  "finished_at": "2026-09-06 22:09:24"
+}

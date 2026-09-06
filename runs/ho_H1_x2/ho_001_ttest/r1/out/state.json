@@ -1,0 +1,59 @@
+{
+  "task_id": "ho_001_ttest",
+  "step": 4,
+  "started_at": 1788732230.639943,
+  "plan": "1. Load data.csv. 2. Exclude participants with age <18 or >80. 3. Exclude rows with missing rt_ms. 4. Compute overall mean and SD (n-1) of rt_ms on remaining sample; remove observations where rt_ms is more than 3 SD from overall mean. 5. Split into placebo and caffeine groups by condition. 6. Compute n, mean, sd (n-1) for each group. 7. mean_diff = mean_caffeine - mean_placebo. 8. Welch's t-test (unequal variances), two-sided, on rt_ms between caffeine and placebo. 9. Cohen's d = mean_diff / pooled_sd, pooled_sd = sqrt(((n1-1)*sd1^2+(n2-1)*sd2^2)/(n1+n2-2)). 10. Print JSON with all claim values.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_placebo\": 89, \"n_caffeine\": 90, \"mean_placebo\": 706.9932584269662, \"mean_caffeine\": 682.9911111111111, \"sd_caffeine\": 99.26045824891838, \"mean_diff\": -24.002147315855154, \"t_stat\": -1.601365191318"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_placebo": 89,
+    "n_caffeine": 90,
+    "mean_placebo": 706.9932584269662,
+    "mean_caffeine": 682.9911111111111,
+    "sd_caffeine": 99.26045824891838,
+    "mean_diff": -24.002147315855154,
+    "t_stat": -1.601365191318443,
+    "p_value": 0.11108100293042009,
+    "cohens_d": -0.23941371382337256
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_placebo": 89,
+        "n_caffeine": 90,
+        "mean_placebo": 706.9932584269662,
+        "mean_caffeine": 682.9911111111111,
+        "sd_caffeine": 99.26045824891838,
+        "mean_diff": -24.002147315855154,
+        "t_stat": -1.601365191318443,
+        "p_value": 0.11108100293042009,
+        "cohens_d": -0.23941371382337256
+      }
+    }
+  ],
+  "best_claims": {
+    "n_placebo": 89,
+    "n_caffeine": 90,
+    "mean_placebo": 706.9932584269662,
+    "mean_caffeine": 682.9911111111111,
+    "sd_caffeine": 99.26045824891838,
+    "mean_diff": -24.002147315855154,
+    "t_stat": -1.601365191318443,
+    "p_value": 0.11108100293042009,
+    "cohens_d": -0.23941371382337256
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df[df['rt_ms'].notna()]\nmean_all = df['rt_ms'].mean()\nsd_all = df['rt_ms'].std(ddof=1)\ndf = df[(df['rt_ms'] >= mean_all - 3*sd_all) & (df['rt_ms'] <= mean_all + 3*sd_all)]\n\nplacebo = df[df['condition']=='placebo']['rt_ms']\ncaffeine = df[df['condition']=='caffeine']['rt_ms']\n\nn_placebo = len(placebo)\nn_caffeine = len(caffeine)\nmean_placebo = placebo.mean()\nmean_caffeine = caffeine.mean()\nsd_placebo = placebo.std(ddof=1)\nsd_caffeine = caffeine.std(ddof=1)\nmean_diff = mean_caffeine - mean_placebo\n\nt_stat, p_value = stats.ttest_ind(caffeine, placebo, equal_var=False)\n\npooled_sd = np.sqrt(((n_placebo-1)*sd_placebo**2 + (n_caffeine-1)*sd_caffeine**2) / (n_placebo+n_caffeine-2))\ncohens_d = mean_diff / pooled_sd\n\nresult = {\n 'n_placebo': n_placebo,\n 'n_caffeine': n_caffeine,\n 'mean_placebo': mean_placebo,\n 'mean_caffeine': mean_caffeine,\n 'sd_caffeine': sd_caffeine,\n 'mean_diff': mean_diff,\n 't_stat': t_stat,\n 'p_value': p_value,\n 'cohens_d': cohens_d\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

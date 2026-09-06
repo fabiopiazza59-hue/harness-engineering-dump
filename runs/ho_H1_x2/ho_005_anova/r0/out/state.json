@@ -1,0 +1,59 @@
+{
+  "task_id": "ho_005_anova",
+  "step": 4,
+  "started_at": 1788732286.671986,
+  "plan": "1. Load data.csv. 2. Exclude participants with age <18 or >80. 3. Exclude participants with missing glucose_fu. 4. Compute overall mean and sample SD (n-1) of glucose_fu on remaining sample; remove outliers >3 SD from mean (using abs(x-mean)>3*sd). 5. On this final analysis sample, compute tertile cut-points of baseline (33rd and 66th percentiles) - need to decide method (likely np.percentile with linear interpolation, using first and second tertile cut-points). 6. Assign group: low if baseline <= 1st tertile cutpoint, middle if > 1st and <= 2nd tertile cutpoint, high if > 2nd tertile cutpoint (values equal to cutpoint assigned to lower group). 7. Compute n and mean glucose_fu per group. 8. Run one-way ANOVA (scipy.stats.f_oneway) across three groups on glucose_fu. 9. Compute eta_squared = SS_between/SS_total. 10. Output all claims as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_low\": 75, \"mean_low\": 97.10666666666667, \"n_middle\": 76, \"mean_middle\": 99.62236842105264, \"n_high\": 73, \"mean_high\": 108.95205479452055, \"f_stat\": 18.838074156760843, \"p_value\": 2.791037196917513"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_low": 75,
+    "mean_low": 97.10666666666667,
+    "n_middle": 76,
+    "mean_middle": 99.62236842105264,
+    "n_high": 73,
+    "mean_high": 108.95205479452055,
+    "f_stat": 18.838074156760843,
+    "p_value": 2.7910371969175134e-08,
+    "eta_squared": 0.14564987363217294
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_low": 75,
+        "mean_low": 97.10666666666667,
+        "n_middle": 76,
+        "mean_middle": 99.62236842105264,
+        "n_high": 73,
+        "mean_high": 108.95205479452055,
+        "f_stat": 18.838074156760843,
+        "p_value": 2.7910371969175134e-08,
+        "eta_squared": 0.14564987363217294
+      }
+    }
+  ],
+  "best_claims": {
+    "n_low": 75,
+    "mean_low": 97.10666666666667,
+    "n_middle": 76,
+    "mean_middle": 99.62236842105264,
+    "n_high": 73,
+    "mean_high": 108.95205479452055,
+    "f_stat": 18.838074156760843,
+    "p_value": 2.7910371969175134e-08,
+    "eta_squared": 0.14564987363217294
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df.age>=18)&(df.age<=80)]\ndf = df[df.glucose_fu.notna()]\n\nmean = df.glucose_fu.mean()\nsd = df.glucose_fu.std(ddof=1)\ndf = df[(df.glucose_fu - mean).abs() <= 3*sd]\n\nq1 = np.percentile(df.baseline, 100/3)\nq2 = np.percentile(df.baseline, 200/3)\n\ndef grp(x):\n    if x <= q1:\n        return 'low'\n    elif x <= q2:\n        return 'middle'\n    else:\n        return 'high'\n\ndf['tertile'] = df.baseline.apply(grp)\n\nlow = df[df.tertile=='low'].glucose_fu\nmid = df[df.tertile=='middle'].glucose_fu\nhigh = df[df.tertile=='high'].glucose_fu\n\nf_stat, p_value = stats.f_oneway(low, mid, high)\n\ngrand_mean = df.glucose_fu.mean()\nss_total = ((df.glucose_fu - grand_mean)**2).sum()\nss_between = len(low)*(low.mean()-grand_mean)**2 + len(mid)*(mid.mean()-grand_mean)**2 + len(high)*(high.mean()-grand_mean)**2\neta_sq = ss_between/ss_total\n\nresult = {\n 'n_low': len(low),\n 'mean_low': low.mean(),\n 'n_middle': len(mid),\n 'mean_middle': mid.mean(),\n 'n_high': len(high),\n 'mean_high': high.mean(),\n 'f_stat': f_stat,\n 'p_value': p_value,\n 'eta_squared': eta_sq\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 1,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

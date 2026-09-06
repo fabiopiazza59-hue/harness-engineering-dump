@@ -1,0 +1,68 @@
+{
+  "task_id": "fb_014_cox",
+  "step": 6,
+  "started_at": 1788732144.6106534,
+  "plan": "1. Load data.csv (225 records). 2. Remove exact duplicate rows (identical on all columns), keep first occurrence. 3. Replace -999 with NaN across all columns. 4. Restrict to age between 18 and 80 inclusive. 5. Normalize condition: strip whitespace, lowercase. 6. Compute followup_days = last_contact_date - enrol_date. 7. Exclude records with followup_days == 0. 8. Administrative censoring at 730 days: if followup_days > 730, set followup_days=730 and event=0 (censored). 9. Recode condition to exposure: caffeine=1, placebo=0 (drop other/missing labels). 10. Fit Cox PH model (lifelines CoxPHFataset, breslow ties) with covariates exposure and age, outcome (followup_days, event). 11. Extract n_model (# rows in model / with complete covariates), n_events (sum of event after censoring), median_followup_days (median of followup_days in analysed sample), hr_exposure = exp(coef), CI via se*1.96, p-value for exposure, hr_age = exp(coef_age). 12. Print all as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 1,
+      "summary": " \"/home/user/harness-engineering-dump/runs/fb_H1_x2/fb_014_cox/r0/out/scripts/scratch_01.py\", line 2, in <module>\n    from lifelines import CoxPHFitter\nModuleNotFoundError: No module named 'lifelines'"
+    },
+    {
+      "name": "scratch_02.py",
+      "returncode": 0,
+      "summary": "[-0.75647647  0.03388987] [0.22036898 0.00903078]"
+    },
+    {
+      "name": "scratch_03.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 207, \"n_events\": 88, \"median_followup_days\": 484.0, \"hr_exposure\": 0.46931717029210945, \"hr_ci_low\": 0.304708508588407, \"hr_ci_high\": 0.7228501998561286, \"p_exposure\": 0.000597444190638874"
+    }
+  ],
+  "failures": [
+    "scratch_01.py: exit 1:  \"/home/user/harness-engineering-dump/runs/fb_H1_x2/fb_014_cox/r0/out/scripts/scratch_01.py\", line 2, in <module>\n    from lifelines import CoxPHFitter\nModuleNotFoundError: No module named 'lifelines'"
+  ],
+  "draft_claims": {
+    "n_model": 207,
+    "n_events": 88,
+    "median_followup_days": 484.0,
+    "hr_exposure": 0.46931717029210945,
+    "hr_ci_low": 0.304708508588407,
+    "hr_ci_high": 0.7228501998561286,
+    "p_exposure": 0.0005974441906388748,
+    "hr_age": 1.034470674978907
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 207,
+        "n_events": 88,
+        "median_followup_days": 484.0,
+        "hr_exposure": 0.46931717029210945,
+        "hr_ci_low": 0.304708508588407,
+        "hr_ci_high": 0.7228501998561286,
+        "p_exposure": 0.0005974441906388748,
+        "hr_age": 1.034470674978907
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 207,
+    "n_events": 88,
+    "median_followup_days": 484.0,
+    "hr_exposure": 0.46931717029210945,
+    "hr_ci_low": 0.304708508588407,
+    "hr_ci_high": 0.7228501998561286,
+    "p_exposure": 0.0005974441906388748,
+    "hr_age": 1.034470674978907
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom statsmodels.duration.hazard_regression import PHReg\n\ndf = pd.read_csv('data.csv')\ndf = df.drop_duplicates(keep='first')\ndf = df.replace(-999, np.nan)\ndf = df.replace(-999.0, np.nan)\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\ndf['condition'] = df['condition'].astype(str).str.strip().str.lower()\ndf['enrol_date'] = pd.to_datetime(df['enrol_date'])\ndf['last_contact_date'] = pd.to_datetime(df['last_contact_date'])\ndf['followup_days'] = (df['last_contact_date'] - df['enrol_date']).dt.days\ndf = df[df['followup_days'] != 0]\nmask = df['followup_days'] > 730\ndf.loc[mask, 'followup_days'] = 730\ndf.loc[mask, 'event'] = 0\ndf = df[df['condition'].isin(['caffeine','placebo'])]\ndf['exposure'] = (df['condition'] == 'caffeine').astype(int)\n\ncols = ['followup_days','event','exposure','age']\ndf_model = df.dropna(subset=cols).copy()\n\nmodel = PHReg(df_model['followup_days'], df_model[['exposure','age']], status=df_model['event'], ties='breslow')\nres = model.fit()\n\nparams = res.params\nbse = res.bse\npvals = res.pvalues\n\nn_model = int(df_model.shape[0])\nn_events = int(df_model['event'].sum())\nmedian_followup = float(df_model['followup_days'].median())\n\ncoef_exp = params[0]\nse_exp = bse[0]\nhr_exposure = float(np.exp(coef_exp))\nhr_ci_low = float(np.exp(coef_exp - 1.96*se_exp))\nhr_ci_high = float(np.exp(coef_exp + 1.96*se_exp))\np_exposure = float(pvals[0])\nhr_age = float(np.exp(params[1]))\n\nresult = {\n 'n_model': n_model,\n 'n_events': n_events,\n 'median_followup_days': median_followup,\n 'hr_exposure': hr_exposure,\n 'hr_ci_low': hr_ci_low,\n 'hr_ci_high': hr_ci_high,\n 'p_exposure': p_exposure,\n 'hr_age': hr_age\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 1,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

@@ -1,0 +1,127 @@
+{
+  "run_id": "fb_H1_x2",
+  "split": "feedback",
+  "label": "H1 feedback",
+  "harness_dir": "evolve/worktrees/cand_1/harness",
+  "harness_commit": "158b515",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 16,
+  "repeats": 2,
+  "mean_score": 1.0,
+  "mean_raw_accuracy": 1.0,
+  "provenance_rate": 1.0,
+  "timeouts": 0,
+  "total_cost_usd": 2.83,
+  "total_llm_calls": 134,
+  "mean_output_tokens": 1652.6,
+  "wall_s": 332.5,
+  "per_task": {
+    "fb_001_ttest": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_002_ols": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_003_correlation": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_004_logistic": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_005_anova": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_006_chisq": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_007_paired": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_008_cox": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_009_mh_stratified": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_010_multi_bh": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_011_ols_interaction": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_012_mannwhitney": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_013_paired": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_015_mh_stratified": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_014_cox": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    },
+    "fb_016_multi_bh": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 2
+    }
+  },
+  "finished_at": "2026-09-06 22:03:50"
+}

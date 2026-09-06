@@ -1,0 +1,53 @@
+{
+  "task_id": "ho_004_logistic",
+  "step": 4,
+  "started_at": 1788732282.6472533,
+  "plan": "1. Load data.csv. 2. Apply exclusion: keep only age between 18 and 80 inclusive. 3. Drop rows with missing biomass or bmi (complete-case). 4. Code treatment as nitrogen exposure: 1=fertilised, 0=unfertilised. 5. Fit logistic regression: event ~ exposure + age + bmi, using statsmodels Logit (MLE, no penalisation). 6. Compute n_model = number of rows used in model; n_events = sum of event among those rows. 7. Compute OR = exp(coef) for exposure and age, Wald 95% CI = exp(coef +/- 1.96*se) (use statsmodels conf_int default alpha=0.05), p-value from model's summary (Wald test). 8. Print JSON with all claim slots as last line of stdout.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 293, \"n_events\": 153, \"or_exposure\": 2.255531090674604, \"or_ci_low\": 1.39111921642914, \"or_ci_high\": 3.6570701065136997, \"p_exposure\": 0.0009711871419276334, \"or_age\": 1.0192946657856494}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 293,
+    "n_events": 153,
+    "or_exposure": 2.255531090674604,
+    "or_ci_low": 1.39111921642914,
+    "or_ci_high": 3.6570701065136997,
+    "p_exposure": 0.0009711871419276334,
+    "or_age": 1.0192946657856494
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 293,
+        "n_events": 153,
+        "or_exposure": 2.255531090674604,
+        "or_ci_low": 1.39111921642914,
+        "or_ci_high": 3.6570701065136997,
+        "p_exposure": 0.0009711871419276334,
+        "or_age": 1.0192946657856494
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 293,
+    "n_events": 153,
+    "or_exposure": 2.255531090674604,
+    "or_ci_low": 1.39111921642914,
+    "or_ci_high": 3.6570701065136997,
+    "p_exposure": 0.0009711871419276334,
+    "or_age": 1.0192946657856494
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['biomass','bmi'])\ndf['exposure'] = (df['treatment']=='fertilised').astype(int)\n\nX = df[['exposure','age','bmi']]\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.Logit(y, X).fit(disp=0)\nn_model = int(len(df))\nn_events = int(y.sum())\n\nparams = model.params\nconf = model.conf_int(alpha=0.05)\npvals = model.pvalues\n\nor_exposure = np.exp(params['exposure'])\nor_ci_low = np.exp(conf.loc['exposure',0])\nor_ci_high = np.exp(conf.loc['exposure',1])\np_exposure = pvals['exposure']\nor_age = np.exp(params['age'])\n\nresult = {\n 'n_model': n_model,\n 'n_events': n_events,\n 'or_exposure': or_exposure,\n 'or_ci_low': or_ci_low,\n 'or_ci_high': or_ci_high,\n 'p_exposure': p_exposure,\n 'or_age': or_age\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

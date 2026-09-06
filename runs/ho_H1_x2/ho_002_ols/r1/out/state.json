@@ -1,0 +1,53 @@
+{
+  "task_id": "ho_002_ols",
+  "step": 4,
+  "started_at": 1788732258.4220665,
+  "plan": "1. Load data.csv (317 rows).\n2. Exclude participants with age <18 or >80.\n3. Exclude rows with missing rt_ms or bmi (complete-case).\n4. Compute mean/SD of rt_ms on remaining sample; remove outliers >3 SD from mean.\n5. Set rt_ms<1 to 1, then log-transform (natural log) -> log_rt.\n6. Recode condition to exposure: caffeine=1, placebo=0.\n7. Standardize age, bmi, baseline (mean0, sd1, sample SD ddof=1) - continuous covariates.\n8. Fit OLS: log_rt ~ exposure + age_z + bmi_z + baseline_z, conventional SE (non-robust).\n9. Extract n_model, coef_exposure, se_exposure, p_exposure, coef_age, r_squared, adj_r_squared.\n10. Print JSON with these keys.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 244, \"coef_exposure\": -0.09314589487782465, \"se_exposure\": 0.013871194024011099, \"p_exposure\": 1.3585645644354348e-10, \"coef_age\": -0.007154834352790379, \"r_squared\": 0.38967408543198656, "
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 244,
+    "coef_exposure": -0.09314589487782465,
+    "se_exposure": 0.013871194024011099,
+    "p_exposure": 1.3585645644354348e-10,
+    "coef_age": -0.007154834352790379,
+    "r_squared": 0.38967408543198656,
+    "adj_r_squared": 0.3794594257739444
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 244,
+        "coef_exposure": -0.09314589487782465,
+        "se_exposure": 0.013871194024011099,
+        "p_exposure": 1.3585645644354348e-10,
+        "coef_age": -0.007154834352790379,
+        "r_squared": 0.38967408543198656,
+        "adj_r_squared": 0.3794594257739444
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 244,
+    "coef_exposure": -0.09314589487782465,
+    "se_exposure": 0.013871194024011099,
+    "p_exposure": 1.3585645644354348e-10,
+    "coef_age": -0.007154834352790379,
+    "r_squared": 0.38967408543198656,
+    "adj_r_squared": 0.3794594257739444
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\n\n# exclusion 1: age 18-80\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# exclusion 2: missing rt_ms or bmi\ndf = df.dropna(subset=['rt_ms','bmi'])\n\n# exclusion 3: outliers >3 SD from mean of rt_ms (sample SD, computed on this sample)\nmean_rt = df['rt_ms'].mean()\nsd_rt = df['rt_ms'].std(ddof=1)\nmask = (df['rt_ms'] - mean_rt).abs() <= 3*sd_rt\ndf = df[mask]\n\n# transform\nrt = df['rt_ms'].copy()\nrt[rt<1] = 1\ndf['log_rt'] = np.log(rt)\n\n# exposure coding\ndf['exposure'] = (df['condition']=='caffeine').astype(int)\n\n# standardize continuous covariates\nfor col in ['age','bmi','baseline']:\n    m = df[col].mean()\n    s = df[col].std(ddof=1)\n    df[col+'_z'] = (df[col]-m)/s\n\nX = df[['exposure','age_z','bmi_z','baseline_z']]\nX = sm.add_constant(X)\ny = df['log_rt']\n\nmodel = sm.OLS(y, X).fit()\n\nresult = {\n 'n_model': int(model.nobs),\n 'coef_exposure': float(model.params['exposure']),\n 'se_exposure': float(model.bse['exposure']),\n 'p_exposure': float(model.pvalues['exposure']),\n 'coef_age': float(model.params['age_z']),\n 'r_squared': float(model.rsquared),\n 'adj_r_squared': float(model.rsquared_adj)\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

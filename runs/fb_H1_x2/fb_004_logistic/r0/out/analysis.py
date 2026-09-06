@@ -1,0 +1,33 @@
+import pandas as pd, numpy as np, statsmodels.api as sm, json
+
+df = pd.read_csv('data.csv')
+df = df[(df['age']>=18)&(df['age']<=80)]
+df = df.dropna(subset=['glucose_fu','bmi'])
+df['diet_bin'] = (df['diet']=='mediterranean').astype(int)
+
+X = df[['diet_bin','age','bmi']]
+X = sm.add_constant(X)
+y = df['event']
+
+model = sm.Logit(y, X).fit(disp=0)
+print(model.summary())
+
+params = model.params
+conf = model.conf_int()
+pvals = model.pvalues
+
+or_exposure = np.exp(params['diet_bin'])
+ci_low, ci_high = np.exp(conf.loc['diet_bin'])
+p_exposure = pvals['diet_bin']
+or_age = np.exp(params['age'])
+
+result = {
+ 'n_model': int(model.nobs),
+ 'n_events': int(y.sum()),
+ 'or_exposure': or_exposure,
+ 'or_ci_low': ci_low,
+ 'or_ci_high': ci_high,
+ 'p_exposure': p_exposure,
+ 'or_age': or_age
+}
+print(json.dumps(result))

@@ -1,0 +1,38 @@
+{
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 207
+    },
+    {
+      "id": "n_events",
+      "value": 88
+    },
+    {
+      "id": "median_followup_days",
+      "value": 484.0
+    },
+    {
+      "id": "hr_exposure",
+      "value": 0.46931717029210945
+    },
+    {
+      "id": "hr_ci_low",
+      "value": 0.304708508588407
+    },
+    {
+      "id": "hr_ci_high",
+      "value": 0.7228501998561286
+    },
+    {
+      "id": "p_exposure",
+      "value": 0.0005974441906388748
+    },
+    {
+      "id": "hr_age",
+      "value": 1.034470674978907
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

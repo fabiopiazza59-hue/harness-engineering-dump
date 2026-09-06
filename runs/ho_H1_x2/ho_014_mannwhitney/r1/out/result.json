@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_014_mannwhitney",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 17255,
+    "output_tokens": 1394,
+    "cache_read_tokens": 3371,
+    "cost_usd": 0.0836
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

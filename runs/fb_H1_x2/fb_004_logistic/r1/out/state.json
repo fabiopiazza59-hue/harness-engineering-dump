@@ -1,0 +1,53 @@
+{
+  "task_id": "fb_004_logistic",
+  "step": 4,
+  "started_at": 1788731951.0445375,
+  "plan": "1. Load data.csv. 2. Apply exclusions in order: (a) age between 18-80 inclusive, (b) drop rows missing glucose_fu or bmi. 3. Recode diet: mediterranean=1, usual=0. 4. Fit logistic regression event ~ diet + age + bmi using statsmodels Logit (ML, no penalty). 5. Compute n_model = number of rows in model, n_events = sum(event==1). 6. Extract OR (exp(coef)) and Wald 95% CI for diet coefficient, p-value for diet. 7. Extract OR for age. 8. Print JSON with all claims.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 161, \"n_events\": 59, \"or_exposure\": 0.3461142250757604, \"or_ci_low\": 0.16402077528609071, \"or_ci_high\": 0.7303651417989179, \"p_exposure\": 0.005358860802361403, \"or_age\": 1.022823128772859}"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.3461142250757604,
+    "or_ci_low": 0.16402077528609071,
+    "or_ci_high": 0.7303651417989179,
+    "p_exposure": 0.005358860802361403,
+    "or_age": 1.022823128772859
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 161,
+        "n_events": 59,
+        "or_exposure": 0.3461142250757604,
+        "or_ci_low": 0.16402077528609071,
+        "or_ci_high": 0.7303651417989179,
+        "p_exposure": 0.005358860802361403,
+        "or_age": 1.022823128772859
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 161,
+    "n_events": 59,
+    "or_exposure": 0.3461142250757604,
+    "or_ci_low": 0.16402077528609071,
+    "or_ci_high": 0.7303651417989179,
+    "p_exposure": 0.005358860802361403,
+    "or_age": 1.022823128772859
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['glucose_fu','bmi'])\ndf['diet_bin'] = (df['diet']=='mediterranean').astype(int)\n\nX = df[['diet_bin','age','bmi']]\nX = sm.add_constant(X)\ny = df['event']\n\nmodel = sm.Logit(y, X).fit(disp=0)\n\nn_model = int(model.nobs)\nn_events = int(y.sum())\n\nconf = model.conf_int()\nor_exposure = np.exp(model.params['diet_bin'])\nor_ci_low = np.exp(conf.loc['diet_bin',0])\nor_ci_high = np.exp(conf.loc['diet_bin',1])\np_exposure = model.pvalues['diet_bin']\nor_age = np.exp(model.params['age'])\n\nresult = {\n 'n_model': n_model,\n 'n_events': n_events,\n 'or_exposure': or_exposure,\n 'or_ci_low': or_ci_low,\n 'or_ci_high': or_ci_high,\n 'p_exposure': p_exposure,\n 'or_age': or_age\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 1,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

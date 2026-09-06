@@ -1,0 +1,59 @@
+{
+  "task_id": "ho_012_mh_stratified",
+  "step": 4,
+  "started_at": 1788732447.0140648,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (identical on all columns), keep first occurrence. 3. Replace -999 with NaN across all columns. 4. Filter to age between 18 and 80 inclusive (drop rows outside or missing age). 5. Normalize program: strip whitespace, lowercase. 6. Define exposed = program == 'tutoring', unexposed = program == 'standard' (drop other values if any). 7. Drop rows with missing event or site. 8. n_total = number of rows in final analysis sample; n_exposed = count of exposed. 9. Build crude 2x2 table (exposed/unexposed x event/no event), compute crude OR = (a*d)/(b*c) with a=exposed+event, b=exposed+noevent, c=unexposed+event, d=unexposed+noevent. 10. Build per-site 2x2 tables for sites 1-4, compute Mantel-Haenszel OR = sum(a_i*d_i/n_i) / sum(b_i*c_i/n_i). 11. Compute MH OR CI using Robins-Breslow-Greenland (RBG) method for variance of ln(OR_MH). 12. Compute MH chi-square with continuity correction: sum((|sum(a_i) - sum(E_i)| - 0.5)^2) / sum(Var_i) using standard hypergeometric formula. 13. Compute p-value from chi-square with df=1. 14. Compute site 1 OR directly from site1 2x2 table. 15. Output JSON with all claim slots.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_total\": 445, \"n_exposed\": 223, \"or_crude\": 2.472192513368984, \"or_mh\": 2.500371270751079, \"or_mh_ci_low\": 1.2280032002095627, \"or_mh_ci_high\": 5.091075080692351, \"mh_chi2\": 21.432116859945058, \"mh"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_total": 445,
+    "n_exposed": 223,
+    "or_crude": 2.472192513368984,
+    "or_mh": 2.500371270751079,
+    "or_mh_ci_low": 1.2280032002095627,
+    "or_mh_ci_high": 5.091075080692351,
+    "mh_chi2": 21.432116859945058,
+    "mh_p": 3.665790509810307e-06,
+    "or_site1": 1.6607142857142858
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_total": 445,
+        "n_exposed": 223,
+        "or_crude": 2.472192513368984,
+        "or_mh": 2.500371270751079,
+        "or_mh_ci_low": 1.2280032002095627,
+        "or_mh_ci_high": 5.091075080692351,
+        "mh_chi2": 21.432116859945058,
+        "mh_p": 3.665790509810307e-06,
+        "or_site1": 1.6607142857142858
+      }
+    }
+  ],
+  "best_claims": {
+    "n_total": 445,
+    "n_exposed": 223,
+    "or_crude": 2.472192513368984,
+    "or_mh": 2.500371270751079,
+    "or_mh_ci_low": 1.2280032002095627,
+    "or_mh_ci_high": 5.091075080692351,
+    "mh_chi2": 21.432116859945058,
+    "mh_p": 3.665790509810307e-06,
+    "or_site1": 1.6607142857142858
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\n# remove exact duplicates\ndf = df.drop_duplicates(keep='first')\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\n# age filter\ndf = df[(df['age']>=18) & (df['age']<=80)]\n# normalize program\ndf['program_norm'] = df['program'].astype(str).str.strip().str.lower()\n# keep only tutoring/standard\ndf = df[df['program_norm'].isin(['tutoring','standard'])]\n# drop missing event or site\ndf = df.dropna(subset=['event','site'])\n\nn_total = len(df)\nn_exposed = (df['program_norm']=='tutoring').sum()\n\ndef table_counts(sub):\n    a = ((sub['program_norm']=='tutoring') & (sub['event']==1)).sum()\n    b = ((sub['program_norm']=='tutoring') & (sub['event']==0)).sum()\n    c = ((sub['program_norm']=='standard') & (sub['event']==1)).sum()\n    d = ((sub['program_norm']=='standard') & (sub['event']==0)).sum()\n    return a,b,c,d\n\na,b,c,d = table_counts(df)\nor_crude = (a*d)/(b*c)\n\nsites = sorted(df['site'].unique())\nnum=0.0; den=0.0\nvar_num=0.0\nP_sum=0.0; Q_sum=0.0\nR_sum=0.0; S_sum=0.0\nsum_a=0; sum_E=0.0; sum_V=0.0\n\nfor s in sites:\n    sub = df[df['site']==s]\n    a_i,b_i,c_i,d_i = table_counts(sub)\n    n_i = a_i+b_i+c_i+d_i\n    if n_i==0:\n        continue\n    num += a_i*d_i/n_i\n    den += b_i*c_i/n_i\n    # RBG variance components\n    P_i = (a_i+d_i)/n_i\n    Q_i = (b_i+c_i)/n_i\n    R_i = a_i*d_i/n_i\n    S_i = b_i*c_i/n_i\n    P_sum += P_i*R_i\n    Q_sum += (P_i*S_i + Q_i*R_i)\n    R_sum += R_i\n    S_sum += Q_i*S_i\n    # for chi2: hypergeometric\n    n1_i = a_i+b_i  # exposed total\n    n0_i = c_i+d_i  # unexposed total\n    m1_i = a_i+c_i  # event total\n    m0_i = b_i+d_i\n    E_i = n1_i*m1_i/n_i\n    V_i = n1_i*n0_i*m1_i*m0_i/(n_i**2*(n_i-1)) if n_i>1 else 0\n    sum_a += a_i\n    sum_E += E_i\n    sum_V += V_i\n\nor_mh = num/den\n\n# RBG variance of ln(OR_MH)\nvar_ln_or_mh = (P_sum/(2*R_sum**2)) + (Q_sum/(2*R_sum*S_sum)) + (S_sum/(2*S_sum**2))\nse_ln = np.sqrt(var_ln_or_mh)\nci_low = np.exp(np.log(or_mh) - 1.96*se_ln)\nci_high = np.exp(np.log(or_mh) + 1.96*se_ln)\n\nchi2 = (abs(sum_a - sum_E) - 0.5)**2 / sum_V\np_val = 1 - stats.chi2.cdf(chi2, df=1)\n\n# site1 OR\nsub1 = df[df['site']==1]\na1,b1,c1,d1 = table_counts(sub1)\nor_site1 = (a1*d1)/(b1*c1)\n\nresult = {\n 'n_total': int(n_total),\n 'n_exposed': int(n_exposed),\n 'or_crude': float(or_crude),\n 'or_mh': float(or_mh),\n 'or_mh_ci_low': float(ci_low),\n 'or_mh_ci_high': float(ci_high),\n 'mh_chi2': float(chi2),\n 'mh_p': float(p_val),\n 'or_site1': float(or_site1)\n}\nimport json\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 1,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

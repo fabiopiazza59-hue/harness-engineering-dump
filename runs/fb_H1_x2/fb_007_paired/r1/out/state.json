@@ -1,0 +1,59 @@
+{
+  "task_id": "fb_007_paired",
+  "step": 4,
+  "started_at": 1788732001.915721,
+  "plan": "1. Load data.csv. 2. Drop exact duplicate rows (all columns identical), keep first. 3. Replace -999 with NaN across all columns. 4. Filter age between 18 and 80 inclusive. 5. Drop rows with missing math_score or math_score_post. 6. n_pairs = count of remaining rows. 7. mean_first = mean(math_score), mean_second = mean(math_score_post). 8. diff = math_score_post - math_score; mean_change = mean(diff); sd_change = sample SD (ddof=1) of diff. 9. paired t-test (scipy.stats.ttest_rel) two-sided -> t_stat, p_value. 10. cohens_dz = mean_change/sd_change. 11. pct_change = diff/math_score*100 per subject; mean_pct_change = mean of that. 12. Print all as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_pairs\": 223, \"mean_first\": 65.10448430493273, \"mean_second\": 68.35291479820629, \"mean_change\": 3.248430493273543, \"sd_change\": 6.525900217723114, \"t_stat\": 7.433367098484354, \"p_value\": 2.27318766"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_pairs": 223,
+    "mean_first": 65.10448430493273,
+    "mean_second": 68.35291479820629,
+    "mean_change": 3.248430493273543,
+    "sd_change": 6.525900217723114,
+    "t_stat": 7.433367098484354,
+    "p_value": 2.2731876609542747e-12,
+    "cohens_dz": 0.4977750785173543,
+    "mean_pct_change": 5.3254985544727775
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_pairs": 223,
+        "mean_first": 65.10448430493273,
+        "mean_second": 68.35291479820629,
+        "mean_change": 3.248430493273543,
+        "sd_change": 6.525900217723114,
+        "t_stat": 7.433367098484354,
+        "p_value": 2.2731876609542747e-12,
+        "cohens_dz": 0.4977750785173543,
+        "mean_pct_change": 5.3254985544727775
+      }
+    }
+  ],
+  "best_claims": {
+    "n_pairs": 223,
+    "mean_first": 65.10448430493273,
+    "mean_second": 68.35291479820629,
+    "mean_change": 3.248430493273543,
+    "sd_change": 6.525900217723114,
+    "t_stat": 7.433367098484354,
+    "p_value": 2.2731876609542747e-12,
+    "cohens_dz": 0.4977750785173543,
+    "mean_pct_change": 5.3254985544727775
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\ndf = df.drop_duplicates(keep='first')\ndf = df.replace(-999, np.nan)\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df.dropna(subset=['math_score','math_score_post'])\n\nn_pairs = len(df)\nmean_first = df['math_score'].mean()\nmean_second = df['math_score_post'].mean()\ndiff = df['math_score_post'] - df['math_score']\nmean_change = diff.mean()\nsd_change = diff.std(ddof=1)\nt_stat, p_value = stats.ttest_rel(df['math_score_post'], df['math_score'])\ncohens_dz = mean_change/sd_change\npct_change = diff/df['math_score']*100\nmean_pct_change = pct_change.mean()\n\nresult = {\n 'n_pairs': n_pairs,\n 'mean_first': mean_first,\n 'mean_second': mean_second,\n 'mean_change': mean_change,\n 'sd_change': sd_change,\n 't_stat': t_stat,\n 'p_value': p_value,\n 'cohens_dz': cohens_dz,\n 'mean_pct_change': mean_pct_change\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

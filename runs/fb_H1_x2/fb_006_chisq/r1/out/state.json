@@ -1,0 +1,56 @@
+{
+  "task_id": "fb_006_chisq",
+  "step": 4,
+  "started_at": 1788731981.2684755,
+  "plan": "1. Load data.csv. 2. Apply exclusion: keep only age between 18 and 80 inclusive. 3. Apply exclusion: drop rows with missing biomass (complete-case). 4. Group by treatment (fertilised vs unfertilised). 5. Compute n and event counts/proportions per group. 6. Compute risk ratio = prop_fertilised/prop_unfertilised. 7. Run Pearson chi-square test of independence (no continuity correction) on 2x2 contingency table of treatment x event. 8. Output all claim values as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_unfertilised\": 163, \"n_fertilised\": 135, \"events_fertilised\": 94, \"prop_unfertilised\": 0.4294478527607362, \"prop_fertilised\": 0.6962962962962963, \"risk_ratio\": 1.6213756613756614, \"chi2_stat\": 21."
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_unfertilised": 163,
+    "n_fertilised": 135,
+    "events_fertilised": 94,
+    "prop_unfertilised": 0.4294478527607362,
+    "prop_fertilised": 0.6962962962962963,
+    "risk_ratio": 1.6213756613756614,
+    "chi2_stat": 21.248013742781275,
+    "p_value": 4.035283100798139e-06
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_unfertilised": 163,
+        "n_fertilised": 135,
+        "events_fertilised": 94,
+        "prop_unfertilised": 0.4294478527607362,
+        "prop_fertilised": 0.6962962962962963,
+        "risk_ratio": 1.6213756613756614,
+        "chi2_stat": 21.248013742781275,
+        "p_value": 4.035283100798139e-06
+      }
+    }
+  ],
+  "best_claims": {
+    "n_unfertilised": 163,
+    "n_fertilised": 135,
+    "events_fertilised": 94,
+    "prop_unfertilised": 0.4294478527607362,
+    "prop_fertilised": 0.6962962962962963,
+    "risk_ratio": 1.6213756613756614,
+    "chi2_stat": 21.248013742781275,
+    "p_value": 4.035283100798139e-06
+  },
+  "best_analysis": "import pandas as pd\nfrom scipy.stats import chi2_contingency\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df[df['biomass'].notna()]\n\ngrp = df.groupby('treatment')\nn_unfert = int((df['treatment']=='unfertilised').sum())\nn_fert = int((df['treatment']=='fertilised').sum())\nevents_fert = int(df.loc[df['treatment']=='fertilised','event'].sum())\nevents_unfert = int(df.loc[df['treatment']=='unfertilised','event'].sum())\nprop_unfert = events_unfert/n_unfert\nprop_fert = events_fert/n_fert\nrisk_ratio = prop_fert/prop_unfert\n\ntable = pd.crosstab(df['treatment'], df['event'])\nchi2, p, dof, exp = chi2_contingency(table, correction=False)\n\nresult = {\n 'n_unfertilised': n_unfert,\n 'n_fertilised': n_fert,\n 'events_fertilised': events_fert,\n 'prop_unfertilised': prop_unfert,\n 'prop_fertilised': prop_fert,\n 'risk_ratio': risk_ratio,\n 'chi2_stat': chi2,\n 'p_value': p\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

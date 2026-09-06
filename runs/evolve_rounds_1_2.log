@@ -1,3 +1,6 @@
 === round 1: lineage head 68f903e4, feedback signal from fb_H0_x3 ===
 feedback packet built (4 failed runs) at /home/user/harness-engineering-dump/evolve/worktrees/cand_1
 creator finished: 42 turns, 404.5s, $2.5431245
+H1: feedback 1.0 (H0 0.9167, band 0.1909) -> within noise band; held-out recorded (hidden from creator)
+=== round 2: lineage head 158b5158, feedback signal from fb_H1_x2 ===
+feedback packet built (0 failed runs) at /home/user/harness-engineering-dump/evolve/worktrees/cand_2

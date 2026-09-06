@@ -1,0 +1,78 @@
+[1/32] ho_001_ttest r1: score=1.0 raw=1.0 prov=True 26.7s
+[2/32] ho_001_ttest r0: score=1.0 raw=1.0 prov=True 26.9s
+[3/32] ho_002_ols r0: score=1.0 raw=1.0 prov=True 29.2s
+[4/32] ho_003_correlation r0: score=1.0 raw=1.0 prov=True 23.2s
+[5/32] ho_003_correlation r1: score=1.0 raw=1.0 prov=True 23.3s
+[6/32] ho_002_ols r1: score=1.0 raw=1.0 prov=True 26.8s
+[7/32] ho_004_logistic r0: score=1.0 raw=1.0 prov=True 25.9s
+[8/32] ho_005_anova r0: score=1.0 raw=1.0 prov=True 28.0s
+[9/32] ho_004_logistic r1: score=1.0 raw=1.0 prov=True 32.3s
+[10/32] ho_005_anova r1: score=1.0 raw=1.0 prov=True 27.1s
+[11/32] ho_006_chisq r0: score=1.0 raw=1.0 prov=True 24.1s
+[12/32] ho_006_chisq r1: score=1.0 raw=1.0 prov=True 22.8s
+[13/32] ho_007_multi_bh r0: score=1.0 raw=1.0 prov=True 26.7s
+[14/32] ho_007_multi_bh r1: score=1.0 raw=1.0 prov=True 28.0s
+[15/32] ho_008_mannwhitney r0: score=1.0 raw=1.0 prov=True 25.6s
+[16/32] ho_008_mannwhitney r1: score=1.0 raw=1.0 prov=True 25.5s
+[17/32] ho_009_cox r1: score=1.0 raw=1.0 prov=True 43.7s
+[18/32] ho_010_ols_interaction r0: score=1.0 raw=1.0 prov=True 24.8s
+[19/32] ho_009_cox r0: score=1.0 raw=1.0 prov=True 58.6s
+[20/32] ho_010_ols_interaction r1: score=1.0 raw=1.0 prov=True 28.3s
+[21/32] ho_011_paired r0: score=1.0 raw=1.0 prov=True 28.5s
+[22/32] ho_011_paired r1: score=1.0 raw=1.0 prov=True 26.3s
+[23/32] ho_012_mh_stratified r0: score=1.0 raw=1.0 prov=True 32.8s
+[24/32] ho_012_mh_stratified r1: score=0.7778 raw=0.7778 prov=True 34.3s
+[25/32] ho_013_multi_bh r0: score=1.0 raw=1.0 prov=True 28.4s
+[26/32] ho_013_multi_bh r1: score=1.0 raw=1.0 prov=True 26.7s
+[27/32] ho_014_mannwhitney r0: score=1.0 raw=1.0 prov=True 25.5s
+[28/32] ho_014_mannwhitney r1: score=1.0 raw=1.0 prov=True 26.1s
+[29/32] ho_016_ols_interaction r0: score=1.0 raw=1.0 prov=True 25.6s
+[30/32] ho_015_cox r0: score=1.0 raw=1.0 prov=True 40.7s
+[31/32] ho_015_cox r1: score=1.0 raw=1.0 prov=True 41.7s
+[32/32] ho_016_ols_interaction r1: score=1.0 raw=1.0 prov=True 24.0s
+{
+  "run_id": "ho_H1_x2",
+  "split": "heldout",
+  "label": "H1 heldout",
+  "harness_dir": "evolve/worktrees/cand_1/harness",
+  "harness_commit": "158b515",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 16,
+  "repeats": 2,
+  "mean_score": 0.9931,
+  "mean_raw_accuracy": 0.9931,
+  "provenance_rate": 1.0,
+  "timeouts": 0,
+  "total_cost_usd": 2.853,
+  "total_llm_calls": 134,
+  "mean_output_tokens": 1638.1,
+  "wall_s": 334.3,
+  "finished_at": "2026-09-06 22:09:24"
+}
+  ho_001_ttest                 score=1.000 raw=1.000 prov=1.00
+  ho_002_ols                   score=1.000 raw=1.000 prov=1.00
+  ho_003_correlation           score=1.000 raw=1.000 prov=1.00
+  ho_004_logistic              score=1.000 raw=1.000 prov=1.00
+  ho_005_anova                 score=1.000 raw=1.000 prov=1.00
+  ho_006_chisq                 score=1.000 raw=1.000 prov=1.00
+  ho_007_multi_bh              score=1.000 raw=1.000 prov=1.00
+  ho_008_mannwhitney           score=1.000 raw=1.000 prov=1.00
+  ho_009_cox                   score=1.000 raw=1.000 prov=1.00
+  ho_010_ols_interaction       score=1.000 raw=1.000 prov=1.00
+  ho_011_paired                score=1.000 raw=1.000 prov=1.00
+  ho_012_mh_stratified         score=0.889 raw=0.889 prov=1.00
+  ho_013_multi_bh              score=1.000 raw=1.000 prov=1.00
+  ho_014_mannwhitney           score=1.000 raw=1.000 prov=1.00
+  ho_015_cox                   score=1.000 raw=1.000 prov=1.00
+  ho_016_ols_interaction       score=1.000 raw=1.000 prov=1.00
+

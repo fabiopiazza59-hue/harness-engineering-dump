@@ -1,0 +1,59 @@
+{
+  "task_id": "fb_005_anova",
+  "step": 4,
+  "started_at": 1788731973.334948,
+  "plan": "1. Load data.csv. 2. Exclude participants with age <18 or >80. 3. Exclude rows with missing rt_ms. 4. Compute overall mean and sample SD (n-1) of rt_ms on remaining data; remove rows where rt_ms is more than 3 SD from mean (outliers). 5. On resulting analysis sample, compute tertile cutpoints (1st and 2nd tertile, i.e. 33.33% and 66.67% quantiles) of baseline. 6. Assign group: low if baseline <= cut1, middle if cut1 < baseline <= cut2, high if baseline > cut2 (values equal to cutpoint go to lower group). 7. Compute n and mean rt_ms per group. 8. Run one-way ANOVA (scipy.stats.f_oneway) on rt_ms across 3 groups; get F and p. 9. Compute eta squared = SS_between/SS_total. 10. Print all as JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_low\": 62, \"mean_low\": 629.7161290322582, \"n_middle\": 62, \"mean_middle\": 698.2838709677418, \"n_high\": 62, \"mean_high\": 752.6741935483872, \"f_stat\": 42.334380123965964, \"p_value\": 7.746157286596403e"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_low": 62,
+    "mean_low": 629.7161290322582,
+    "n_middle": 62,
+    "mean_middle": 698.2838709677418,
+    "n_high": 62,
+    "mean_high": 752.6741935483872,
+    "f_stat": 42.334380123965964,
+    "p_value": 7.746157286596403e-16,
+    "eta_squared": 0.3163191706402577
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_low": 62,
+        "mean_low": 629.7161290322582,
+        "n_middle": 62,
+        "mean_middle": 698.2838709677418,
+        "n_high": 62,
+        "mean_high": 752.6741935483872,
+        "f_stat": 42.334380123965964,
+        "p_value": 7.746157286596403e-16,
+        "eta_squared": 0.3163191706402577
+      }
+    }
+  ],
+  "best_claims": {
+    "n_low": 62,
+    "mean_low": 629.7161290322582,
+    "n_middle": 62,
+    "mean_middle": 698.2838709677418,
+    "n_high": 62,
+    "mean_high": 752.6741935483872,
+    "f_stat": 42.334380123965964,
+    "p_value": 7.746157286596403e-16,
+    "eta_squared": 0.3163191706402577
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18) & (df['age']<=80)]\ndf = df[df['rt_ms'].notna()]\n\nmean_rt = df['rt_ms'].mean()\nsd_rt = df['rt_ms'].std(ddof=1)\nlow_b = mean_rt - 3*sd_rt\nhigh_b = mean_rt + 3*sd_rt\ndf = df[(df['rt_ms']>=low_b) & (df['rt_ms']<=high_b)]\n\ncut1, cut2 = df['baseline'].quantile([1/3, 2/3])\n\ndef assign(x):\n    if x <= cut1:\n        return 'low'\n    elif x <= cut2:\n        return 'middle'\n    else:\n        return 'high'\n\ndf['group'] = df['baseline'].apply(assign)\n\ngroups = {g: df[df['group']==g]['rt_ms'] for g in ['low','middle','high']}\n\nn_low = len(groups['low'])\nn_middle = len(groups['middle'])\nn_high = len(groups['high'])\nmean_low = groups['low'].mean()\nmean_middle = groups['middle'].mean()\nmean_high = groups['high'].mean()\n\nf_stat, p_value = stats.f_oneway(groups['low'], groups['middle'], groups['high'])\n\ngrand_mean = df['rt_ms'].mean()\nss_total = ((df['rt_ms']-grand_mean)**2).sum()\nss_between = sum(len(v)*(v.mean()-grand_mean)**2 for v in groups.values())\neta_squared = ss_between/ss_total\n\nresult = {\n 'n_low': n_low,\n 'mean_low': mean_low,\n 'n_middle': n_middle,\n 'mean_middle': mean_middle,\n 'n_high': n_high,\n 'mean_high': mean_high,\n 'f_stat': f_stat,\n 'p_value': p_value,\n 'eta_squared': eta_squared\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "repairs": 2,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}
