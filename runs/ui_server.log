@@ -31,3 +31,18 @@ INFO:     127.0.0.1:55780 - "GET /api/job/ui_20260906_213930_up_e2e_glucose_tria
 INFO:     127.0.0.1:55780 - "GET /api/result/ui_20260906_213930_up_e2e_glucose_trial/up_e2e_glucose_trial_a6fdb7 HTTP/1.1" 200 OK
 INFO:     127.0.0.1:55780 - "GET /api/task/uploads/up_e2e_glucose_trial_a6fdb7 HTTP/1.1" 200 OK
 INFO:     127.0.0.1:55780 - "POST /api/judge/ui_20260906_213930_up_e2e_glucose_trial/uploads/up_e2e_glucose_trial_a6fdb7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50102 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50102 - "GET /api/tasks HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50102 - "GET /api/versions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50102 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50102 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50102 - "GET /api/tasks HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/versions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "POST /api/run/uploads/up_e2e_glucose_trial_a6fdb7?harness_ref=current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/job/ui_20260906_221031_up_e2e_glucose_trial HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/job/ui_20260906_221031_up_e2e_glucose_trial HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/job/ui_20260906_221031_up_e2e_glucose_trial HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/job/ui_20260906_221031_up_e2e_glucose_trial HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/job/ui_20260906_221031_up_e2e_glucose_trial HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/job/ui_20260906_221031_up_e2e_glucose_trial HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "GET /api/job/ui_20260906_221031_up_e2e_glucose_trial HTTP/1.1" 200 OK
