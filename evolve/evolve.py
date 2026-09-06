@@ -232,16 +232,16 @@ def run_creator(wt: Path, round_no: int, cfg: dict) -> dict:
     allowed = ["Read", "Edit", "Write", "Glob", "Grep", "Bash(python3:*)", "Bash(python:*)", "Bash(ls:*)", "Bash(cat:*)",
                "Bash(head:*)", "Bash(tail:*)", "Bash(grep:*)", "Bash(wc:*)", "Bash(diff:*)", "Bash(git diff:*)", "Bash(git status:*)",
                "Bash(sed -n:*)", "Bash(find:*)"]
+    # the prompt goes on stdin: --allowedTools is variadic and would swallow a trailing positional argument
     cmd = ["claude", "-p", "--no-session-persistence", "--output-format", "json", "--model", cfg.get("model", "opus"),
-           "--max-turns", str(cfg.get("max_turns", 90)), "--append-system-prompt", CONTRACT,
-           "--allowedTools", *allowed, prompt]
+           "--max-turns", str(cfg.get("max_turns", 90)), "--append-system-prompt", CONTRACT, "--allowedTools", *allowed]
     if cfg.get("effort"):
-        cmd[cmd.index("--model"):cmd.index("--model")] = ["--effort", str(cfg["effort"])]
+        cmd += ["--effort", str(cfg["effort"])]
     env = dict(os.environ)
     env.pop("CLAUDECODE", None)
     t0 = time.time()
     try:
-        proc = subprocess.run(cmd, cwd=str(wt), capture_output=True, text=True, timeout=int(cfg.get("timeout_s", 3000)), env=env)
+        proc = subprocess.run(cmd, cwd=str(wt), input=prompt, capture_output=True, text=True, timeout=int(cfg.get("timeout_s", 3000)), env=env)
         raw = proc.stdout
     except subprocess.TimeoutExpired as e:
         raw = e.stdout.decode() if isinstance(e.stdout, bytes) else (e.stdout or "")
@@ -336,10 +336,10 @@ def main():
     ap.add_argument("--creator", default="configs/creator.json")
     a = ap.parse_args()
     cfg = json.loads((ROOT / a.creator).read_text())
-    h0_commit = git("rev-parse", "H0")
+    h0_commit = git("rev-parse", "H0^{commit}")
     record_h0(h0_commit, a.baseline_run, a.baseline_heldout_run if (ROOT / "runs" / a.baseline_heldout_run / "summary.json").exists() else None)
     rows = ledger_rows()
-    head = a.start and git("rev-parse", a.start) or rows[-1]["commit"]
+    head = a.start and git("rev-parse", a.start + "^{commit}") or rows[-1]["commit"]
     last_fb_run = rows[-1].get("feedback_run", a.baseline_run)
     band_val = next(r for r in rows if r["version"] == "H0")["noise_band"]
     h0_fb = next(r for r in rows if r["version"] == "H0")["feedback_mean"]
