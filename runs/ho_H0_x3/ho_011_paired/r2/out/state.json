@@ -1,0 +1,58 @@
+{
+  "task_id": "ho_011_paired",
+  "step": 6,
+  "started_at": 1788731087.4455516,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_pairs\": 220, \"mean_first\": 135.8531818181818, \"mean_second\": 130.93227272727273, \"mean_change\": -4.920909090909091, \"sd_change\": 5.726244881972723, \"w_stat\": 2586.5, \"p_value\": 1.1566676054660006e"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_pairs": 220,
+    "mean_first": 135.8531818181818,
+    "mean_second": 130.93227272727273,
+    "mean_change": -4.920909090909091,
+    "sd_change": 5.726244881972723,
+    "w_stat": 2586.5,
+    "p_value": 1.1566676054660006e-23,
+    "cohens_dz": -0.8593605743968481,
+    "mean_pct_change": -3.651735354605737
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_pairs": 220,
+        "mean_first": 135.8531818181818,
+        "mean_second": 130.93227272727273,
+        "mean_change": -4.920909090909091,
+        "sd_change": 5.726244881972723,
+        "w_stat": 2586.5,
+        "p_value": 1.1566676054660006e-23,
+        "cohens_dz": -0.8593605743968481,
+        "mean_pct_change": -3.651735354605737
+      }
+    }
+  ],
+  "best_claims": {
+    "n_pairs": 220,
+    "mean_first": 135.8531818181818,
+    "mean_second": 130.93227272727273,
+    "mean_change": -4.920909090909091,
+    "sd_change": 5.726244881972723,
+    "w_stat": 2586.5,
+    "p_value": 1.1566676054660006e-23,
+    "cohens_dz": -0.8593605743968481,
+    "mean_pct_change": -3.651735354605737
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df.drop_duplicates(keep='first')\ndf = df.replace(-999, np.nan)\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df.dropna(subset=['sbp_12w','sbp_12w_post'])\n\nn_pairs = len(df)\nfirst = df['sbp_12w'].values\nsecond = df['sbp_12w_post'].values\nmean_first = first.mean()\nmean_second = second.mean()\ndiff = second - first\nmean_change = diff.mean()\nsd_change = diff.std(ddof=1)\n\nres = stats.wilcoxon(diff, zero_method='wilcox', correction=False, mode='approx')\nw_stat = res.statistic\np_value = res.pvalue\n\ncohens_dz = mean_change / sd_change\n\npct_change = (second-first)/first*100\nmean_pct_change = pct_change.mean()\n\nout = {\n 'n_pairs': int(n_pairs),\n 'mean_first': float(mean_first),\n 'mean_second': float(mean_second),\n 'mean_change': float(mean_change),\n 'sd_change': float(sd_change),\n 'w_stat': float(w_stat),\n 'p_value': float(p_value),\n 'cohens_dz': float(cohens_dz),\n 'mean_pct_change': float(mean_pct_change)\n}\nprint(json.dumps(out))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

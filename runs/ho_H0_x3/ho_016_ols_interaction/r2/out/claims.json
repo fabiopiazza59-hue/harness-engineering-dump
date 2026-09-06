@@ -1,0 +1,38 @@
+{
+  "claims": [
+    {
+      "id": "n_model",
+      "value": 267
+    },
+    {
+      "id": "coef_exposure",
+      "value": 58.933827069898044
+    },
+    {
+      "id": "se_exposure_hc3",
+      "value": 12.178018270109126
+    },
+    {
+      "id": "p_exposure",
+      "value": 1.3025723427478084e-06
+    },
+    {
+      "id": "coef_interaction",
+      "value": 3.7537144062959786
+    },
+    {
+      "id": "p_interaction",
+      "value": 0.00026096888724641277
+    },
+    {
+      "id": "coef_bmi",
+      "value": -0.15650972961204868
+    },
+    {
+      "id": "r_squared",
+      "value": 0.1897569008172647
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

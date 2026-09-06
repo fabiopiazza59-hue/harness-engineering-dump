@@ -56,6 +56,12 @@ def summary_of(run_id: str) -> dict:
     return json.loads((ROOT / "runs" / run_id / "summary.json").read_text())
 
 
+def fail_rate(run_id: str) -> float:
+    """Fraction of runs that ended with no claims submitted (crash-type failures)."""
+    rows = load_results(run_id)
+    return round(sum(1 for r in rows if not r.get("submitted_any")) / max(1, len(rows)), 4)
+
+
 def noise_band(run_id: str) -> dict:
     sys.path.insert(0, str(ROOT / "evalkit"))
     from noise import band, repeat_means
@@ -70,10 +76,10 @@ def ledger_rows() -> list[dict]:
 
 def visible_ledger_md(rows: list[dict]) -> str:
     lines = ["# Evolution ledger (creator view: feedback set only)", "",
-             "| version | commit | feedback mean | noise band (H0) | feedback per-task | hypothesis | outcome |", "|---|---|---|---|---|---|---|"]
+             "| version | commit | feedback mean | noise band (H0) | run fail-rate | feedback per-task | hypothesis | outcome |", "|---|---|---|---|---|---|---|---|"]
     for r in rows:
         pt = " ".join(f"{k.split('_')[0]}{k.split('_')[1]}={v['score']:.2f}" for k, v in sorted(r.get("feedback_per_task", {}).items()))
-        lines.append(f"| {r['version']} | {r['commit'][:8]} | {r.get('feedback_mean', 'n/a')} | {r.get('noise_band', 'n/a')} | {pt} | "
+        lines.append(f"| {r['version']} | {r['commit'][:8]} | {r.get('feedback_mean', 'n/a')} | {r.get('noise_band', 'n/a')} | {r.get('feedback_fail_rate', 'n/a')} | {pt} | "
                      f"{r.get('hypothesis', '')[:120].replace('|', '/')} | {r.get('outcome', '')} |")
     return "\n".join(lines) + "\n"
 
@@ -286,14 +292,14 @@ def append_ledger(row: dict):
     rows = ledger_rows()
     lines = ["# Evolution ledger (full, controller view)", "",
              "Held-out columns are never shown to the creator. A candidate 'improves' only when its feedback gain exceeds the H0 noise band.", "",
-             "| version | commit | round | feedback mean | Δ vs H0 | noise band | held-out mean | Δ vs H0 | diff (+/-) | verdict | hypothesis |",
-             "|---|---|---|---|---|---|---|---|---|---|---|"]
+             "| version | commit | round | feedback mean | Δ vs H0 | noise band | fb fail-rate | held-out mean | Δ vs H0 | ho fail-rate | diff (+/-) | verdict | hypothesis |",
+             "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     h0 = next((r for r in rows if r["version"] == "H0"), None)
     for r in rows:
         dfb = round(r["feedback_mean"] - h0["feedback_mean"], 4) if h0 and r.get("feedback_mean") is not None else ""
         dho = round(r["heldout_mean"] - h0["heldout_mean"], 4) if h0 and r.get("heldout_mean") is not None and h0.get("heldout_mean") is not None else ""
-        lines.append(f"| {r['version']} | {r['commit'][:8]} | {r.get('round', '')} | {r.get('feedback_mean', '')} | {dfb} | {r.get('noise_band', '')} | "
-                     f"{r.get('heldout_mean', '')} | {dho} | {r.get('diff', '')} | {r.get('outcome', '')} | {r.get('hypothesis', '')[:160].replace('|', '/')} |")
+        lines.append(f"| {r['version']} | {r['commit'][:8]} | {r.get('round', '')} | {r.get('feedback_mean', '')} | {dfb} | {r.get('noise_band', '')} | {r.get('feedback_fail_rate', '')} | "
+                     f"{r.get('heldout_mean', '')} | {dho} | {r.get('heldout_fail_rate', '')} | {r.get('diff', '')} | {r.get('outcome', '')} | {r.get('hypothesis', '')[:160].replace('|', '/')} |")
     lines += ["", "## Round notes", ""]
     for r in rows:
         if r.get("round"):
@@ -313,11 +319,11 @@ def record_h0(commit: str, fb_run: str, ho_run: str | None):
     fb = summary_of(fb_run)
     nb = noise_band(fb_run)
     row = {"version": "H0", "commit": commit, "round": 0, "feedback_run": fb_run, "feedback_mean": fb["mean_score"],
-           "feedback_per_task": fb["per_task"], "noise_band": nb["band"], "noise": nb, "hypothesis": "baseline from Creation",
+           "feedback_per_task": fb["per_task"], "feedback_fail_rate": fail_rate(fb_run), "noise_band": nb["band"], "noise": nb, "hypothesis": "baseline from Creation",
            "outcome": "baseline", "diff": "", "created_at": time.strftime("%Y-%m-%d %H:%M:%S")}
     if ho_run:
         ho = summary_of(ho_run)
-        row.update({"heldout_run": ho_run, "heldout_mean": ho["mean_score"], "heldout_per_task": ho["per_task"]})
+        row.update({"heldout_run": ho_run, "heldout_mean": ho["mean_score"], "heldout_per_task": ho["per_task"], "heldout_fail_rate": fail_rate(ho_run)})
     append_ledger(row)
 
 
@@ -385,11 +391,11 @@ def main():
         row["smoke"] = {"mean_score": smoke["mean_score"], "timeouts": smoke["timeouts"]}
         fb = eval_split(FEEDBACK_SPLIT, wt / "harness", f"fb_{version}_x{cfg.get('feedback_repeats', 2)}", int(cfg.get("feedback_repeats", 2)), f"{version} feedback")
         row.update({"feedback_run": fb["run_id"], "feedback_mean": fb["mean_score"], "feedback_per_task": fb["per_task"],
-                    "feedback_cost_usd": fb["total_cost_usd"], "noise_band": band_val})
+                    "feedback_fail_rate": fail_rate(fb["run_id"]), "feedback_cost_usd": fb["total_cost_usd"], "noise_band": band_val})
         gain = fb["mean_score"] - h0_fb
         row["outcome"] = ("improved beyond noise band" if gain > band_val else "regressed beyond noise band" if gain < -band_val else "within noise band")
         ho = eval_split(HELDOUT_SPLIT, wt / "harness", f"ho_{version}_x{cfg.get('heldout_repeats', 2)}", int(cfg.get("heldout_repeats", 2)), f"{version} heldout")
-        row.update({"heldout_run": ho["run_id"], "heldout_mean": ho["mean_score"], "heldout_per_task": ho["per_task"]})
+        row.update({"heldout_run": ho["run_id"], "heldout_mean": ho["mean_score"], "heldout_per_task": ho["per_task"], "heldout_fail_rate": fail_rate(ho["run_id"])})
         append_ledger(row)
         rows = ledger_rows()
         head, last_fb_run = commit, fb["run_id"]

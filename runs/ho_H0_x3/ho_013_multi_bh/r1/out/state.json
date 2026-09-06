@@ -1,0 +1,62 @@
+{
+  "task_id": "ho_013_multi_bh",
+  "step": 5,
+  "started_at": 1788731161.4403121,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 1,
+      "summary": "^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type int64 is not JSON serializable"
+    },
+    {
+      "name": "scratch_02.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_analysed\": 271, \"r_biomarker_1\": 0.4870554486770405, \"p_adj_biomarker_1\": 9.00945713597151e-17, \"r_biomarker_3\": -0.2868025042169946, \"p_adj_biomarker_3\": 4.7416054188900804e-06, \"p_adj_biomarker_"
+    }
+  ],
+  "failures": [
+    "scratch_01.py: exit 1: ^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type int64 is not JSON serializable"
+  ],
+  "draft_claims": {
+    "n_analysed": 271,
+    "r_biomarker_1": 0.4870554486770405,
+    "p_adj_biomarker_1": 9.00945713597151e-17,
+    "r_biomarker_3": -0.2868025042169946,
+    "p_adj_biomarker_3": 4.7416054188900804e-06,
+    "p_adj_biomarker_5": 0.0043453904915685525,
+    "n_significant_adj": 4,
+    "r_strongest": 0.4870554486770405
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_analysed": 271,
+        "r_biomarker_1": 0.4870554486770405,
+        "p_adj_biomarker_1": 9.00945713597151e-17,
+        "r_biomarker_3": -0.2868025042169946,
+        "p_adj_biomarker_3": 4.7416054188900804e-06,
+        "p_adj_biomarker_5": 0.0043453904915685525,
+        "n_significant_adj": 4,
+        "r_strongest": 0.4870554486770405
+      }
+    }
+  ],
+  "best_claims": {
+    "n_analysed": 271,
+    "r_biomarker_1": 0.4870554486770405,
+    "p_adj_biomarker_1": 9.00945713597151e-17,
+    "r_biomarker_3": -0.2868025042169946,
+    "p_adj_biomarker_3": 4.7416054188900804e-06,
+    "p_adj_biomarker_5": 0.0043453904915685525,
+    "n_significant_adj": 4,
+    "r_strongest": 0.4870554486770405
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nfrom statsmodels.stats.multitest import multipletests\nimport json\n\ndf = pd.read_csv('data.csv')\n\ndf = df.drop_duplicates(keep='first')\ndf = df.replace(-999, np.nan)\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\nbiomarkers = [f'biomarker_{i}' for i in range(1,7)]\ncols = ['sbp_12w'] + biomarkers\ndf = df.dropna(subset=cols)\n\nn_analysed = int(len(df))\n\nrs = {}\nps = {}\nfor b in biomarkers:\n    r, p = stats.pearsonr(df[b], df['sbp_12w'])\n    rs[b] = float(r)\n    ps[b] = float(p)\n\npvals = [ps[b] for b in biomarkers]\nrej, p_adj, _, _ = multipletests(pvals, method='fdr_bh')\np_adj_dict = dict(zip(biomarkers, [float(x) for x in p_adj]))\n\nn_sig = int(sum(p_adj_dict[b] < 0.05 for b in biomarkers))\n\nstrongest_b = max(biomarkers, key=lambda b: abs(rs[b]))\nr_strongest = rs[strongest_b]\n\nout = {\n    'n_analysed': n_analysed,\n    'r_biomarker_1': rs['biomarker_1'],\n    'p_adj_biomarker_1': p_adj_dict['biomarker_1'],\n    'r_biomarker_3': rs['biomarker_3'],\n    'p_adj_biomarker_3': p_adj_dict['biomarker_3'],\n    'p_adj_biomarker_5': p_adj_dict['biomarker_5'],\n    'n_significant_adj': n_sig,\n    'r_strongest': r_strongest\n}\nprint(json.dumps(out))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

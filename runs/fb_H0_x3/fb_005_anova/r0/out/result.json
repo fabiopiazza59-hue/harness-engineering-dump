@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_005_anova",
+  "reason": "verification gate passed",
+  "steps": 5,
+  "claims_written": true,
+  "slots_filled": 9,
+  "slots_total": 9,
+  "gate_passed": true,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 20082,
+    "output_tokens": 2229,
+    "cache_read_tokens": 3243,
+    "cost_usd": 0.1032
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

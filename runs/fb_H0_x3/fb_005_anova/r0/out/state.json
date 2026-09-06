@@ -1,16 +1,58 @@
 {
   "task_id": "fb_005_anova",
-  "step": 2,
+  "step": 5,
   "started_at": 1788730841.8600657,
   "plan": "",
-  "scripts": [],
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_low\": 62, \"mean_low\": 629.7161290322582, \"n_middle\": 62, \"mean_middle\": 698.2838709677418, \"n_high\": 62, \"mean_high\": 752.6741935483872, \"f_stat\": 42.334380123965964, \"p_value\": 7.746157286596403e"
+    }
+  ],
   "failures": [],
-  "draft_claims": {},
-  "submissions": [],
-  "best_claims": {},
-  "best_analysis": "",
+  "draft_claims": {
+    "n_low": 62,
+    "mean_low": 629.7161290322582,
+    "n_middle": 62,
+    "mean_middle": 698.2838709677418,
+    "n_high": 62,
+    "mean_high": 752.6741935483872,
+    "f_stat": 42.334380123965964,
+    "p_value": 7.746157286596403e-16,
+    "eta_squared": 0.3163191706402577
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_low": 62,
+        "mean_low": 629.7161290322582,
+        "n_middle": 62,
+        "mean_middle": 698.2838709677418,
+        "n_high": 62,
+        "mean_high": 752.6741935483872,
+        "f_stat": 42.334380123965964,
+        "p_value": 7.746157286596403e-16,
+        "eta_squared": 0.3163191706402577
+      }
+    }
+  ],
+  "best_claims": {
+    "n_low": 62,
+    "mean_low": 629.7161290322582,
+    "n_middle": 62,
+    "mean_middle": 698.2838709677418,
+    "n_high": 62,
+    "mean_high": 752.6741935483872,
+    "f_stat": 42.334380123965964,
+    "p_value": 7.746157286596403e-16,
+    "eta_squared": 0.3163191706402577
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df[df['rt_ms'].notna()]\n\nmean_rt = df['rt_ms'].mean()\nsd_rt = df['rt_ms'].std(ddof=1)\nlow_b, high_b = mean_rt-3*sd_rt, mean_rt+3*sd_rt\ndf = df[(df['rt_ms']>=low_b)&(df['rt_ms']<=high_b)]\n\ncut1, cut2 = df['baseline'].quantile([1/3, 2/3])\n\ndef grp(x):\n    if x <= cut1:\n        return 'low'\n    elif x <= cut2:\n        return 'middle'\n    else:\n        return 'high'\n\ndf['group'] = df['baseline'].apply(grp)\n\ng_low = df[df['group']=='low']['rt_ms']\ng_mid = df[df['group']=='middle']['rt_ms']\ng_high = df[df['group']=='high']['rt_ms']\n\nf_stat, p_value = stats.f_oneway(g_low, g_mid, g_high)\n\ngrand_mean = df['rt_ms'].mean()\nss_between = sum(len(g)*(g.mean()-grand_mean)**2 for g in [g_low,g_mid,g_high])\nss_total = ((df['rt_ms']-grand_mean)**2).sum()\neta_sq = ss_between/ss_total\n\nresult = {\n 'n_low': len(g_low),\n 'mean_low': g_low.mean(),\n 'n_middle': len(g_mid),\n 'mean_middle': g_mid.mean(),\n 'n_high': len(g_high),\n 'mean_high': g_high.mean(),\n 'f_stat': f_stat,\n 'p_value': p_value,\n 'eta_squared': eta_sq\n}\nprint(json.dumps(result))\n",
   "parse_failures": 0,
   "compactions": 0,
-  "finished": false,
-  "status": "running"
+  "finished": true,
+  "status": "success"
 }

@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "task_id": "ho_010_ols_interaction",
+  "reason": "too many unparseable replies",
+  "steps": 5,
+  "claims_written": false,
+  "slots_filled": 0,
+  "slots_total": 8,
+  "gate_passed": false,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 22608,
+    "output_tokens": 2366,
+    "cache_read_tokens": 3349,
+    "cost_usd": 0.1147
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "run_id": "fb_H0_x3",
+  "split": "feedback",
+  "label": "H0 baseline, feedback x3 (6 easy + 10 hard)",
+  "harness_dir": "harness",
+  "harness_commit": "68f903e",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 16,
+  "repeats": 3,
+  "mean_score": 0.9167,
+  "mean_raw_accuracy": 0.9167,
+  "provenance_rate": 0.917,
+  "timeouts": 0,
+  "total_cost_usd": 5.141,
+  "total_llm_calls": 227,
+  "mean_output_tokens": 2085.3,
+  "wall_s": 621.5,
+  "per_task": {
+    "fb_001_ttest": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_002_ols": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_003_correlation": {
+      "score": 0.6667,
+      "raw_accuracy": 0.6667,
+      "provenance_rate": 0.667,
+      "n": 3
+    },
+    "fb_004_logistic": {
+      "score": 0.6667,
+      "raw_accuracy": 0.6667,
+      "provenance_rate": 0.667,
+      "n": 3
+    },
+    "fb_005_anova": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_006_chisq": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_007_paired": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_008_cox": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_009_mh_stratified": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_010_multi_bh": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_011_ols_interaction": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_012_mannwhitney": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_013_paired": {
+      "score": 0.6667,
+      "raw_accuracy": 0.6667,
+      "provenance_rate": 0.667,
+      "n": 3
+    },
+    "fb_014_cox": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_015_mh_stratified": {
+      "score": 1.0,
+      "raw_accuracy": 1.0,
+      "provenance_rate": 1.0,
+      "n": 3
+    },
+    "fb_016_multi_bh": {
+      "score": 0.6667,
+      "raw_accuracy": 0.6667,
+      "provenance_rate": 0.667,
+      "n": 3
+    }
+  },
+  "finished_at": "2026-09-06 21:48:52"
+}

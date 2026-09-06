@@ -1,0 +1,42 @@
+{
+  "claims": [
+    {
+      "id": "n_pairs",
+      "value": 223
+    },
+    {
+      "id": "mean_first",
+      "value": 65.10448430493273
+    },
+    {
+      "id": "mean_second",
+      "value": 68.35291479820629
+    },
+    {
+      "id": "mean_change",
+      "value": 3.248430493273543
+    },
+    {
+      "id": "sd_change",
+      "value": 6.525900217723114
+    },
+    {
+      "id": "t_stat",
+      "value": 7.433367098484354
+    },
+    {
+      "id": "p_value",
+      "value": 2.2731876609542747e-12
+    },
+    {
+      "id": "cohens_dz",
+      "value": 0.4977750785173543
+    },
+    {
+      "id": "mean_pct_change",
+      "value": 5.3254985544727775
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

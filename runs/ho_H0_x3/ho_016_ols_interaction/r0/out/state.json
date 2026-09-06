@@ -1,0 +1,55 @@
+{
+  "task_id": "ho_016_ols_interaction",
+  "step": 4,
+  "started_at": 1788731269.5959742,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 267, \"coef_exposure\": 58.933827069898044, \"se_exposure_hc3\": 12.178018270109126, \"p_exposure\": 1.3025723427478084e-06, \"coef_interaction\": 3.7537144062959786, \"p_interaction\": 0.0002609688"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 267,
+    "coef_exposure": 58.933827069898044,
+    "se_exposure_hc3": 12.178018270109126,
+    "p_exposure": 1.3025723427478084e-06,
+    "coef_interaction": 3.7537144062959786,
+    "p_interaction": 0.00026096888724641277,
+    "coef_bmi": -0.15650972961204868,
+    "r_squared": 0.1897569008172647
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 267,
+        "coef_exposure": 58.933827069898044,
+        "se_exposure_hc3": 12.178018270109126,
+        "p_exposure": 1.3025723427478084e-06,
+        "coef_interaction": 3.7537144062959786,
+        "p_interaction": 0.00026096888724641277,
+        "coef_bmi": -0.15650972961204868,
+        "r_squared": 0.1897569008172647
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 267,
+    "coef_exposure": 58.933827069898044,
+    "se_exposure_hc3": 12.178018270109126,
+    "p_exposure": 1.3025723427478084e-06,
+    "coef_interaction": 3.7537144062959786,
+    "p_interaction": 0.00026096888724641277,
+    "coef_bmi": -0.15650972961204868,
+    "r_squared": 0.1897569008172647
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.formula.api as smf, json\n\ndf = pd.read_csv('data.csv')\n\n# remove exact duplicates keep first\ndf = df.drop_duplicates(keep='first')\n\n# replace -999 with NaN across all numeric columns\ndf = df.replace(-999, np.nan)\ndf = df.replace(-999.0, np.nan)\n\n# age 18-80 inclusive\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# drop missing savings, weight_kg, height_cm\ndf = df.dropna(subset=['savings','weight_kg','height_cm'])\n\n# BMI\ndf['bmi'] = df['weight_kg']/(df['height_cm']/100)**2\ndf = df[(df['bmi']>=15) & (df['bmi']<=50)]\n\n# center age\nage_mean = df['age'].mean()\ndf['age_c'] = df['age'] - age_mean\n\n# program coding\ndf['program_bin'] = df['program'].str.strip().str.lower().map({'coaching':1,'waitlist':0})\n\nmodel = smf.ols('savings ~ program_bin * age_c + bmi', data=df).fit(cov_type='HC3')\n\nresult = {\n 'n_model': int(model.nobs),\n 'coef_exposure': model.params['program_bin'],\n 'se_exposure_hc3': model.bse['program_bin'],\n 'p_exposure': model.pvalues['program_bin'],\n 'coef_interaction': model.params['program_bin:age_c'],\n 'p_interaction': model.pvalues['program_bin:age_c'],\n 'coef_bmi': model.params['bmi'],\n 'r_squared': model.rsquared\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

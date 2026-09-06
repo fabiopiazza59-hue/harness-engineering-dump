@@ -1,0 +1,58 @@
+{
+  "task_id": "ho_012_mh_stratified",
+  "step": 4,
+  "started_at": 1788731135.070706,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_total\": 445, \"n_exposed\": 223, \"or_crude\": 2.472192513368984, \"or_mh\": 2.500371270751079, \"or_mh_ci_low\": 1.7048032099066308, \"or_mh_ci_high\": 3.6672012671420107, \"mh_chi2\": 21.432116859945058, \"m"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_total": 445,
+    "n_exposed": 223,
+    "or_crude": 2.472192513368984,
+    "or_mh": 2.500371270751079,
+    "or_mh_ci_low": 1.7048032099066308,
+    "or_mh_ci_high": 3.6672012671420107,
+    "mh_chi2": 21.432116859945058,
+    "mh_p": 3.665790509810307e-06,
+    "or_site1": 1.6607142857142858
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_total": 445,
+        "n_exposed": 223,
+        "or_crude": 2.472192513368984,
+        "or_mh": 2.500371270751079,
+        "or_mh_ci_low": 1.7048032099066308,
+        "or_mh_ci_high": 3.6672012671420107,
+        "mh_chi2": 21.432116859945058,
+        "mh_p": 3.665790509810307e-06,
+        "or_site1": 1.6607142857142858
+      }
+    }
+  ],
+  "best_claims": {
+    "n_total": 445,
+    "n_exposed": 223,
+    "or_crude": 2.472192513368984,
+    "or_mh": 2.500371270751079,
+    "or_mh_ci_low": 1.7048032099066308,
+    "or_mh_ci_high": 3.6672012671420107,
+    "mh_chi2": 21.432116859945058,
+    "mh_p": 3.665790509810307e-06,
+    "or_site1": 1.6607142857142858
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# remove exact duplicates, keep first\ndf = df.drop_duplicates(keep='first')\n\n# replace -999 sentinel with NaN across all columns\ndf = df.replace(-999, np.nan)\n\n# age filter 18-80 inclusive\ndf = df[(df['age']>=18) & (df['age']<=80)]\n\n# normalize program\ndf['program'] = df['program'].astype(str).str.strip().str.lower()\n\n# keep only standard/tutoring\ndf = df[df['program'].isin(['standard','tutoring'])]\n\n# drop missing event/site\ndf = df.dropna(subset=['event','site','program'])\n\nn_total = len(df)\nn_exposed = int((df['program']=='tutoring').sum())\n\ndf['exposed'] = (df['program']=='tutoring').astype(int)\n\n# crude 2x2: exposed/unexposed by event/noevent\na = int(((df.exposed==1) & (df.event==1)).sum())\nb = int(((df.exposed==1) & (df.event==0)).sum())\nc = int(((df.exposed==0) & (df.event==1)).sum())\nd = int(((df.exposed==0) & (df.event==0)).sum())\nor_crude = (a*d)/(b*c)\n\nsites = sorted(df['site'].unique())\nnum=0; den=0\nvar_num=0.0\nP_sum=0.0\nQ_sum=0.0\nR_sum=0.0\nS_sum=0.0\nchi_num_sum=0.0\nOi_sum=0.0\nEi_sum=0.0\nVi_sum=0.0\n\nstratum_data=[]\nfor s in sites:\n    sub = df[df.site==s]\n    ai = int(((sub.exposed==1)&(sub.event==1)).sum())\n    bi = int(((sub.exposed==1)&(sub.event==0)).sum())\n    ci = int(((sub.exposed==0)&(sub.event==1)).sum())\n    di = int(((sub.exposed==0)&(sub.event==0)).sum())\n    ni = ai+bi+ci+di\n    stratum_data.append((ai,bi,ci,di,ni))\n\nfor (ai,bi,ci,di,ni) in stratum_data:\n    if ni==0: continue\n    num += (ai*di)/ni\n    den += (bi*ci)/ni\n\nor_mh = num/den\n\n# Robins-Breslow-Greenland variance for ln(OR_MH)\nP_sum=0.0\nQ_sum=0.0\nR_sum=0.0\nS_sum=0.0\nfor (ai,bi,ci,di,ni) in stratum_data:\n    if ni==0: continue\n    Ri = (ai*di)/ni\n    Si = (bi*ci)/ni\n    Pi = (ai+di)/ni\n    Qi = (bi+ci)/ni\n    P_sum += Pi*Ri\n    Q_sum += (Pi*Si + Qi*Ri)\n    S_sum += Qi*Si\n    R_sum += Ri\n\nsum_R = sum((ai*di)/ni for (ai,bi,ci,di,ni) in stratum_data if ni>0)\nsum_S = sum((bi*ci)/ni for (ai,bi,ci,di,ni) in stratum_data if ni>0)\n\nvar_ln_or = (P_sum/(2*sum_R**2)) + (Q_sum/(2*sum_R*sum_S)) + (S_sum/(2*sum_S**2))\nse_ln_or = np.sqrt(var_ln_or)\nln_or_mh = np.log(or_mh)\nci_low = np.exp(ln_or_mh - 1.96*se_ln_or)\nci_high = np.exp(ln_or_mh + 1.96*se_ln_or)\n\n# MH chi-square with continuity correction\nsum_ai = sum(ai for (ai,bi,ci,di,ni) in stratum_data)\nsum_Eai = 0.0\nsum_Vi = 0.0\nfor (ai,bi,ci,di,ni) in stratum_data:\n    if ni==0: continue\n    n1i = ai+bi\n    n0i = ci+di\n    m1i = ai+ci\n    m0i = bi+di\n    Ei = n1i*m1i/ni\n    Vi = (n1i*n0i*m1i*m0i)/(ni**2*(ni-1)) if ni>1 else 0\n    sum_Eai += Ei\n    sum_Vi += Vi\n\nnumerator = (abs(sum_ai - sum_Eai) - 0.5)**2\nmh_chi2 = numerator/sum_Vi\nmh_p = 1 - stats.chi2.cdf(mh_chi2, df=1)\n\n# site 1 OR\nsub1 = df[df.site==1]\na1 = int(((sub1.exposed==1)&(sub1.event==1)).sum())\nb1 = int(((sub1.exposed==1)&(sub1.event==0)).sum())\nc1 = int(((sub1.exposed==0)&(sub1.event==1)).sum())\nd1 = int(((sub1.exposed==0)&(sub1.event==0)).sum())\nor_site1 = (a1*d1)/(b1*c1)\n\nresult = {\n    'n_total': n_total,\n    'n_exposed': n_exposed,\n    'or_crude': or_crude,\n    'or_mh': or_mh,\n    'or_mh_ci_low': ci_low,\n    'or_mh_ci_high': ci_high,\n    'mh_chi2': mh_chi2,\n    'mh_p': mh_p,\n    'or_site1': or_site1\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

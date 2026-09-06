@@ -1,0 +1,38 @@
+{
+  "claims": [
+    {
+      "id": "n_analysed",
+      "value": 344
+    },
+    {
+      "id": "r_biomarker_1",
+      "value": 0.45475731660164226
+    },
+    {
+      "id": "p_adj_biomarker_1",
+      "value": 3.501982336685895e-18
+    },
+    {
+      "id": "r_biomarker_3",
+      "value": -0.32473696432571536
+    },
+    {
+      "id": "p_adj_biomarker_3",
+      "value": 2.0612362737474602e-09
+    },
+    {
+      "id": "p_adj_biomarker_5",
+      "value": 0.09436758685942506
+    },
+    {
+      "id": "n_significant_adj",
+      "value": 2
+    },
+    {
+      "id": "r_strongest",
+      "value": 0.45475731660164226
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

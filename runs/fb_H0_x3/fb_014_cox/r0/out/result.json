@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_014_cox",
+  "reason": "verification gate passed",
+  "steps": 7,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 7,
+    "input_tokens": 48840,
+    "output_tokens": 4598,
+    "cache_read_tokens": 0,
+    "cost_usd": 0.2413
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

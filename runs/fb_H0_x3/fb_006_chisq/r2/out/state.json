@@ -1,0 +1,55 @@
+{
+  "task_id": "fb_006_chisq",
+  "step": 4,
+  "started_at": 1788730891.3706007,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_unfertilised\": 163, \"n_fertilised\": 135, \"events_fertilised\": 94, \"prop_unfertilised\": 0.4294478527607362, \"prop_fertilised\": 0.6962962962962963, \"risk_ratio\": 1.6213756613756614, \"chi2_stat\": 21."
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_unfertilised": 163,
+    "n_fertilised": 135,
+    "events_fertilised": 94,
+    "prop_unfertilised": 0.4294478527607362,
+    "prop_fertilised": 0.6962962962962963,
+    "risk_ratio": 1.6213756613756614,
+    "chi2_stat": 21.248013742781275,
+    "p_value": 4.035283100798139e-06
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_unfertilised": 163,
+        "n_fertilised": 135,
+        "events_fertilised": 94,
+        "prop_unfertilised": 0.4294478527607362,
+        "prop_fertilised": 0.6962962962962963,
+        "risk_ratio": 1.6213756613756614,
+        "chi2_stat": 21.248013742781275,
+        "p_value": 4.035283100798139e-06
+      }
+    }
+  ],
+  "best_claims": {
+    "n_unfertilised": 163,
+    "n_fertilised": 135,
+    "events_fertilised": 94,
+    "prop_unfertilised": 0.4294478527607362,
+    "prop_fertilised": 0.6962962962962963,
+    "risk_ratio": 1.6213756613756614,
+    "chi2_stat": 21.248013742781275,
+    "p_value": 4.035283100798139e-06
+  },
+  "best_analysis": "import pandas as pd\nfrom scipy.stats import chi2_contingency\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df[df['biomass'].notna()]\n\ng_un = df[df['treatment']=='unfertilised']\ng_fe = df[df['treatment']=='fertilised']\n\nn_un = len(g_un)\nn_fe = len(g_fe)\nev_un = g_un['event'].sum()\nev_fe = g_fe['event'].sum()\nprop_un = ev_un/n_un\nprop_fe = ev_fe/n_fe\nrr = prop_fe/prop_un\n\ntable = pd.crosstab(df['treatment'], df['event'])\nchi2, p, dof, exp = chi2_contingency(table, correction=False)\n\nresult = {\n 'n_unfertilised': n_un,\n 'n_fertilised': n_fe,\n 'events_fertilised': int(ev_fe),\n 'prop_unfertilised': prop_un,\n 'prop_fertilised': prop_fe,\n 'risk_ratio': rr,\n 'chi2_stat': chi2,\n 'p_value': p\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

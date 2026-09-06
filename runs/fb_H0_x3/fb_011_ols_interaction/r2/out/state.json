@@ -1,0 +1,60 @@
+{
+  "task_id": "fb_011_ols_interaction",
+  "step": 5,
+  "started_at": 1788731090.6464546,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 385, \"coef_exposure\": 4.693808312857147, \"se_exposure_hc3\": 1.1304348887854232, \"p_exposure\": 3.29273185640977e-05, \"coef_interaction\": -0.14538262430726343, \"p_interaction\": 0.08094265137"
+    },
+    {
+      "name": "scratch_02.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 385, \"coef_exposure\": 4.693808312857147, \"se_exposure_hc3\": 1.1304348887854232, \"p_exposure\": 3.29273185640977e-05, \"coef_interaction\": -0.14538262430726343, \"p_interaction\": 0.08094265137"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_model": 385,
+    "coef_exposure": 4.693808312857147,
+    "se_exposure_hc3": 1.1304348887854232,
+    "p_exposure": 3.29273185640977e-05,
+    "coef_interaction": -0.14538262430726343,
+    "p_interaction": 0.08094265137155644,
+    "coef_bmi": 0.8105836063805563,
+    "r_squared": 0.16174519891102634
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 385,
+        "coef_exposure": 4.693808312857147,
+        "se_exposure_hc3": 1.1304348887854232,
+        "p_exposure": 3.29273185640977e-05,
+        "coef_interaction": -0.14538262430726343,
+        "p_interaction": 0.08094265137155644,
+        "coef_bmi": 0.8105836063805563,
+        "r_squared": 0.16174519891102634
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 385,
+    "coef_exposure": 4.693808312857147,
+    "se_exposure_hc3": 1.1304348887854232,
+    "p_exposure": 3.29273185640977e-05,
+    "coef_interaction": -0.14538262430726343,
+    "p_interaction": 0.08094265137155644,
+    "coef_bmi": 0.8105836063805563,
+    "r_squared": 0.16174519891102634
+  },
+  "best_analysis": "import pandas as pd, numpy as np, statsmodels.api as sm, json\n\ndf = pd.read_csv('data.csv')\n\n# 1. remove exact duplicates, keep first\ndf = df.drop_duplicates(keep='first')\n\n# 2. replace -999 with NaN across all numeric columns\ndf = df.replace(-999, np.nan)\n\n# 3. age filter 18-80 inclusive\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n\n# 4. drop missing math_score, weight_kg, height_cm\ndf = df.dropna(subset=['math_score','weight_kg','height_cm'])\n\n# 5. compute BMI, exclude implausible\ndf['bmi'] = df['weight_kg'] / (df['height_cm']/100)**2\ndf = df[(df['bmi'] >= 15) & (df['bmi'] <= 50)]\n\n# 6. code exposure\ndf['exposure'] = (df['program'] == 'tutoring').astype(int)\n\n# 7. center age\nage_mean = df['age'].mean()\ndf['age_c'] = df['age'] - age_mean\ndf['inter'] = df['exposure'] * df['age_c']\n\nX = df[['exposure','age_c','inter','bmi']]\nX = sm.add_constant(X)\ny = df['math_score']\n\nmodel = sm.OLS(y, X).fit(cov_type='HC3')\n\nresult = {\n 'n_model': int(model.nobs),\n 'coef_exposure': model.params['exposure'],\n 'se_exposure_hc3': model.bse['exposure'],\n 'p_exposure': model.pvalues['exposure'],\n 'coef_interaction': model.params['inter'],\n 'p_interaction': model.pvalues['inter'],\n 'coef_bmi': model.params['bmi'],\n 'r_squared': model.rsquared,\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

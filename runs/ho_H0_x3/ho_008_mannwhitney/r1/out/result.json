@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "task_id": "ho_008_mannwhitney",
+  "reason": "too many unparseable replies",
+  "steps": 5,
+  "claims_written": false,
+  "slots_filled": 0,
+  "slots_total": 8,
+  "gate_passed": false,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 22526,
+    "output_tokens": 2355,
+    "cache_read_tokens": 3369,
+    "cost_usd": 0.1143
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "claims": [
+    {
+      "id": "n_unfertilised",
+      "value": 163
+    },
+    {
+      "id": "n_fertilised",
+      "value": 135
+    },
+    {
+      "id": "events_fertilised",
+      "value": 94
+    },
+    {
+      "id": "prop_unfertilised",
+      "value": 0.4294478527607362
+    },
+    {
+      "id": "prop_fertilised",
+      "value": 0.6962962962962963
+    },
+    {
+      "id": "risk_ratio",
+      "value": 1.6213756613756614
+    },
+    {
+      "id": "chi2_stat",
+      "value": 21.248013742781275
+    },
+    {
+      "id": "p_value",
+      "value": 4.035283100798139e-06
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

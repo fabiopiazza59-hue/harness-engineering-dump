@@ -1,0 +1,16 @@
+{
+  "task_id": "ho_014_mannwhitney",
+  "step": 5,
+  "started_at": 1788731192.7169185,
+  "plan": "",
+  "scripts": [],
+  "failures": [],
+  "draft_claims": {},
+  "submissions": [],
+  "best_claims": {},
+  "best_analysis": "",
+  "parse_failures": 3,
+  "compactions": 0,
+  "finished": true,
+  "status": "failed"
+}

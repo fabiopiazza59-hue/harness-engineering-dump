@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "task_id": "fb_013_paired",
+  "reason": "too many unparseable replies",
+  "steps": 5,
+  "claims_written": false,
+  "slots_filled": 0,
+  "slots_total": 9,
+  "gate_passed": false,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 22209,
+    "output_tokens": 2441,
+    "cache_read_tokens": 3234,
+    "cost_usd": 0.1139
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

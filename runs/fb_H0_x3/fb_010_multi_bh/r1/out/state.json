@@ -1,0 +1,62 @@
+{
+  "task_id": "fb_010_multi_bh",
+  "step": 7,
+  "started_at": 1788731038.2793963,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py",
+      "returncode": 1,
+      "summary": "_010_multi_bh/r1/out/scripts/scratch_01.py\", line 1, in <module>\n    exec(open('analysis.py').read())\n         ^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'analysis.py'"
+    },
+    {
+      "name": "scratch_02.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_analysed\": 291, \"r_biomarker_1\": 0.49773822919901184, \"p_adj_biomarker_1\": 7.633757228942548e-19, \"r_biomarker_3\": -0.3178142009352862, \"p_adj_biomarker_3\": 8.943947025490594e-08, \"p_adj_biomarker"
+    }
+  ],
+  "failures": [
+    "scratch_01.py: exit 1: _010_multi_bh/r1/out/scripts/scratch_01.py\", line 1, in <module>\n    exec(open('analysis.py').read())\n         ^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'analysis.py'"
+  ],
+  "draft_claims": {
+    "n_analysed": 291,
+    "r_biomarker_1": 0.49773822919901184,
+    "p_adj_biomarker_1": 7.633757228942548e-19,
+    "r_biomarker_3": -0.3178142009352862,
+    "p_adj_biomarker_3": 8.943947025490594e-08,
+    "p_adj_biomarker_5": 0.0004143740270936808,
+    "n_significant_adj": 3,
+    "r_strongest": 0.49773822919901184
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_analysed": 291,
+        "r_biomarker_1": 0.49773822919901184,
+        "p_adj_biomarker_1": 7.633757228942548e-19,
+        "r_biomarker_3": -0.3178142009352862,
+        "p_adj_biomarker_3": 8.943947025490594e-08,
+        "p_adj_biomarker_5": 0.0004143740270936808,
+        "n_significant_adj": 3,
+        "r_strongest": 0.49773822919901184
+      }
+    }
+  ],
+  "best_claims": {
+    "n_analysed": 291,
+    "r_biomarker_1": 0.49773822919901184,
+    "p_adj_biomarker_1": 7.633757228942548e-19,
+    "r_biomarker_3": -0.3178142009352862,
+    "p_adj_biomarker_3": 8.943947025490594e-08,
+    "p_adj_biomarker_5": 0.0004143740270936808,
+    "n_significant_adj": 3,
+    "r_strongest": 0.49773822919901184
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\nfrom statsmodels.stats.multitest import multipletests\n\ndf = pd.read_csv('data.csv')\ndf = df.drop_duplicates(keep='first')\ndf = df.replace(-999, np.nan)\ndf = df[(df['age']>=18)&(df['age']<=80)]\ncols = ['savings','biomarker_1','biomarker_2','biomarker_3','biomarker_4','biomarker_5','biomarker_6']\ndf = df.dropna(subset=cols)\nn = len(df)\n\nbiomarkers = ['biomarker_1','biomarker_2','biomarker_3','biomarker_4','biomarker_5','biomarker_6']\nrs = []\nps = []\nfor b in biomarkers:\n    r,p = stats.pearsonr(df[b], df['savings'])\n    rs.append(r)\n    ps.append(p)\n\nreject, p_adj, _, _ = multipletests(ps, method='fdr_bh')\n\nresults = dict(zip(biomarkers, zip(rs, p_adj)))\nn_sig = int(sum(p<0.05 for p in p_adj))\nabs_rs = [abs(r) for r in rs]\nidx_max = abs_rs.index(max(abs_rs))\nr_strongest = rs[idx_max]\n\nout = {\n 'n_analysed': n,\n 'r_biomarker_1': results['biomarker_1'][0],\n 'p_adj_biomarker_1': results['biomarker_1'][1],\n 'r_biomarker_3': results['biomarker_3'][0],\n 'p_adj_biomarker_3': results['biomarker_3'][1],\n 'p_adj_biomarker_5': results['biomarker_5'][1],\n 'n_significant_adj': n_sig,\n 'r_strongest': r_strongest\n}\nprint(json.dumps(out))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

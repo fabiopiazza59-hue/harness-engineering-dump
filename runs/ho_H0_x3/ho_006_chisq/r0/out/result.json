@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "task_id": "ho_006_chisq",
+  "reason": "too many unparseable replies",
+  "steps": 5,
+  "claims_written": false,
+  "slots_filled": 0,
+  "slots_total": 8,
+  "gate_passed": false,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 17774,
+    "output_tokens": 1851,
+    "cache_read_tokens": 3027,
+    "cost_usd": 0.0902
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

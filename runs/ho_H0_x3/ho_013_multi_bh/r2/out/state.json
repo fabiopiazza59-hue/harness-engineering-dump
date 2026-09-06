@@ -1,0 +1,55 @@
+{
+  "task_id": "ho_013_multi_bh",
+  "step": 4,
+  "started_at": 1788731176.834969,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_analysed\": 271, \"r_biomarker_1\": 0.4870554486770405, \"p_adj_biomarker_1\": 9.009457135971509e-17, \"r_biomarker_3\": -0.2868025042169946, \"p_adj_biomarker_3\": 4.7416054188900804e-06, \"p_adj_biomarker"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_analysed": 271,
+    "r_biomarker_1": 0.4870554486770405,
+    "p_adj_biomarker_1": 9.009457135971509e-17,
+    "r_biomarker_3": -0.2868025042169946,
+    "p_adj_biomarker_3": 4.7416054188900804e-06,
+    "p_adj_biomarker_5": 0.004345390491568552,
+    "n_significant_adj": 4,
+    "r_strongest": 0.4870554486770405
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_analysed": 271,
+        "r_biomarker_1": 0.4870554486770405,
+        "p_adj_biomarker_1": 9.009457135971509e-17,
+        "r_biomarker_3": -0.2868025042169946,
+        "p_adj_biomarker_3": 4.7416054188900804e-06,
+        "p_adj_biomarker_5": 0.004345390491568552,
+        "n_significant_adj": 4,
+        "r_strongest": 0.4870554486770405
+      }
+    }
+  ],
+  "best_claims": {
+    "n_analysed": 271,
+    "r_biomarker_1": 0.4870554486770405,
+    "p_adj_biomarker_1": 9.009457135971509e-17,
+    "r_biomarker_3": -0.2868025042169946,
+    "p_adj_biomarker_3": 4.7416054188900804e-06,
+    "p_adj_biomarker_5": 0.004345390491568552,
+    "n_significant_adj": 4,
+    "r_strongest": 0.4870554486770405
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# remove exact duplicate rows, keep first\ndf = df.drop_duplicates(keep='first')\n\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\ndf = df.replace(-999.0, np.nan)\n\n# age filter\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n\nbiomarkers = [f'biomarker_{i}' for i in range(1,7)]\ncols_needed = ['sbp_12w'] + biomarkers\ndf = df.dropna(subset=cols_needed)\n\nn_analysed = len(df)\n\nresults = {}\npvals = []\nrs = []\nfor b in biomarkers:\n    r, p = stats.pearsonr(df[b], df['sbp_12w'])\n    rs.append(r)\n    pvals.append(p)\n\n# BH adjustment\nfrom scipy.stats import rankdata\nm = len(pvals)\norder = np.argsort(pvals)\nranked_p = np.array(pvals)[order]\nadj = np.empty(m)\nprev = 1.0\nfor i in range(m-1, -1, -1):\n    rank = i+1\n    val = ranked_p[i] * m / rank\n    prev = min(prev, val)\n    adj[i] = prev\nadj_p = np.empty(m)\nadj_p[order] = adj\n\nfor i,b in enumerate(biomarkers):\n    results[b] = {'r': rs[i], 'p': pvals[i], 'p_adj': adj_p[i]}\n\nn_sig = int(np.sum(adj_p < 0.05))\n\nidx_strongest = np.argmax(np.abs(rs))\nr_strongest = rs[idx_strongest]\n\nout = {\n    'n_analysed': n_analysed,\n    'r_biomarker_1': rs[0],\n    'p_adj_biomarker_1': adj_p[0],\n    'r_biomarker_3': rs[2],\n    'p_adj_biomarker_3': adj_p[2],\n    'p_adj_biomarker_5': adj_p[4],\n    'n_significant_adj': n_sig,\n    'r_strongest': r_strongest\n}\nprint(json.dumps(out))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

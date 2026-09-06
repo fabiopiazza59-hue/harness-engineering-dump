@@ -1,0 +1,58 @@
+{
+  "task_id": "fb_013_paired",
+  "step": 5,
+  "started_at": 1788731152.0067842,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_pairs\": 211, \"mean_first\": 696.0663507109005, \"mean_second\": 672.70663507109, \"mean_change\": -23.359715639810425, \"sd_change\": 44.462565719883344, \"t_stat\": -7.631576452194591, \"p_value\": 7.993812"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_pairs": 211,
+    "mean_first": 696.0663507109005,
+    "mean_second": 672.70663507109,
+    "mean_change": -23.359715639810425,
+    "sd_change": 44.462565719883344,
+    "t_stat": -7.631576452194591,
+    "p_value": 7.993812952704315e-13,
+    "cohens_dz": -0.5253793896415682,
+    "mean_pct_change": -3.3764048264017363
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_pairs": 211,
+        "mean_first": 696.0663507109005,
+        "mean_second": 672.70663507109,
+        "mean_change": -23.359715639810425,
+        "sd_change": 44.462565719883344,
+        "t_stat": -7.631576452194591,
+        "p_value": 7.993812952704315e-13,
+        "cohens_dz": -0.5253793896415682,
+        "mean_pct_change": -3.3764048264017363
+      }
+    }
+  ],
+  "best_claims": {
+    "n_pairs": 211,
+    "mean_first": 696.0663507109005,
+    "mean_second": 672.70663507109,
+    "mean_change": -23.359715639810425,
+    "sd_change": 44.462565719883344,
+    "t_stat": -7.631576452194591,
+    "p_value": 7.993812952704315e-13,
+    "cohens_dz": -0.5253793896415682,
+    "mean_pct_change": -3.3764048264017363
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\n\n# remove exact duplicate rows, keep first\ndf = df.drop_duplicates(keep='first')\n\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\n\n# age filter 18-80 inclusive\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n\n# drop missing rt_ms or rt_ms_post\ndf = df.dropna(subset=['rt_ms', 'rt_ms_post'])\n\nn_pairs = len(df)\nmean_first = df['rt_ms'].mean()\nmean_second = df['rt_ms_post'].mean()\ndiff = df['rt_ms_post'] - df['rt_ms']\nmean_change = diff.mean()\nsd_change = diff.std(ddof=1)\n\nt_stat, p_value = stats.ttest_rel(df['rt_ms_post'], df['rt_ms'])\n\ncohens_dz = mean_change / sd_change\n\npct_change = (df['rt_ms_post'] - df['rt_ms']) / df['rt_ms'] * 100\nmean_pct_change = pct_change.mean()\n\nresult = {\n 'n_pairs': n_pairs,\n 'mean_first': mean_first,\n 'mean_second': mean_second,\n 'mean_change': mean_change,\n 'sd_change': sd_change,\n 't_stat': t_stat,\n 'p_value': p_value,\n 'cohens_dz': cohens_dz,\n 'mean_pct_change': mean_pct_change\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

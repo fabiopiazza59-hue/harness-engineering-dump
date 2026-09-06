@@ -1,0 +1,58 @@
+{
+  "task_id": "fb_007_paired",
+  "step": 5,
+  "started_at": 1788730912.1516361,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_pairs\": 223, \"mean_first\": 65.10448430493273, \"mean_second\": 68.35291479820629, \"mean_change\": 3.248430493273543, \"sd_change\": 6.525900217723114, \"t_stat\": 7.433367098484354, \"p_value\": 2.27318766"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_pairs": 223,
+    "mean_first": 65.10448430493273,
+    "mean_second": 68.35291479820629,
+    "mean_change": 3.248430493273543,
+    "sd_change": 6.525900217723114,
+    "t_stat": 7.433367098484354,
+    "p_value": 2.2731876609542747e-12,
+    "cohens_dz": 0.4977750785173543,
+    "mean_pct_change": 5.3254985544727775
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_pairs": 223,
+        "mean_first": 65.10448430493273,
+        "mean_second": 68.35291479820629,
+        "mean_change": 3.248430493273543,
+        "sd_change": 6.525900217723114,
+        "t_stat": 7.433367098484354,
+        "p_value": 2.2731876609542747e-12,
+        "cohens_dz": 0.4977750785173543,
+        "mean_pct_change": 5.3254985544727775
+      }
+    }
+  ],
+  "best_claims": {
+    "n_pairs": 223,
+    "mean_first": 65.10448430493273,
+    "mean_second": 68.35291479820629,
+    "mean_change": 3.248430493273543,
+    "sd_change": 6.525900217723114,
+    "t_stat": 7.433367098484354,
+    "p_value": 2.2731876609542747e-12,
+    "cohens_dz": 0.4977750785173543,
+    "mean_pct_change": 5.3254985544727775
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n# remove exact duplicates, keep first\ndf = df.drop_duplicates(keep='first')\n# replace -999 with NaN\ndf = df.replace(-999, np.nan)\n# age filter\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n# drop missing math_score, math_score_post\ndf = df.dropna(subset=['math_score', 'math_score_post'])\n\nn_pairs = len(df)\nmean_first = df['math_score'].mean()\nmean_second = df['math_score_post'].mean()\ndiff = df['math_score_post'] - df['math_score']\nmean_change = diff.mean()\nsd_change = diff.std(ddof=1)\nt_stat, p_value = stats.ttest_rel(df['math_score_post'], df['math_score'])\ncohens_dz = mean_change / sd_change\npct_change = (diff / df['math_score']) * 100\nmean_pct_change = pct_change.mean()\n\nresult = {\n 'n_pairs': n_pairs,\n 'mean_first': mean_first,\n 'mean_second': mean_second,\n 'mean_change': mean_change,\n 'sd_change': sd_change,\n 't_stat': t_stat,\n 'p_value': p_value,\n 'cohens_dz': cohens_dz,\n 'mean_pct_change': mean_pct_change\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

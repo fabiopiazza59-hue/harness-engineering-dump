@@ -1,0 +1,55 @@
+{
+  "task_id": "ho_006_chisq",
+  "step": 5,
+  "started_at": 1788730900.1069863,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_control\": 168, \"n_treatment\": 130, \"events_treatment\": 38, \"prop_control\": 0.47619047619047616, \"prop_treatment\": 0.2923076923076923, \"risk_ratio\": 0.6138461538461539, \"chi2_stat\": 10.360877189351"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_control": 168,
+    "n_treatment": 130,
+    "events_treatment": 38,
+    "prop_control": 0.47619047619047616,
+    "prop_treatment": 0.2923076923076923,
+    "risk_ratio": 0.6138461538461539,
+    "chi2_stat": 10.360877189351761,
+    "p_value": 0.0012871402931461772
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_control": 168,
+        "n_treatment": 130,
+        "events_treatment": 38,
+        "prop_control": 0.47619047619047616,
+        "prop_treatment": 0.2923076923076923,
+        "risk_ratio": 0.6138461538461539,
+        "chi2_stat": 10.360877189351761,
+        "p_value": 0.0012871402931461772
+      }
+    }
+  ],
+  "best_claims": {
+    "n_control": 168,
+    "n_treatment": 130,
+    "events_treatment": 38,
+    "prop_control": 0.47619047619047616,
+    "prop_treatment": 0.2923076923076923,
+    "risk_ratio": 0.6138461538461539,
+    "chi2_stat": 10.360877189351761,
+    "p_value": 0.0012871402931461772
+  },
+  "best_analysis": "import pandas as pd\nfrom scipy.stats import chi2_contingency\nimport json\n\ndf = pd.read_csv('data.csv')\ndf = df[(df['age']>=18)&(df['age']<=80)]\ndf = df.dropna(subset=['sbp_12w'])\n\nn_control = (df['arm']=='control').sum()\nn_treatment = (df['arm']=='treatment').sum()\n\nctrl = df[df['arm']=='control']\ntrt = df[df['arm']=='treatment']\n\nevents_treatment = int(trt['event'].sum())\nprop_control = ctrl['event'].mean()\nprop_treatment = trt['event'].mean()\nrisk_ratio = prop_treatment/prop_control\n\ntable = pd.crosstab(df['arm'], df['event'])\nchi2, p, dof, exp = chi2_contingency(table, correction=False)\n\nresult = {\n 'n_control': int(n_control),\n 'n_treatment': int(n_treatment),\n 'events_treatment': events_treatment,\n 'prop_control': prop_control,\n 'prop_treatment': prop_treatment,\n 'risk_ratio': risk_ratio,\n 'chi2_stat': chi2,\n 'p_value': p\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

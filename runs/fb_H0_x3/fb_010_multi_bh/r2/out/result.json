@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_010_multi_bh",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 16195,
+    "output_tokens": 1436,
+    "cache_read_tokens": 3449,
+    "cost_usd": 0.0798
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

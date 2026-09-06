@@ -1,0 +1,55 @@
+{
+  "task_id": "ho_008_mannwhitney",
+  "step": 4,
+  "started_at": 1788730972.200708,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_usual\": 192, \"n_mediterranean\": 202, \"median_usual\": 105.35, \"median_mediterranean\": 96.6, \"median_diff\": -8.75, \"u_stat\": 13059.0, \"p_value\": 2.087096990227714e-08, \"rank_biserial\": 0.32657797029"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_usual": 192,
+    "n_mediterranean": 202,
+    "median_usual": 105.35,
+    "median_mediterranean": 96.6,
+    "median_diff": -8.75,
+    "u_stat": 13059.0,
+    "p_value": 2.087096990227714e-08,
+    "rank_biserial": 0.32657797029702973
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_usual": 192,
+        "n_mediterranean": 202,
+        "median_usual": 105.35,
+        "median_mediterranean": 96.6,
+        "median_diff": -8.75,
+        "u_stat": 13059.0,
+        "p_value": 2.087096990227714e-08,
+        "rank_biserial": 0.32657797029702973
+      }
+    }
+  ],
+  "best_claims": {
+    "n_usual": 192,
+    "n_mediterranean": 202,
+    "median_usual": 105.35,
+    "median_mediterranean": 96.6,
+    "median_diff": -8.75,
+    "u_stat": 13059.0,
+    "p_value": 2.087096990227714e-08,
+    "rank_biserial": 0.32657797029702973
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom scipy.stats import mannwhitneyu\nimport json\n\ndf = pd.read_csv('data.csv')\n# remove exact duplicates\ndf = df.drop_duplicates(keep='first')\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\n# age filter\ndf = df[(df['age']>=18) & (df['age']<=80)]\n# normalize diet\ndf['diet'] = df['diet'].astype(str).str.strip().str.lower()\n# exclude missing glucose_fu\ndf = df[df['glucose_fu'].notna()]\n\nusual = df[df['diet']=='usual']['glucose_fu']\nmed = df[df['diet']=='mediterranean']['glucose_fu']\n\nn_usual = len(usual)\nn_med = len(med)\nmedian_usual = usual.median()\nmedian_med = med.median()\nmedian_diff = median_med - median_usual\n\nres = mannwhitneyu(med, usual, alternative='two-sided', method='asymptotic')\nu_stat = res.statistic\np_value = res.pvalue\nrank_biserial = 1 - 2*u_stat/(n_med*n_usual)\n\nout = {\n 'n_usual': n_usual,\n 'n_mediterranean': n_med,\n 'median_usual': median_usual,\n 'median_mediterranean': median_med,\n 'median_diff': median_diff,\n 'u_stat': u_stat,\n 'p_value': p_value,\n 'rank_biserial': rank_biserial\n}\nprint(json.dumps(out))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_015_cox",
+  "reason": "verification gate passed",
+  "steps": 7,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 7,
+    "input_tokens": 45456,
+    "output_tokens": 5437,
+    "cache_read_tokens": 3262,
+    "cost_usd": 0.2368
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

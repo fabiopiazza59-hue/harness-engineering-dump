@@ -1,0 +1,55 @@
+{
+  "task_id": "fb_012_mannwhitney",
+  "step": 4,
+  "started_at": 1788731122.59642,
+  "plan": "1. Load data.csv. 2. Drop exact duplicate rows (all columns identical), keep first. 3. Replace -999 with NaN across all columns (sentinel missing). 4. Filter age between 18 and 80 inclusive. 5. Normalize program: strip whitespace, lowercase. 6. Drop rows with missing savings. 7. Split into coaching vs waitlist groups. 8. Compute n per group, median per group, median_diff = median_coaching - median_waitlist. 9. Run scipy.stats.mannwhitneyu(coaching, waitlist, alternative='two-sided', use_continuity=True, method='asymptotic') -> U stat for coaching (x=coaching). 10. rank_biserial = 1 - 2*U/(n1*n2) where n1=n_coaching, n2=n_waitlist. 11. Print JSON with all claims.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_waitlist\": 204, \"n_coaching\": 207, \"median_waitlist\": 314.0, \"median_coaching\": 377.9, \"median_diff\": 63.89999999999998, \"u_stat\": 28388.0, \"p_value\": 1.534699155096575e-09, \"rank_biserial\": -0.34"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_waitlist": 204,
+    "n_coaching": 207,
+    "median_waitlist": 314.0,
+    "median_coaching": 377.9,
+    "median_diff": 63.89999999999998,
+    "u_stat": 28388.0,
+    "p_value": 1.534699155096575e-09,
+    "rank_biserial": -0.34451075116036756
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_waitlist": 204,
+        "n_coaching": 207,
+        "median_waitlist": 314.0,
+        "median_coaching": 377.9,
+        "median_diff": 63.89999999999998,
+        "u_stat": 28388.0,
+        "p_value": 1.534699155096575e-09,
+        "rank_biserial": -0.34451075116036756
+      }
+    }
+  ],
+  "best_claims": {
+    "n_waitlist": 204,
+    "n_coaching": 207,
+    "median_waitlist": 314.0,
+    "median_coaching": 377.9,
+    "median_diff": 63.89999999999998,
+    "u_stat": 28388.0,
+    "p_value": 1.534699155096575e-09,
+    "rank_biserial": -0.34451075116036756
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy import stats\n\ndf = pd.read_csv('data.csv')\n\n# drop exact duplicates, keep first\ndf = df.drop_duplicates(keep='first')\n\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\ndf = df.replace(-999.0, np.nan)\n\n# age filter\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n\n# normalize program\ndf['program'] = df['program'].astype(str).str.strip().str.lower()\n\n# drop missing savings\ndf = df.dropna(subset=['savings'])\n\ncoaching = df[df['program']=='coaching']['savings']\nwaitlist = df[df['program']=='waitlist']['savings']\n\nn_coaching = len(coaching)\nn_waitlist = len(waitlist)\nmedian_coaching = float(coaching.median())\nmedian_waitlist = float(waitlist.median())\nmedian_diff = median_coaching - median_waitlist\n\nres = stats.mannwhitneyu(coaching, waitlist, alternative='two-sided', use_continuity=True, method='asymptotic')\nu_stat = float(res.statistic)\np_value = float(res.pvalue)\nrank_biserial = 1 - 2*u_stat/(n_coaching*n_waitlist)\n\nout = {\n 'n_waitlist': n_waitlist,\n 'n_coaching': n_coaching,\n 'median_waitlist': median_waitlist,\n 'median_coaching': median_coaching,\n 'median_diff': median_diff,\n 'u_stat': u_stat,\n 'p_value': p_value,\n 'rank_biserial': rank_biserial\n}\nprint(json.dumps(out))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

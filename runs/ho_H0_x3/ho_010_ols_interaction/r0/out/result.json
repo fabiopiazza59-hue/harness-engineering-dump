@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_010_ols_interaction",
+  "reason": "verification gate passed",
+  "steps": 5,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 26805,
+    "output_tokens": 2263,
+    "cache_read_tokens": 0,
+    "cost_usd": 0.1298
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

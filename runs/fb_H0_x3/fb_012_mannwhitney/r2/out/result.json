@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "fb_012_mannwhitney",
+  "reason": "verification gate passed",
+  "steps": 4,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 4,
+    "input_tokens": 15373,
+    "output_tokens": 1361,
+    "cache_read_tokens": 3254,
+    "cost_usd": 0.0757
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

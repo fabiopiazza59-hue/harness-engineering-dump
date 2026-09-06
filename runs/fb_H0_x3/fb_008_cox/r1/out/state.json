@@ -1,0 +1,67 @@
+{
+  "task_id": "fb_008_cox",
+  "step": 6,
+  "started_at": 1788730945.4968286,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py",
+      "returncode": 1,
+      "summary": " \"/home/user/harness-engineering-dump/runs/fb_H0_x3/fb_008_cox/r1/out/scripts/scratch_01.py\", line 2, in <module>\n    from lifelines import CoxPHFitter\nModuleNotFoundError: No module named 'lifelines'"
+    },
+    {
+      "name": "scratch_02.py",
+      "returncode": 0,
+      "summary": "[0.00217555 0.25137744]"
+    },
+    {
+      "name": "scratch_03.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_model\": 404, \"n_events\": 250, \"median_followup_days\": 285.0, \"hr_exposure\": 1.4768294487428384, \"hr_ci_low\": 1.150940590527385, \"hr_ci_high\": 1.8949937456586565, \"p_exposure\": 0.002175548899268953"
+    }
+  ],
+  "failures": [
+    "scratch_01.py: exit 1:  \"/home/user/harness-engineering-dump/runs/fb_H0_x3/fb_008_cox/r1/out/scripts/scratch_01.py\", line 2, in <module>\n    from lifelines import CoxPHFitter\nModuleNotFoundError: No module named 'lifelines'"
+  ],
+  "draft_claims": {
+    "n_model": 404,
+    "n_events": 250,
+    "median_followup_days": 285.0,
+    "hr_exposure": 1.4768294487428384,
+    "hr_ci_low": 1.150940590527385,
+    "hr_ci_high": 1.8949937456586565,
+    "p_exposure": 0.002175548899268953,
+    "hr_age": 1.006049424889128
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_model": 404,
+        "n_events": 250,
+        "median_followup_days": 285.0,
+        "hr_exposure": 1.4768294487428384,
+        "hr_ci_low": 1.150940590527385,
+        "hr_ci_high": 1.8949937456586565,
+        "p_exposure": 0.002175548899268953,
+        "hr_age": 1.006049424889128
+      }
+    }
+  ],
+  "best_claims": {
+    "n_model": 404,
+    "n_events": 250,
+    "median_followup_days": 285.0,
+    "hr_exposure": 1.4768294487428384,
+    "hr_ci_low": 1.150940590527385,
+    "hr_ci_high": 1.8949937456586565,
+    "p_exposure": 0.002175548899268953,
+    "hr_age": 1.006049424889128
+  },
+  "best_analysis": "import pandas as pd, numpy as np\nfrom statsmodels.duration.hazard_regression import PHReg\nimport json\n\ndef run():\n    df = pd.read_csv('data.csv')\n    df = df.drop_duplicates(keep='first')\n    df = df.replace(-999, np.nan)\n    df = df[(df['age']>=18) & (df['age']<=80)]\n    df['treatment_norm'] = df['treatment'].str.strip().str.lower()\n    df['enrol_date'] = pd.to_datetime(df['enrol_date'])\n    df['last_contact_date'] = pd.to_datetime(df['last_contact_date'])\n    df['followup'] = (df['last_contact_date'] - df['enrol_date']).dt.days\n    df = df[df['followup'] != 0]\n    df['event_cens'] = df['event']\n    mask = df['followup']>730\n    df.loc[mask, 'event_cens'] = 0\n    df.loc[mask, 'followup'] = 730\n    df['exposure'] = (df['treatment_norm']=='fertilised').astype(int)\n    model_df = df.dropna(subset=['age','exposure','event_cens','followup','treatment_norm'])\n\n    exog = model_df[['exposure','age']]\n    model = PHReg(model_df['followup'], exog, status=model_df['event_cens'], ties='breslow')\n    result = model.fit()\n\n    z = 1.96\n    coef_exp = result.params[0]\n    se_exp = result.bse[0]\n    hr_exp = np.exp(coef_exp)\n    ci_low = np.exp(coef_exp - z*se_exp)\n    ci_high = np.exp(coef_exp + z*se_exp)\n    p_exp = result.pvalues[0]\n    hr_age = np.exp(result.params[1])\n\n    claims = {\n        'n_model': int(len(model_df)),\n        'n_events': int(model_df['event_cens'].sum()),\n        'median_followup_days': float(model_df['followup'].median()),\n        'hr_exposure': float(hr_exp),\n        'hr_ci_low': float(ci_low),\n        'hr_ci_high': float(ci_high),\n        'p_exposure': float(p_exp),\n        'hr_age': float(hr_age)\n    }\n    return claims\n\nclaims = run()\nprint(json.dumps(claims))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

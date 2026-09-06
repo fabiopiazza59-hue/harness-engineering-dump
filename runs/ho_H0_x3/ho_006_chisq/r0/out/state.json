@@ -1,0 +1,16 @@
+{
+  "task_id": "ho_006_chisq",
+  "step": 5,
+  "started_at": 1788730889.1866968,
+  "plan": "",
+  "scripts": [],
+  "failures": [],
+  "draft_claims": {},
+  "submissions": [],
+  "best_claims": {},
+  "best_analysis": "",
+  "parse_failures": 3,
+  "compactions": 0,
+  "finished": true,
+  "status": "failed"
+}

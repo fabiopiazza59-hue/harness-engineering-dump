@@ -1,0 +1,55 @@
+{
+  "task_id": "ho_014_mannwhitney",
+  "step": 6,
+  "started_at": 1788731207.3086855,
+  "plan": "",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_unfertilised\": 120, \"n_fertilised\": 121, \"median_unfertilised\": 419.5, \"median_fertilised\": 475.9, \"median_diff\": 56.39999999999998, \"u_stat\": 9670.5, \"p_value\": 8.441766954014353e-06, \"rank_biser"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_unfertilised": 120,
+    "n_fertilised": 121,
+    "median_unfertilised": 419.5,
+    "median_fertilised": 475.9,
+    "median_diff": 56.39999999999998,
+    "u_stat": 9670.5,
+    "p_value": 8.441766954014353e-06,
+    "rank_biserial": -0.3320247933884297
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_unfertilised": 120,
+        "n_fertilised": 121,
+        "median_unfertilised": 419.5,
+        "median_fertilised": 475.9,
+        "median_diff": 56.39999999999998,
+        "u_stat": 9670.5,
+        "p_value": 8.441766954014353e-06,
+        "rank_biserial": -0.3320247933884297
+      }
+    }
+  ],
+  "best_claims": {
+    "n_unfertilised": 120,
+    "n_fertilised": 121,
+    "median_unfertilised": 419.5,
+    "median_fertilised": 475.9,
+    "median_diff": 56.39999999999998,
+    "u_stat": 9670.5,
+    "p_value": 8.441766954014353e-06,
+    "rank_biserial": -0.3320247933884297
+  },
+  "best_analysis": "import pandas as pd, numpy as np, json\nfrom scipy.stats import mannwhitneyu\n\ndf = pd.read_csv('data.csv')\ndf = df.drop_duplicates(keep='first')\ndf = df.replace(-999, np.nan)\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\ndf['treatment_norm'] = df['treatment'].str.strip().str.lower()\ndf = df[df['biomass'].notna()]\n\nfert = df[df['treatment_norm'] == 'fertilised']['biomass']\nunfert = df[df['treatment_norm'] == 'unfertilised']['biomass']\n\nn_fert = len(fert)\nn_unfert = len(unfert)\nmed_fert = fert.median()\nmed_unfert = unfert.median()\nmed_diff = med_fert - med_unfert\n\nres = mannwhitneyu(fert, unfert, alternative='two-sided', use_continuity=True, method='asymptotic')\nU = res.statistic\np = res.pvalue\nrb = 1 - 2*U/(n_fert*n_unfert)\n\nout = {\n 'n_unfertilised': n_unfert,\n 'n_fertilised': n_fert,\n 'median_unfertilised': med_unfert,\n 'median_fertilised': med_fert,\n 'median_diff': med_diff,\n 'u_stat': U,\n 'p_value': p,\n 'rank_biserial': rb\n}\nprint(json.dumps(out))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}

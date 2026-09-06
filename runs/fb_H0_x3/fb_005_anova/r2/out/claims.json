@@ -1,0 +1,42 @@
+{
+  "claims": [
+    {
+      "id": "n_low",
+      "value": 62
+    },
+    {
+      "id": "mean_low",
+      "value": 629.7161290322582
+    },
+    {
+      "id": "n_middle",
+      "value": 62
+    },
+    {
+      "id": "mean_middle",
+      "value": 698.2838709677418
+    },
+    {
+      "id": "n_high",
+      "value": 62
+    },
+    {
+      "id": "mean_high",
+      "value": 752.6741935483872
+    },
+    {
+      "id": "f_stat",
+      "value": 42.334380123965964
+    },
+    {
+      "id": "p_value",
+      "value": 7.746157286596403e-16
+    },
+    {
+      "id": "eta_squared",
+      "value": 0.3163191706402577
+    }
+  ],
+  "notes": "verification gate passed",
+  "gate_passed": true
+}

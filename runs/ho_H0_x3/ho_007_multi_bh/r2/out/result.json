@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "task_id": "ho_007_multi_bh",
+  "reason": "verification gate passed",
+  "steps": 5,
+  "claims_written": true,
+  "slots_filled": 8,
+  "slots_total": 8,
+  "gate_passed": true,
+  "usage": {
+    "calls": 5,
+    "input_tokens": 24183,
+    "output_tokens": 2368,
+    "cache_read_tokens": 3546,
+    "cost_usd": 0.1211
+  },
+  "artifacts": {
+    "claims": "claims.json",
+    "analysis": "analysis.py",
+    "state": "state.json"
+  }
+}

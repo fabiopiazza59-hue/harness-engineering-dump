@@ -10,3 +10,84 @@
 [10/48] fb_004_logistic r1: score=1.0 raw=1.0 prov=True 28.4s
 [11/48] fb_004_logistic r0: score=1.0 raw=1.0 prov=True 33.1s
 [12/48] fb_004_logistic r2: score=0.0 raw=0.0 prov=False 34.4s
+[13/48] fb_005_anova r2: score=1.0 raw=1.0 prov=True 28.0s
+[14/48] fb_005_anova r0: score=1.0 raw=1.0 prov=True 39.7s
+[15/48] fb_005_anova r1: score=1.0 raw=1.0 prov=True 44.5s
+[16/48] fb_006_chisq r0: score=1.0 raw=1.0 prov=True 27.6s
+[17/48] fb_006_chisq r1: score=1.0 raw=1.0 prov=True 26.1s
+[18/48] fb_006_chisq r2: score=1.0 raw=1.0 prov=True 25.5s
+[19/48] fb_007_paired r0: score=1.0 raw=1.0 prov=True 36.0s
+[20/48] fb_007_paired r1: score=1.0 raw=1.0 prov=True 31.8s
+[21/48] fb_007_paired r2: score=1.0 raw=1.0 prov=True 27.8s
+[22/48] fb_008_cox r0: score=1.0 raw=1.0 prov=True 43.5s
+[23/48] fb_008_cox r1: score=1.0 raw=1.0 prov=True 52.0s
+[24/48] fb_009_mh_stratified r0: score=1.0 raw=1.0 prov=True 37.2s
+[25/48] fb_008_cox r2: score=1.0 raw=1.0 prov=True 77.6s
+[26/48] fb_009_mh_stratified r1: score=1.0 raw=1.0 prov=True 37.9s
+[27/48] fb_010_multi_bh r0: score=1.0 raw=1.0 prov=True 30.8s
+[28/48] fb_009_mh_stratified r2: score=1.0 raw=1.0 prov=True 51.3s
+[29/48] fb_010_multi_bh r2: score=1.0 raw=1.0 prov=True 27.6s
+[30/48] fb_010_multi_bh r1: score=1.0 raw=1.0 prov=True 50.8s
+[31/48] fb_011_ols_interaction r0: score=1.0 raw=1.0 prov=True 32.1s
+[32/48] fb_011_ols_interaction r1: score=1.0 raw=1.0 prov=True 32.2s
+[33/48] fb_011_ols_interaction r2: score=1.0 raw=1.0 prov=True 42.2s
+[34/48] fb_012_mannwhitney r0: score=1.0 raw=1.0 prov=True 28.1s
+[35/48] fb_012_mannwhitney r1: score=1.0 raw=1.0 prov=True 28.4s
+[36/48] fb_012_mannwhitney r2: score=1.0 raw=1.0 prov=True 29.7s
+[37/48] fb_013_paired r0: score=1.0 raw=1.0 prov=True 28.8s
+[38/48] fb_013_paired r1: score=1.0 raw=1.0 prov=True 34.6s
+[39/48] fb_013_paired r2: score=0.0 raw=0.0 prov=False 33.1s
+[40/48] fb_014_cox r0: score=1.0 raw=1.0 prov=True 62.6s
+[41/48] fb_014_cox r1: score=1.0 raw=1.0 prov=True 54.2s
+[42/48] fb_014_cox r2: score=1.0 raw=1.0 prov=True 53.8s
+[43/48] fb_015_mh_stratified r0: score=1.0 raw=1.0 prov=True 39.5s
+[44/48] fb_015_mh_stratified r2: score=1.0 raw=1.0 prov=True 37.9s
+[45/48] fb_015_mh_stratified r1: score=1.0 raw=1.0 prov=True 51.6s
+[46/48] fb_016_multi_bh r0: score=1.0 raw=1.0 prov=True 31.0s
+[47/48] fb_016_multi_bh r2: score=1.0 raw=1.0 prov=True 34.5s
+[48/48] fb_016_multi_bh r1: score=0.0 raw=0.0 prov=False 39.8s
+{
+  "run_id": "fb_H0_x3",
+  "split": "feedback",
+  "label": "H0 baseline, feedback x3 (6 easy + 10 hard)",
+  "harness_dir": "harness",
+  "harness_commit": "68f903e",
+  "executor": {
+    "provider": "claude-cli",
+    "model": "sonnet",
+    "effort": "medium",
+    "max_steps": 30,
+    "step_timeout_s": 300,
+    "run_timeout_s": 1500,
+    "max_tool_output_chars": 6000,
+    "context_budget_chars": 60000,
+    "llm_retries": 3
+  },
+  "n_tasks": 16,
+  "repeats": 3,
+  "mean_score": 0.9167,
+  "mean_raw_accuracy": 0.9167,
+  "provenance_rate": 0.917,
+  "timeouts": 0,
+  "total_cost_usd": 5.141,
+  "total_llm_calls": 227,
+  "mean_output_tokens": 2085.3,
+  "wall_s": 621.5,
+  "finished_at": "2026-09-06 21:48:52"
+}
+  fb_001_ttest                 score=1.000 raw=1.000 prov=1.00
+  fb_002_ols                   score=1.000 raw=1.000 prov=1.00
+  fb_003_correlation           score=0.667 raw=0.667 prov=0.67
+  fb_004_logistic              score=0.667 raw=0.667 prov=0.67
+  fb_005_anova                 score=1.000 raw=1.000 prov=1.00
+  fb_006_chisq                 score=1.000 raw=1.000 prov=1.00
+  fb_007_paired                score=1.000 raw=1.000 prov=1.00
+  fb_008_cox                   score=1.000 raw=1.000 prov=1.00
+  fb_009_mh_stratified         score=1.000 raw=1.000 prov=1.00
+  fb_010_multi_bh              score=1.000 raw=1.000 prov=1.00
+  fb_011_ols_interaction       score=1.000 raw=1.000 prov=1.00
+  fb_012_mannwhitney           score=1.000 raw=1.000 prov=1.00
+  fb_013_paired                score=0.667 raw=0.667 prov=0.67
+  fb_014_cox                   score=1.000 raw=1.000 prov=1.00
+  fb_015_mh_stratified         score=1.000 raw=1.000 prov=1.00
+  fb_016_multi_bh              score=0.667 raw=0.667 prov=0.67

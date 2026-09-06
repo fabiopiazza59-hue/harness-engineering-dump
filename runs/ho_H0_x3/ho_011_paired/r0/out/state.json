@@ -1,0 +1,58 @@
+{
+  "task_id": "ho_011_paired",
+  "step": 4,
+  "started_at": 1788731083.78988,
+  "plan": "1. Load data.csv. 2. Remove exact duplicate rows (all columns identical), keep first. 3. Replace -999 with NaN across all columns (sentinel missing). 4. Filter age between 18 and 80 inclusive. 5. Drop rows missing sbp_12w or sbp_12w_post. 6. This is the analysis sample; n_pairs = count. 7. mean_first = mean(sbp_12w), mean_second = mean(sbp_12w_post). 8. diff = sbp_12w_post - sbp_12w (second minus first). mean_change = mean(diff), sd_change = sample SD (ddof=1) of diff. 9. Wilcoxon signed-rank test: two-sided, normal approximation (mode='approx'), no continuity correction (correction=False), zero differences discarded (zero_method='wilcox' default drops zeros). Use scipy.stats.wilcoxon with correction=False, mode='approx', zero_method='wilcox'. w_stat = statistic, p_value = pvalue. 10. cohens_dz = mean_change / sd_change. 11. pct_change per patient = (second-first)/first*100, then mean_pct_change = mean of these (over analysis sample, using first as sbp_12w, before dropping zero diffs - note Wilcoxon drops zeros only for test statistic, not for other stats). 12. Output all in JSON.",
+  "scripts": [
+    {
+      "name": "scratch_01.py -> analysis.py",
+      "returncode": 0,
+      "summary": "{\"n_pairs\": 220, \"mean_first\": 135.8531818181818, \"mean_second\": 130.93227272727273, \"mean_change\": -4.920909090909091, \"sd_change\": 5.726244881972723, \"w_stat\": 2586.5, \"p_value\": 1.1566676054660006e"
+    }
+  ],
+  "failures": [],
+  "draft_claims": {
+    "n_pairs": 220,
+    "mean_first": 135.8531818181818,
+    "mean_second": 130.93227272727273,
+    "mean_change": -4.920909090909091,
+    "sd_change": 5.726244881972723,
+    "w_stat": 2586.5,
+    "p_value": 1.1566676054660006e-23,
+    "cohens_dz": -0.8593605743968481,
+    "mean_pct_change": -3.651735354605737
+  },
+  "submissions": [
+    {
+      "ok": true,
+      "problems": [],
+      "claims": {
+        "n_pairs": 220,
+        "mean_first": 135.8531818181818,
+        "mean_second": 130.93227272727273,
+        "mean_change": -4.920909090909091,
+        "sd_change": 5.726244881972723,
+        "w_stat": 2586.5,
+        "p_value": 1.1566676054660006e-23,
+        "cohens_dz": -0.8593605743968481,
+        "mean_pct_change": -3.651735354605737
+      }
+    }
+  ],
+  "best_claims": {
+    "n_pairs": 220,
+    "mean_first": 135.8531818181818,
+    "mean_second": 130.93227272727273,
+    "mean_change": -4.920909090909091,
+    "sd_change": 5.726244881972723,
+    "w_stat": 2586.5,
+    "p_value": 1.1566676054660006e-23,
+    "cohens_dz": -0.8593605743968481,
+    "mean_pct_change": -3.651735354605737
+  },
+  "best_analysis": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport json\n\ndf = pd.read_csv('data.csv')\n\n# remove exact duplicate rows\ndf = df.drop_duplicates(keep='first')\n\n# replace -999 sentinel with NaN\ndf = df.replace(-999, np.nan)\n\n# filter age 18-80 inclusive\ndf = df[(df['age'] >= 18) & (df['age'] <= 80)]\n\n# drop missing sbp_12w or sbp_12w_post\ndf = df.dropna(subset=['sbp_12w', 'sbp_12w_post'])\n\nn_pairs = len(df)\nfirst = df['sbp_12w'].values\nsecond = df['sbp_12w_post'].values\ndiff = second - first\n\nmean_first = np.mean(first)\nmean_second = np.mean(second)\nmean_change = np.mean(diff)\nsd_change = np.std(diff, ddof=1)\n\nres = stats.wilcoxon(second, first, zero_method='wilcox', correction=False, mode='approx')\nw_stat = res.statistic\np_value = res.pvalue\n\ncohens_dz = mean_change / sd_change\n\npct_change = (second - first) / first * 100\nmean_pct_change = np.mean(pct_change)\n\nresult = {\n 'n_pairs': int(n_pairs),\n 'mean_first': float(mean_first),\n 'mean_second': float(mean_second),\n 'mean_change': float(mean_change),\n 'sd_change': float(sd_change),\n 'w_stat': float(w_stat),\n 'p_value': float(p_value),\n 'cohens_dz': float(cohens_dz),\n 'mean_pct_change': float(mean_pct_change)\n}\nprint(json.dumps(result))\n",
+  "parse_failures": 0,
+  "compactions": 0,
+  "finished": true,
+  "status": "success"
+}
